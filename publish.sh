@@ -2,6 +2,7 @@
 
 rm ./publish.zip
 cd Spune.Desktop
+dotnet clean
 dotnet publish -c Release -r win-x64 -p:PublishSingleFile=true --self-contained true
 cd ..
 dotnet run --project ./Tools/NSubsys/NSubsys.csproj -- ./Spune.Desktop/bin/Release/net9.0/win-x64/publish/Spune.Desktop.exe
