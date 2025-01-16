@@ -19,7 +19,7 @@ To install Spune, clone the repository and build the project using the .NET 9 SD
 
 ```sh
 git clone https://github.com/martin-bosgra-nhl-stenden/Spune.git
-cd spune
+cd Spune
 dotnet build
 ```
 
@@ -27,7 +27,7 @@ dotnet build
 To run the browser version of Spune, make sure Nginx is configured, and then run the script `launch.sh`. Open your favorite browser and go to the URL http://localhost/index.html.
 
 ```sh
-cd spune
+cd Spune
 ./launch.sh
 ```
 
@@ -35,7 +35,7 @@ cd spune
 To publish the desktop app for Windows, run the provided script `publish.sh`. The file `publish.zip` will be created.
 
 ```sh
-cd spune
+cd Spune
 ./publish.sh
 ```
 
