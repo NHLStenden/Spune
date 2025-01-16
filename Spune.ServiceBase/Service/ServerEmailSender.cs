@@ -41,6 +41,9 @@ public class EmailSender : IEmailSender
     /// <inheritdoc />
     public async Task<string> SendAsync()
     {
+        if (!string.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password))
+            return "Password is not provided";
+
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse(From));
         email.To.Add(MailboxAddress.Parse(To));
