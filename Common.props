@@ -1,0 +1,9 @@
+<Project>
+	<PropertyGroup>
+		<Company>NHL Stenden</Company>
+		<Copyright>Copyright © NHL Stenden</Copyright>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Version>1.0.1</Version>
+	</PropertyGroup>
+</Project>
