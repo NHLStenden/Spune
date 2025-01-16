@@ -1,0 +1,855 @@
+{
+  "Author": "martin.bosgra",
+  "Chapters": [
+    {
+      "CloseDelay": 12000,
+      "Media": {
+        "ImagePath": "images/Introduction.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "Introduction",
+      "Link": "PlayerName",
+      "Text": "Once upon a time, there was a mystical and magical forest..."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/PlayerName.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "PostProcessing": "Trim(?),UpperCaseFirstChar(?)",
+          "Prompt": "What is your name?",
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Type": "OpenQuestion",
+          "Link": "AvatarSelection",
+          "Text": "Ready"
+        }
+      ],
+      "Identifier": "PlayerName",
+      "Text": "Are you coming on an adventure? But before we start, I would like to know your name..."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/AvatarSelection.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "Height": 1,
+          "SetsResult": true,
+          "Width": 0.25,
+          "Link": "AgeSelection",
+          "Text": "explorer"
+        },
+        {
+          "Height": 1,
+          "SetsResult": true,
+          "Width": 0.25,
+          "XPosition": 0.25,
+          "Link": "AgeSelection",
+          "Text": "artist"
+        },
+        {
+          "Height": 1,
+          "SetsResult": true,
+          "Width": 0.25,
+          "XPosition": 0.5,
+          "Link": "AgeSelection",
+          "Text": "inventor"
+        },
+        {
+          "Height": 1,
+          "SetsResult": true,
+          "Width": 0.25,
+          "XPosition": 0.75,
+          "Link": "AgeSelection",
+          "Text": "protector"
+        }
+      ],
+      "Identifier": "AvatarSelection",
+      "Text": "Nice that you are playing, {{PlayerName}}! Which avatar suits you well? Touch this avatar to continue."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/AgeSelection.webp"
+      },
+      "Interactions": [
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "TeacherName",
+          "Text": "7"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "TeacherName",
+          "Text": "8"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "TeacherName",
+          "Text": "9"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "TeacherName",
+          "Text": "10"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "TeacherName",
+          "Text": "11"
+        }
+      ],
+      "Identifier": "AgeSelection",
+      "Text": "You really seem like a {{AvatarSelection}}. How old are you?"
+    },
+    {
+      "Media": {
+        "ImagePath": "images/TeacherName.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "PostProcessing": "Trim(?),UpperCaseFirstChar(?)",
+          "Prompt": "What is the name of your teacher?",
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Type": "OpenQuestion",
+          "Link": "ForestHike",
+          "Text": "Ready"
+        }
+      ],
+      "Identifier": "TeacherName",
+      "Text": "{{AgeSelection}}? That\u0027s a nice age for this game.\nLast question: what is your teacher\u0027s name?"
+    },
+    {
+      "CloseDelay": 12000,
+      "Media": {
+        "ImagePath": "images/ForestHike.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "ForestHike",
+      "Link": "RustlingSound",
+      "Text": "{{TeacherName}} takes your class and you on a hike in the mystical and magical forest today.\nYou are a bit bored and walk at the back."
+    },
+    {
+      "CloseDelay": 10000,
+      "Media": {
+        "ImagePath": "images/RustlingSound.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "RustlingSound",
+      "Link": "SoundReaction",
+      "Text": "You suddenly stop. You hear a rustling sound nearby, as if someone is in the bushes."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/SoundReaction.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "RemoveAfterUse": true,
+          "TextIsVisible": true,
+          "Hint": "It sounds like a child crying. {{TeacherName}} and your class are almost out of sight.",
+          "Identifier": "SoundInvestigationBackToTeacher",
+          "Text": "Back to {{TeacherName}}"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "SoundInvestigation",
+          "Text": "Go see what it is"
+        }
+      ],
+      "Identifier": "SoundReaction",
+      "Text": "You turn around. What are you going to do?"
+    },
+    {
+      "Media": {
+        "ImagePath": "images/SoundInvestigation.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "Height": 0.5351511437908496,
+          "SetsResult": true,
+          "Width": 0.23978758169934644,
+          "XPosition": 0.15870098039215685,
+          "YPosition": 0.12914624183006537,
+          "Hint": "I don\u0027t touch this mushroom. But it is beautiful!",
+          "Text": "Mushroom"
+        },
+        {
+          "Height": 0.27293531910009183,
+          "SetsResult": true,
+          "Width": 0.4747080176767676,
+          "XPosition": 0.19136320592286502,
+          "YPosition": 0.678116391184573,
+          "Hint": "What a mess here. Quickly clean up!",
+          "Text": "Litter"
+        },
+        {
+          "Height": 0.36638401056014697,
+          "SetsResult": true,
+          "Width": 0.2408280245638199,
+          "XPosition": 0.7603951446280992,
+          "YPosition": 0.3455793732782369,
+          "Hint": "The plants have a beautiful color today.",
+          "Text": "Leafs"
+        },
+        {
+          "Height": 0.09881485307621668,
+          "SetsResult": true,
+          "Width": 0.04799414600550955,
+          "XPosition": 0.6917972337006428,
+          "YPosition": 0.2979295798898072,
+          "Link": "PuppyRescue",
+          "Text": "FoundPuppy"
+        },
+        {
+          "Height": 0.40639297385620915,
+          "SetsResult": true,
+          "Width": 0.25714358660130715,
+          "XPosition": 0.4141237745098039,
+          "YPosition": 0.01664624183006536,
+          "Hint": "It must be something in the background.",
+          "Text": "Background"
+        }
+      ],
+      "Identifier": "SoundInvestigation",
+      "Text": "Very brave of you! You are now near the sound.\nTouch the image to start exploring."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/PuppyRescue.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "HandsUsage",
+          "Text": "Pick up the puppy"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "StickUsage",
+          "Text": "Find a stick\nPush the branches aside\nPick up the puppy"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "SleevesUsage",
+          "Text": "Hands in your sleeves\nPick up the puppy"
+        }
+      ],
+      "Identifier": "PuppyRescue",
+      "Text": "You see a puppy. The puppy is confused, crying and says: \u0022I\u0027m stuck!\u0022. What do you do?"
+    },
+    {
+      "CloseDelay": 12000,
+      "Media": {},
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "HandsUsage",
+      "Link": "BloodPaw",
+      "Text": "You carefully take the puppy out of the bushes. It hurts, but you saved the puppy!\nThe puppy wags its tail and looks at you gratefully, {{PlayerName}}!"
+    },
+    {
+      "CloseDelay": 12000,
+      "Media": {},
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "StickUsage",
+      "Link": "BloodPaw",
+      "Text": "You find a stick nearby and push the branches aside with it.\nThe puppy wags its tail and is picked up by you, {{PlayerName}}!"
+    },
+    {
+      "CloseDelay": 12000,
+      "Media": {},
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "SleevesUsage",
+      "Link": "BloodPaw",
+      "Text": "Annoying thorns...\n\nYou first put your hands in the sleeves of your jacket.\nThe puppy wags its tail and is picked up by you, {{PlayerName}}!"
+    },
+    {
+      "Media": {
+        "ImagePath": "images/BloodPaw.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Hint": "Well done! The puppy feels a bit better because of this.",
+          "Link": "PuppyMeetHandkerchief",
+          "Text": "Wrap handkerchief around it"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Hint": "You are kind. The puppy wags a little and licks the wound clean.",
+          "Link": "PuppyMeet",
+          "Text": "Give it a kiss"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Hint": "The puppy looks a bit sad, licks the wound clean and still limps a bit.",
+          "Link": "PuppyMeet",
+          "Text": "Do nothing"
+        }
+      ],
+      "Identifier": "BloodPaw",
+      "Text": "The joy doesn\u0027t last long... the puppy looks confused again and has blood on its paw.\nWhat are you going to do?"
+    },
+    {
+      "ChatFallback": "Max",
+      "ChatMessage": "Give a suitable and common name for a puppy. Draw inspiration from the words: \u0022{{PlayerName}}\u0022, \u0022{{AvatarSelection}}\u0022 and \u0022{{AgeSelection}}\u0022. The answer can only be one word, and no more than that",
+      "Media": {
+        "ImagePath": "images/PuppyMeet.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "RemoveAfterUse": true,
+          "TextIsVisible": true,
+          "Hint": "\u0022I-I-I think {{ChatResult.PuppyMeet}} is fine for now...\u0022 says the puppy hesitantly.",
+          "Identifier": "PuppyMeetName",
+          "Text": "Name him {{ChatResult.PuppyMeet}}"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "MagpieLaugh1",
+          "Text": "Go find the collar"
+        }
+      ],
+      "Identifier": "PuppyMeet",
+      "Text": "\u0022T-T-T-Thank you!\u0022 says the puppy still a bit scared. \u0022My name is... I don\u0027t remember my name right now.\u0022 squeaks the puppy sadly.\nThe pup is clearly lost and missing its collar."
+    },
+    {
+      "ChatFallback": "Max",
+      "ChatMessage": "Give a suitable and common name for a puppy. Draw inspiration from the words: \u0022{{PlayerName}}\u0022, \u0022{{AvatarSelection}}\u0022 and \u0022{{AgeSelection}}\u0022. The answer can only be one word, and no more than that",
+      "Media": {
+        "ImagePath": "images/PuppyMeetHandkerchief.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "RemoveAfterUse": true,
+          "TextIsVisible": true,
+          "Hint": "\u0022I-I-I think {{ChatResult.PuppyMeetHandkerchief}} is fine for now...\u0022 says the puppy hesitantly.",
+          "Identifier": "PuppyMeetHandkerchief",
+          "Text": "Name him {{ChatResult.PuppyMeetHandkerchief}}"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "MagpieLaugh1",
+          "Text": "Go find the collar"
+        }
+      ],
+      "Identifier": "PuppyMeetHandkerchief",
+      "Text": "\u0022T-T-T-Thank you!\u0022 says the puppy still a bit scared. \u0022My name is... I don\u0027t remember my name right now.\u0022 squeaks the puppy sadly.\nThe pup is clearly lost and missing its collar."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/MagpieLaugh1.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "MagpieLaugh2",
+          "Text": "Think for a moment..."
+        },
+        {
+          "Height": 0.3590482026143791,
+          "SetsResult": true,
+          "Width": 0.2639501633986928,
+          "XPosition": 0.21607945261437908,
+          "YPosition": 0.2601511437908497,
+          "Hint": "\u0022How do you like my hairstyle? Nice, right?\u0022 says the mocking magpie.",
+          "Text": "MagpieHair"
+        },
+        {
+          "Height": 0.15273692810457518,
+          "SetsResult": true,
+          "Width": 0.07747651143790857,
+          "XPosition": 0.8133323120915033,
+          "YPosition": 0.678564133986928,
+          "Hint": "No, this bird is not it. I think it\u0027s the magpie.",
+          "Text": "NotTheBird"
+        }
+      ],
+      "Identifier": "MagpieLaugh1",
+      "Text": "\u0022Hahaha! That puppy was really stuck... What a joke!\u0022 you hear a mocking magpie say from a high tree."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/MagpieLaugh2.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "RemoveAfterUse": true,
+          "TextIsVisible": true,
+          "Hint": "\u0022Go away? Tough luck. Hahaha! You can\u0027t catch me!\u0022 laughs the mocking magpie.",
+          "Identifier": "MagpieLaugh2GoAway",
+          "Text": "Go away!"
+        },
+        {
+          "RemoveAfterUse": true,
+          "TextIsVisible": true,
+          "Hint": "\u0022I\u0027m not here to make friends.\u0022 says the mocking magpie.",
+          "Identifier": "MagpieLaugh2NotHelping",
+          "Text": "You\u0027re not helping!"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "BerriesPick",
+          "Text": "Never mind"
+        }
+      ],
+      "Identifier": "MagpieLaugh2",
+      "Text": "\u0022I saw a shiny collar, but I don\u0027t want to get it.\u0022 says the magpie smacking."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/BerriesPick.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "Height": 0.276797385620915,
+          "SetsResult": true,
+          "Width": 0.137515318627451,
+          "XPosition": 0.2016595179738562,
+          "YPosition": 0.4876736111111111,
+          "Hint": "You pick up the coin and hold it up for the magpie. The magpie says: \u0022The 100 coins in my nest are prettier.\u0022",
+          "Text": "CoinSelect"
+        },
+        {
+          "Height": 0.2731924019607843,
+          "SetsResult": true,
+          "Width": 0.4268790849673203,
+          "XPosition": 0.36197406045751634,
+          "YPosition": 0.6946895424836601,
+          "Hint": "The water glistens beautifully today. And what are those purple things there?",
+          "Text": "WaterSelect"
+        },
+        {
+          "Height": 0.45601511437908493,
+          "SetsResult": true,
+          "Width": 0.18889399509803917,
+          "XPosition": 0.6420904820261438,
+          "YPosition": 0.009334150326797385,
+          "Hint": "This tree is perfect for the magpie to live in! But the magpie is not interested in your suggestion.",
+          "Text": "Tree1Select"
+        },
+        {
+          "Height": 0.4258169934640523,
+          "SetsResult": true,
+          "Width": 0.38140829248366015,
+          "XPosition": 0.014705882352941176,
+          "YPosition": 0.019240196078431374,
+          "Hint": "The forest really comes alive with all these beautiful colors!",
+          "Text": "ColorSelect"
+        },
+        {
+          "Height": 0.11429738562091507,
+          "SetsResult": true,
+          "Width": 0.16204044117647054,
+          "XPosition": 0.8296568627450981,
+          "YPosition": 0.6449550653594771,
+          "Hint": "You pick some berries because the magpie was smacking. \u0022Delicious!\u0022 says the magpie.",
+          "Link": "MagpieDinner",
+          "Text": "BerriesSelect"
+        },
+        {
+          "Height": 0.12124183006535949,
+          "SetsResult": true,
+          "Width": 0.1741319444444444,
+          "XPosition": 0.4532015931372549,
+          "YPosition": 0.42685866013071894,
+          "Hint": "Something glistens in the grass, but it\u0027s hard to see from here.",
+          "Text": "GrassSelect"
+        }
+      ],
+      "Identifier": "BerriesPick",
+      "Text": "Good idea! Leave the magpie alone. Investigate and discover by touching the image.\nMaybe you\u0027ll find something..."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/MagpieDinner.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "Height": 0.7300551470588236,
+          "SetsResult": true,
+          "Width": 0.5472732843137256,
+          "XPosition": 0.020557598039215686,
+          "YPosition": 0.03577410130718954,
+          "Hint": "\u0022Let me eat in peace!\u0022 says the magpie with its beak full.",
+          "Text": "MagpieInterrupt"
+        },
+        {
+          "RemoveAfterUse": true,
+          "TextIsVisible": true,
+          "Hint": "\u0022Pfff... I don\u0027t help children!\u0022 says the magpie. And continues eating greedily.",
+          "Identifier": "MagpieDinnerAskHelp",
+          "Text": "Ask the magpie for help"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "MagpieFlight",
+          "Text": "Wait another minute"
+        },
+        {
+          "Height": 0.2504391339869281,
+          "SetsResult": true,
+          "Width": 0.4317146650326798,
+          "XPosition": 0.42472937091503266,
+          "YPosition": 0.6583741830065359,
+          "Hint": "The magpie suddenly gets angry: \u0022Stay away from those delicious berries, or I\u0027ll peck you!\u0022.",
+          "Text": "BerriesTouchWhileEating"
+        }
+      ],
+      "Identifier": "MagpieDinner",
+      "Text": "You throw the berries on the ground. The magpie flies down and starts eating."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/MagpieFlight.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "RemoveAfterUse": true,
+          "TextIsVisible": true,
+          "Hint": "The puppy is very happy that you stay with him. It\u0027s sometimes so scary in the forest!",
+          "Identifier": "MagpieFlightStay",
+          "Text": "Stay with the puppy"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Hint": "You pick up the puppy and quickly go after the magpie. \u0022What an annoying magpie!\u0022 you think.",
+          "Link": "MagpieRun",
+          "Text": "Pick up the puppy\nGo after it"
+        }
+      ],
+      "Identifier": "MagpieFlight",
+      "Text": "The pup cries again, and you turn around to comfort him.\nAnd suddenly: the mocking magpie flies away! What now?"
+    },
+    {
+      "CloseDelay": 12000,
+      "Media": {},
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "MagpieRun",
+      "Link": "PuppyCollar",
+      "Text": "You run fast. In the distance, you hear the magpie laughing: \u0022Hahaha! Faster!\u0022.\n\nCome on!!! Run, {{PlayerName}}!!!"
+    },
+    {
+      "Media": {
+        "ImagePath": "images/PuppyCollar.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "RemoveAfterUse": true,
+          "TextIsVisible": true,
+          "Hint": "\u0022My collar!\u0022 says the puppy happily. \u0022But I still don\u0027t know my name...\u0022",
+          "Identifier": "PuppyCollarAroundNeck",
+          "Text": "Put on the collar"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Hint": "You look inside the collar and see the word \u0022Bijou\u0022.",
+          "Link": "PuppyHappy",
+          "Text": "Look for the name"
+        }
+      ],
+      "Identifier": "PuppyCollar",
+      "Text": "And then suddenly you stop. \u0022There it is!\u0022 shouts the magpie from a high tree.\nYou found the collar! What a beautiful collar it is..."
+    },
+    {
+      "CloseDelay": 8000,
+      "Media": {
+        "ImagePath": "images/PuppyHappy.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "RemoveAfterUse": true,
+          "TextIsVisible": true,
+          "Hint": "\u0022Uhm... I-I-I don\u0027t know where I live either.\u0022 stutters Bijou.",
+          "Identifier": "PuppyHappyTakeHome",
+          "Text": "Take Bijou home"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Hint": "\u0022I don\u0027t know right now.\u0022 says Bijou.\nWhat should you do, {{PlayerName}}? Look around to see if you can get further.",
+          "Link": "AnimalPuzzle",
+          "Text": "Ask: \u0022Where do you live?\u0022"
+        }
+      ],
+      "Identifier": "PuppyHappy",
+      "Text": "Sitting down, the puppy wags its tail and says: \u0022Oh yes! My name is Bijou. Can I go home now?\u0022."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/AnimalPuzzle.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "Height": 0.19809027777777782,
+          "SetsResult": true,
+          "Width": 0.0689593545751634,
+          "XPosition": 0.02044015522875817,
+          "YPosition": 0.2647160947712418,
+          "Hint": "The squirrel says: \u0022The deer speaks the truth.\u0022.",
+          "Text": "SquirrelTalk"
+        },
+        {
+          "Height": 0.2981515522875817,
+          "SetsResult": true,
+          "Width": 0.17207924836601307,
+          "XPosition": 0.2034313725490196,
+          "YPosition": 0.5164726307189542,
+          "Hint": "The deer says: \u0022The fox is lying.\u0022.",
+          "Text": "DeerTalk"
+        },
+        {
+          "Height": 0.16456290849673202,
+          "SetsResult": true,
+          "Width": 0.05568831699346405,
+          "XPosition": 0.46504289215686273,
+          "YPosition": 0.03875612745098039,
+          "Hint": "The owl says: \u0022The squirrel is not lying.\u0022.",
+          "Text": "OwlTalk"
+        },
+        {
+          "Height": 0.1973549836601307,
+          "SetsResult": true,
+          "Width": 0.10190972222222228,
+          "XPosition": 0.6785590277777778,
+          "YPosition": 0.5171058006535948,
+          "Hint": "The fox says: \u0022The owl is not telling the truth.\u0022.",
+          "Text": "FoxTalk"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Hint": "The squirrel looks at you angrily: \u0022Are you calling me a liar?\u0022.",
+          "Text": "The squirrel"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Hint": "The deer chews calmly: \u0022Whatever...\u0022.",
+          "Text": "The deer"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Hint": "\u0022Hoo-hoo! I\u0027m not a liar.\u0022 says the owl surprised.",
+          "Text": "The owl"
+        },
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Hint": "\u0022Yuck! How did you know I was lying?\u0022 asks the fox.",
+          "Link": "Intersection",
+          "Text": "The fox"
+        }
+      ],
+      "Identifier": "AnimalPuzzle",
+      "Text": "You see a few animals in the forest. Bijou says: \u0022One of the animals knows where I live, but it\u0027s a liar!\u0022\nWhich animal is lying?"
+    },
+    {
+      "Media": {
+        "ImagePath": "images/Intersection.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "Height": 1,
+          "SetsResult": true,
+          "Width": 0.5,
+          "Hint": "You take the dark path and walk for half an hour in the mud. Then Bijou says: \u0022This doesn\u0027t seem right!\u0022.\nAgain, the fox lied. You have to go all the way back.",
+          "Text": "DarkRoad"
+        },
+        {
+          "Height": 1,
+          "SetsResult": true,
+          "Width": 0.5,
+          "XPosition": 0.5,
+          "Link": "Houses",
+          "Text": "BrightRoad"
+        }
+      ],
+      "Identifier": "Intersection",
+      "Text": "The fox says: \u0022I know where Bijou lives. Follow the dark path for sure!\u0022 Bijou looks at you questioningly.\nWhich path do you choose?"
+    },
+    {
+      "Media": {
+        "ImagePath": "images/Houses.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "Height": 0.34671160130718953,
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Width": 0.1721966911764706,
+          "XPosition": 0.24659926470588237,
+          "YPosition": 0.09160539215686274,
+          "Hint": "No, this house is not it.",
+          "Text": "Nyumbani"
+        },
+        {
+          "Height": 0.31465482026143793,
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Width": 0.17808415032679736,
+          "XPosition": 0.5178002450980392,
+          "YPosition": 0.1145016339869281,
+          "Hint": "Yes, that\u0027s where Bijou lives! Well done, {{PlayerName}}!",
+          "Link": "PuppyHouse",
+          "Text": "Heimili"
+        },
+        {
+          "Height": 0.3870404411764705,
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Width": 0.20220077614379087,
+          "XPosition": 0.0773999183006536,
+          "YPosition": 0.47849264705882355,
+          "Hint": "No, this house is not it.",
+          "Text": "Ekhaya"
+        },
+        {
+          "Height": 0.3694240196078431,
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Width": 0.19582312091503262,
+          "XPosition": 0.7463337418300654,
+          "YPosition": 0.3749591503267974,
+          "Hint": "No, this is not the house.",
+          "Text": "Nanglog"
+        },
+        {
+          "Height": 0.29352532679738563,
+          "SetsResult": true,
+          "Width": 0.1574652777777778,
+          "XPosition": 0.08125,
+          "YPosition": 0.10413602941176471,
+          "Hint": "This house has no nameplate.",
+          "Text": "NoSignHouse1"
+        },
+        {
+          "Height": 0.33743872549019605,
+          "SetsResult": true,
+          "Width": 0.17155330882352943,
+          "XPosition": 0.4404718137254902,
+          "YPosition": 0.34882557189542485,
+          "Hint": "This house has no nameplate.",
+          "Text": "NoSignHouse2"
+        }
+      ],
+      "Identifier": "Houses",
+      "Text": "After a while, you and Bijou see a number of houses.\nCan you figure out where Bijou lives?"
+    },
+    {
+      "CloseDelay": 10000,
+      "Media": {
+        "ImagePath": "images/PuppyHouse.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "PuppyHouse",
+      "Link": "BrotherMeet",
+      "Text": "Bijou is so happy: \u0022That\u0027s where I live! Yes!\u0022."
+    },
+    {
+      "CloseDelay": 8000,
+      "Media": {
+        "ImagePath": "images/BrotherMeet.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "BrotherMeet",
+      "Link": "PuppyCuddle",
+      "Text": "Another pup comes out. \u0022That\u0027s my brother!\u0022 says Bijou happily. Bijou runs to him."
+    },
+    {
+      "Media": {
+        "ImagePath": "images/PuppyCuddle.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [
+        {
+          "SetsResult": true,
+          "TextIsVisible": true,
+          "Link": "Conclusion",
+          "Text": "Look for {{TeacherName}}!"
+        },
+        {
+          "RemoveAfterUse": true,
+          "TextIsVisible": true,
+          "Hint": "Bijou loves it when you pet him!",
+          "Identifier": "PuppyCuddleAgain",
+          "Text": "Pet Bijou again"
+        }
+      ],
+      "Identifier": "PuppyCuddle",
+      "Link": "Conclusion",
+      "Text": "Bijou comes to you and says: \u0022Thank you, {{PlayerName}}!\u0022 You give Bijou a hug. What do you do now?"
+    },
+    {
+      "CloseDelay": 12000,
+      "Media": {
+        "ImagePath": "images/Conclusion.webp"
+      },
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "Conclusion",
+      "Link": "SpuneStory.Finished",
+      "Text": "You walk down the path and hear... a school bell! You see your school again. {{TeacherName}} is standing at the door.\n\u0022Where were you?\u0022 is asked. You chuckle and say:"
+    },
+    {
+      "Media": {},
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "SpuneStory.Finished",
+      "Text": "\u0022I was rescuing a pup, you see, For a friend in need is a friend indeed!\u0022\n\nThe end."
+    }
+  ],
+  "EmailOrganizer": "martin.bosgra@nhlstenden.com",
+  "ValueInputIsMandatoryText": "You must fill it in, otherwise you cannot continue.",
+  "ValueSelectIsMandatoryText": "You must choose at least one, otherwise you cannot continue.",
+  "Text": "The lost puppy in the magical forest"
+}

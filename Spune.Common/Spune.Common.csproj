@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TargetFramework>net9.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.2.3"/>
+        <PackageReference Include="Google.Protobuf" Version="3.29.3"/>
+        <PackageReference Include="Grpc.Net.Client" Version="2.67.0"/>
+        <PackageReference Include="Grpc.Tools" Version="2.69.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="protobuf-net" Version="3.2.45"/>
+        <PackageReference Include="System.Text.Json" Version="9.0.0"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Protobuf Include="./Protos/*.proto"/>
+    </ItemGroup>
+</Project>

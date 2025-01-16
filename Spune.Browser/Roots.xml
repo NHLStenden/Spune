@@ -1,0 +1,4 @@
+﻿<linker>
+    <assembly fullname="Spune.Browser" preserve="All"/>
+    <assembly fullname="Spune.UIShared" preserve="All"/>
+</linker>

@@ -1,0 +1,12 @@
+{
+  "ApplicationUri": "http://localhost/",
+  "ChatServerUri": "ollama/",
+  "ChatServerModel": "gemma2:27b",
+  "EmailFrom": "martin.bosgra@nhlstenden.com",
+  "EmailPassword": "",
+  "EmailPort": 587,
+  "EmailSmtpHost": "nhlstenden.com",
+  "EmailUserName": "martin.bosgra@nhlstenden.com",
+  "SplashScreen": false,
+  "SpuneServerUri": "spune_server/"
+}

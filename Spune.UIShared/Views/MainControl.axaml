@@ -1,0 +1,130 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="using:System"
+             xmlns:c="using:Spune.UIShared.Core"
+             xmlns:v="using:Spune.UIShared.Views"
+             mc:Ignorable="d"
+             Padding="12"
+             x:Class="Spune.UIShared.Views.MainControl">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <sys:TimeSpan x:Key="FadeInDuration">0:0:0.300</sys:TimeSpan>
+            <sys:TimeSpan x:Key="GrowAndFadeOutDuration">0:0:0.300</sys:TimeSpan>
+            <sys:TimeSpan x:Key="RectangleClickDuration">0:0:0.150</sys:TimeSpan>
+            <ResourceDictionary.ThemeDictionaries>
+                <!-- Took FluentTheme accent color, and rotated +180 degrees using hue (HSV) -->
+                <ResourceDictionary x:Key="Default">
+                    <Color x:Key="SystemSecondaryAccentColor">#FFFF8500</Color>
+                    <Color x:Key="SystemSecondaryAccentColorLight1">#FFFFAA4E</Color>
+
+                    <SolidColorBrush x:Key="SystemControlHighlightSecondaryAccentBrush" Color="{DynamicResource SystemSecondaryAccentColor}" />
+
+                    <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="{DynamicResource SystemSecondaryAccentColor}" />
+                    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="{DynamicResource SystemSecondaryAccentColorLight1}" />
+
+                    <StaticResource x:Key="TextControlSelectionHighlightColor" ResourceKey="SystemControlHighlightSecondaryAccentBrush" />
+                    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="{DynamicResource SystemSecondaryAccentColor}" />
+                    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="{DynamicResource SystemSecondaryAccentColor}" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <Color x:Key="SystemSecondaryAccentColor">#FFFF8500</Color>
+                    <Color x:Key="SystemSecondaryAccentColorDark1">#FFC66700</Color>
+
+                    <SolidColorBrush x:Key="SystemControlHighlightSecondaryAccentBrush" Color="{DynamicResource SystemSecondaryAccentColor}" />
+
+                    <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="{DynamicResource SystemSecondaryAccentColor}" />
+                    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="{DynamicResource SystemSecondaryAccentColorDark1}" />
+
+                    <StaticResource x:Key="TextControlSelectionHighlightColor" ResourceKey="SystemControlHighlightSecondaryAccentBrush" />
+                    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="{DynamicResource SystemSecondaryAccentColor}" />
+                    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="{DynamicResource SystemSecondaryAccentColor}" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.Styles>
+        <Style Selector="Panel.grow_and_fade_out">
+            <Style.Animations>
+                <Animation Easing="SineEaseInOut" Duration="{StaticResource GrowAndFadeOutDuration}">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="1" />
+                        <Setter Property="ScaleTransform.ScaleX" Value="1" />
+                        <Setter Property="ScaleTransform.ScaleY" Value="1" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="0" />
+                        <Setter Property="ScaleTransform.ScaleX" Value="2" />
+                        <Setter Property="ScaleTransform.ScaleY" Value="2" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <Style Selector="Panel.fade_in">
+            <Style.Animations>
+                <Animation Easing="SineEaseInOut" Duration="{StaticResource FadeInDuration}">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="1" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <Style Selector="Rectangle.click_animation">
+            <Style.Animations>
+                <Animation Easing="SineEaseInOut" Duration="{StaticResource RectangleClickDuration}">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0.75" />
+                        <Setter Property="ScaleTransform.ScaleX" Value="1" />
+                        <Setter Property="ScaleTransform.ScaleY" Value="1" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="0" />
+                        <Setter Property="ScaleTransform.ScaleX" Value="0.75" />
+                        <Setter Property="ScaleTransform.ScaleY" Value="0.75" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </UserControl.Styles>
+    <Grid RowDefinitions="*,Auto">
+        <Image Grid.Row="0" x:Name="SplashImage" Source="{SvgImage avares://Spune.UIShared/Images/LogoWithGlow.svg}"
+               Opacity="0">
+            <Image.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:1.5" Easing="SineEaseInOut" />
+                </Transitions>
+            </Image.Transitions>
+        </Image>
+        <Grid Grid.Row="0" x:Name="MainGrid" />
+        <Grid Grid.Row="0" x:Name="MessageGrid" Height="{Binding #MainGrid.Bounds.Height}" IsHitTestVisible="False"
+              Opacity="0" v:ControlExtensions.PointerClick="MessageGridPointerClick">
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}" />
+            <TextBlock x:Name="MessageTextBlock" FontSize="21" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Grid.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.300" Easing="SineEaseInOut" />
+                </Transitions>
+            </Grid.Transitions>
+        </Grid>
+        <Grid Grid.Row="0" x:Name="ChapterGrid" Height="{Binding #MainGrid.Bounds.Height}" IsHitTestVisible="False"
+              Opacity="0">
+            <ListBox Grid.Row="0" x:Name="ChapterListBox" x:DataType="c:RunningStory" ItemsSource="{Binding MasterStory.Chapters}"
+                     SelectionChanged="ChapterListBoxSelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Identifier}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Grid.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.300" Easing="SineEaseInOut" />
+                </Transitions>
+            </Grid.Transitions>
+        </Grid>
+    </Grid>
+</UserControl>

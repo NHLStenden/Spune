@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package spune.common.grpc;
+
+service EmailService {
+  rpc SendEmail (SendEmailRequest) returns (SendEmailResponse);
+}
+
+message SendEmailRequest {
+  string smtpHost = 1;
+  int32 port = 2;
+  string userName = 3;
+  string password = 4;
+  string from = 5;
+  string to = 6;
+  string subject = 7;
+  string attachmentFileName = 8;
+  bytes attachment = 9;
+  string body = 10;
+}
+
+message SendEmailResponse {
+  bool success = 1;
+  string message = 2;
+}

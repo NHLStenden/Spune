@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <ApplicationIcon>Spune.ico</ApplicationIcon>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.3"/>
+    </ItemGroup>
+    <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+        <Copy SourceFiles="Spune.Desktop.json" DestinationFolder="$(OutDir)"/>
+    </Target>
+    <ItemGroup>
+        <ProjectReference Include="./../Spune.ServiceBase/Spune.ServiceBase.csproj"/>
+        <ProjectReference Include="./../Spune.UIShared/Spune.UIShared.csproj"/>
+    </ItemGroup>
+</Project>

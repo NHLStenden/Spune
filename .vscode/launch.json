@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Spune.Browser",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildSpuneBrowser",
+            "program": "${workspaceFolder}/Spune.Browser/bin/Debug/net9.0/Spune.Browser.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "enableStepFiltering": false
+        },
+        {
+            "name": "Spune.Desktop",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildSpuneDesktop",
+            "program": "${workspaceFolder}/Spune.Desktop/bin/Debug/net9.0/Spune.Desktop.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "enableStepFiltering": false
+        },
+        {
+            "name": "Spune.Server",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildSpuneServer",
+            "program": "${workspaceFolder}/Spune.Server/bin/Debug/net9.0/Spune.Server.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "enableStepFiltering": false
+        }
+    ]
+}

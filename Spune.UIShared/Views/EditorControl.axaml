@@ -1,0 +1,183 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="using:Spune.UIShared.Core"
+             xmlns:v="using:Spune.UIShared.Views"
+             mc:Ignorable="d"
+             Padding="12"
+             x:Class="Spune.UIShared.Views.EditorControl"
+             x:DataType="c:MasterStory">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <v:FilePathToSourceConverter x:Key="FilePathToSourceConverter" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid x:Name="MainGrid">
+        <Grid x:Name="EditorGrid" RowDefinitions="Auto,*" IsVisible="False">
+            <StackPanel Grid.Row="0" Spacing="12">
+                <Grid ColumnDefinitions="*,*,Auto">
+                    <StackPanel Grid.Column="0" Spacing="12">
+                        <TextBlock Margin="0,0,0,-4">Title</TextBlock>
+                        <TextBox Text="{Binding Text}" />
+                        <TextBlock Margin="0,0,0,-4">Text for value is mandatory</TextBlock>
+                        <TextBox Text="{Binding ValueInputIsMandatoryText}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
+                        <TextBlock Margin="0,0,0,-4">Author</TextBlock>
+                        <TextBox Text="{Binding Author}" />
+                        <TextBlock Margin="0,0,0,-4">Text for selection is mandatory</TextBlock>
+                        <TextBox Text="{Binding ValueSelectIsMandatoryText}" />
+                    </StackPanel>
+                    <Button Grid.Column="2" Click="SaveMasterStoryButtonClick" Margin="12,0,0,0" VerticalAlignment="Stretch" VerticalContentAlignment="Center">Save master story
+                    </Button>
+                </Grid>
+                <TextBlock Margin="0,0,0,-4">E-mail organiser</TextBlock>
+                <TextBox Text="{Binding EmailOrganizer}" />
+            </StackPanel>
+            <Grid Grid.Row="1" RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0" Margin="0,12,0,-4">Chapters</TextBlock>
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="0,12,0,0">
+                    <Grid Grid.Column="0" x:Name="ChaptersGrid">
+                        <Grid RowDefinitions="*,Auto">
+                            <ListBox Grid.Row="0" x:Name="ChapterListBox" ItemsSource="{Binding Chapters}"
+                                     Margin="0,0,0,12" MinWidth="240">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Identifier}" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <Grid Grid.Row="1">
+                                <StackPanel Orientation="Vertical" Spacing="12">
+                                    <TextBox x:Name="ChapterIdentifierTextBox" Watermark="Identifier" />
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <Button Click="AddChapterButtonClick">+</Button>
+                                        <Button Click="CloneChapterButtonClick">&#x29C9;</Button>
+                                        <Button Click="DeleteChapterButtonClick">-</Button>
+                                        <Button Click="MoveUpChapterButtonClick">&#x2191;</Button>
+                                        <Button Click="MoveDownChapterButtonClick">&#x2193;</Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <ScrollViewer x:Name="SelectedChapterScrollViewer" Grid.Column="1"
+                                  VerticalScrollBarVisibility="Auto">
+                        <Grid x:Name="SelectedChapterGrid" Margin="12,0,0,0">
+                            <StackPanel Spacing="12">
+                                <TextBlock Margin="0,0,0,-4">Image</TextBlock>
+                                <Grid ColumnDefinitions="0.75*,0.25*">
+                                    <Image Grid.Column="0" x:Name="ChapterImage" Source="{Binding $parent[v:EditorControl].SelectedChapter.Media.ImagePath, Converter={StaticResource FilePathToSourceConverter}}" />
+                                    <Panel Grid.Column="0" x:Name="ChapterCanvas" Background="Transparent" Width="{Binding #ChapterImage.Bounds.Width}" Height="{Binding #ChapterImage.Bounds.Height}" />
+                                </Grid>
+                                <TextBlock Margin="0,0,0,-4">Chat message</TextBlock>
+                                <TextBox Text="{Binding $parent[v:EditorControl].SelectedChapter.ChatMessage}" />
+                                <Grid ColumnDefinitions="*,*">
+                                    <StackPanel Grid.Column="0" Spacing="12">
+                                        <TextBlock Margin="0,0,0,-4">Close delay (ms)</TextBlock>
+                                        <v:NumberBox Number="{Binding $parent[v:EditorControl].SelectedChapter.CloseDelay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
+                                        <TextBlock Margin="0,0,0,-4">Identifier</TextBlock>
+                                        <TextBox Text="{Binding $parent[v:EditorControl].SelectedChapter.Identifier}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,*">
+                                    <StackPanel Grid.Column="0" Spacing="12">
+                                        <TextBlock Margin="0,0,0,-4">Link</TextBlock>
+                                        <TextBox Text="{Binding $parent[v:EditorControl].SelectedChapter.Link}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
+                                        <TextBlock Margin="0,0,0,-4">Image path</TextBlock>
+                                        <TextBox
+                                            Text="{Binding $parent[v:EditorControl].SelectedChapter.Media.ImagePath}" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Margin="0,0,0,-4">Text</TextBlock>
+                                <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedChapter.Text}" />
+                                <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.RandomizeInteractions}">Randomize the interactions</CheckBox>
+                                <TextBlock Margin="0,0,0,-4">Interactions</TextBlock>
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Grid Grid.Column="0" RowDefinitions="*,Auto">
+                                        <ListBox Grid.Row="0" x:Name="InteractionListBox" ItemsSource="{Binding $parent[v:EditorControl].SelectedChapter.Interactions}" Margin="0,0,0,12" MinWidth="360">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Text}" />
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        <Grid Grid.Row="1">
+                                            <StackPanel Orientation="Vertical" Spacing="12">
+                                                <TextBox Margin="0,0,0,-4" x:Name="InteractionTextTextBox" Watermark="Text" />
+                                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                                    <Button Click="AddInteractionButtonClick">+</Button>
+                                                    <Button Click="DeleteInteractionButtonClick">-</Button>
+                                                    <Button Click="MoveUpInteractionButtonClick">&#x2191;</Button>
+                                                    <Button Click="MoveDownInteractionButtonClick">&#x2193;</Button>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid Grid.Column="1" x:Name="SelectedInteractionGrid" Margin="12,0,0,0">
+                                        <StackPanel Spacing="12">
+                                            <TextBlock Margin="0,0,0,-4">Hint</TextBlock>
+                                            <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedInteraction.Hint}" />
+                                            <TextBlock Margin="0,0,0,-4">Identifier</TextBlock>
+                                            <TextBox Text="{Binding $parent[v:EditorControl].SelectedInteraction.Identifier}" />
+                                            <TextBlock Margin="0,0,0,-4">Link</TextBlock>
+                                            <TextBox Text="{Binding $parent[v:EditorControl].SelectedInteraction.Link}" />
+                                            <TextBlock Margin="0,0,0,-4">Text</TextBlock>
+                                            <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedInteraction.Text}" />
+                                            <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedInteraction.TextIsVisible}">Text is visible</CheckBox>
+                                            <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedInteraction.RemoveAfterUse}">Remove after use</CheckBox>
+                                            <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedInteraction.SetsResult}">Sets the result of the chapter</CheckBox>
+                                            <Grid ColumnDefinitions="*,*,*,*">
+                                                <StackPanel Grid.Column="0" Spacing="12">
+                                                    <TextBlock Margin="0,0,0,-4">X Position</TextBlock>
+                                                    <v:NumberBox Number="{Binding $parent[v:EditorControl].SelectedInteraction.XPosition}" />
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
+                                                    <TextBlock Margin="0,0,0,-4">Y Position</TextBlock>
+                                                    <v:NumberBox Number="{Binding $parent[v:EditorControl].SelectedInteraction.YPosition}" />
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="2" Spacing="12" Margin="12,0,0,0">
+                                                    <TextBlock Margin="0,0,0,-4">Width</TextBlock>
+                                                    <v:NumberBox Number="{Binding $parent[v:EditorControl].SelectedInteraction.Width}" />
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="3" Spacing="12" Margin="12,0,0,0">
+                                                    <TextBlock Margin="0,0,0,-4">Height</TextBlock>
+                                                    <v:NumberBox Number="{Binding $parent[v:EditorControl].SelectedInteraction.Height}" />
+                                                </StackPanel>
+                                            </Grid>
+                                            <Grid ColumnDefinitions="*,*">
+                                                <StackPanel Grid.Column="0" Spacing="12">
+                                                    <TextBlock Margin="0,0,0,-4">PostProcessing</TextBlock>
+                                                    <TextBox Text="{Binding $parent[v:EditorControl].SelectedInteraction.PostProcessing}" />
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
+                                                    <TextBlock Margin="0,0,0,-4">Prompt</TextBlock>
+                                                    <TextBox Text="{Binding $parent[v:EditorControl].SelectedInteraction.Prompt}" />
+                                                </StackPanel>
+                                            </Grid>
+                                            <Grid ColumnDefinitions="*,*">
+                                                <StackPanel Grid.Column="0" Spacing="12">
+                                                    <TextBlock Margin="0,0,0,-4">Type</TextBlock>
+                                                    <ComboBox x:Name="InteractionTypeComboBox" HorizontalAlignment="Stretch" SelectedItem="{Binding $parent[v:EditorControl].SelectedInteraction.Type}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

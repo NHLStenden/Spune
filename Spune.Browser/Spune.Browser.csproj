@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
+        <Nullable>enable</Nullable>
+        <OutputType>Exe</OutputType>
+        <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+        <TargetFramework>net9.0-browser</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <TrimmerRootDescriptor Include="Roots.xml"/>
+    </ItemGroup>
+    <ItemGroup>
+        <WasmExtraFilesToDeploy Include="AppBundle/**/*" TargetPath="%(RecursiveDir)%(Filename)%(Extension)"/>
+        <WasmExtraFilesToDeploy Include="../MasterStories/**/*" TargetPath="MasterStories/%(RecursiveDir)%(Filename)%(Extension)"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Browser" Version="11.2.3"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="./../Spune.UIShared/Spune.UIShared.csproj"/>
+    </ItemGroup>
+</Project>
