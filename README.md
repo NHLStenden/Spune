@@ -18,7 +18,7 @@ Spune is a story-based serious gaming framework designed to facilitate both the 
 To install Spune, clone the repository and build the project using the .NET 9 SDK. To play a game, please ensure that Ollama with Gemma 2 (27B) is also installed. If you want to try the browser version, have a look at the file `nginx.conf` to configure Nginx properly.
 
 ```sh
-git clone https://gitlab.com/martin.bosgra/spune.git
+git clone https://github.com/martin-bosgra-nhl-stenden/Spune.git
 cd spune
 dotnet build
 ```
