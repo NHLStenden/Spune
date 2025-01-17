@@ -357,9 +357,6 @@ public class RunningStory
     /// <returns>A task that represents the asynchronous operation.</returns>
     async Task SendEmailAsync()
     {
-        if (string.IsNullOrEmpty(MasterStory.EmailOrganizer))
-            return;
-
         var emailSender = EmailSenderCreator != null ? EmailSenderCreator() : new EmailSender();
 
         var clientProperties = await ClientProperties.GetInstanceAsync();
