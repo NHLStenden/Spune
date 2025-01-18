@@ -10,7 +10,7 @@
       "Interactions": [],
       "Identifier": "Introduction",
       "Link": "PlayerName",
-      "Text": "Er was eens een mystiek en magisch bos..."
+      "Text": "Once upon a time, there was a mystical and magical forest..."
     },
     {
       "Media": {
@@ -20,16 +20,16 @@
       "Interactions": [
         {
           "PostProcessing": "Trim(?),UpperCaseFirstChar(?)",
-          "Prompt": "Wat is je naam?",
+          "Prompt": "What is your name?",
           "SetsResult": true,
           "TextIsVisible": true,
           "Type": "OpenQuestion",
           "Link": "AvatarSelection",
-          "Text": "Klaar"
+          "Text": "Ready"
         }
       ],
       "Identifier": "PlayerName",
-      "Text": "Ga je mee op avontuur? Maar voordat we beginnen, wil ik graag weten hoe je heet..."
+      "Text": "Are you coming on an adventure? But before we start, I would like to know your name..."
     },
     {
       "Media": {
@@ -42,7 +42,7 @@
           "SetsResult": true,
           "Width": 0.25,
           "Link": "AgeSelection",
-          "Text": "ontdekkingsreiziger"
+          "Text": "explorer"
         },
         {
           "Height": 1,
@@ -50,7 +50,7 @@
           "Width": 0.25,
           "XPosition": 0.25,
           "Link": "AgeSelection",
-          "Text": "kunstenaar"
+          "Text": "artist"
         },
         {
           "Height": 1,
@@ -58,7 +58,7 @@
           "Width": 0.25,
           "XPosition": 0.5,
           "Link": "AgeSelection",
-          "Text": "uitvinder"
+          "Text": "inventor"
         },
         {
           "Height": 1,
@@ -66,11 +66,11 @@
           "Width": 0.25,
           "XPosition": 0.75,
           "Link": "AgeSelection",
-          "Text": "beschermer"
+          "Text": "protector"
         }
       ],
       "Identifier": "AvatarSelection",
-      "Text": "Leuk dat je speelt, {{PlayerName}}! Welke avatar past goed bij je? Raak deze avatar aan om door te gaan."
+      "Text": "Nice that you are playing, {{PlayerName}}! Which avatar suits you well? Touch this avatar to continue."
     },
     {
       "Media": {
@@ -109,7 +109,7 @@
         }
       ],
       "Identifier": "AgeSelection",
-      "Text": "Je lijkt me echt een {{AvatarSelection}}. Hoe oud ben je?"
+      "Text": "You really seem like a {{AvatarSelection}}. How old are you?"
     },
     {
       "Media": {
@@ -119,20 +119,18 @@
       "Interactions": [
         {
           "PostProcessing": "Trim(?),UpperCaseFirstChar(?)",
-          "Prompt": "Wat is de naam van je meester of juf?",
+          "Prompt": "What is the name of your teacher?",
           "SetsResult": true,
           "TextIsVisible": true,
           "Type": "OpenQuestion",
           "Link": "ForestHike",
-          "Text": "Klaar"
+          "Text": "Ready"
         }
       ],
       "Identifier": "TeacherName",
-      "Text": "{{AgeSelection}}? Dat is een mooie leeftijd voor dit spel.\nLaatste vraag: hoe heet je meester of juf?"
+      "Text": "{{AgeSelection}}? That\u0027s a nice age for this game.\nLast question: what is your teacher\u0027s name?"
     },
     {
-      "ChatFallback": "Juf",
-      "ChatMessage": "Is {{TeacherName}} een naam voor een meester of voor een juf? Het antwoord mag maar een woord zijn, en niet meer dan dat",
       "CloseDelay": 12000,
       "Media": {
         "ImagePath": "images/ForestHike.webp"
@@ -141,7 +139,7 @@
       "Interactions": [],
       "Identifier": "ForestHike",
       "Link": "RustlingSound",
-      "Text": "{{ChatResult.ForestHike}} {{TeacherName}} neemt je klas en jou vandaag mee op wandeltocht in het mystieke en magische bos.\nJij verveelt je wat en loopt achteraan."
+      "Text": "{{TeacherName}} takes your class and you on a hike in the mystical and magical forest today.\nYou are a bit bored and walk at the back."
     },
     {
       "CloseDelay": 10000,
@@ -152,7 +150,7 @@
       "Interactions": [],
       "Identifier": "RustlingSound",
       "Link": "SoundReaction",
-      "Text": "Je staat opeens stil. Je hoort een ritselend geluid vlakbij, alsof iemand in de bosjes zit."
+      "Text": "You suddenly stop. You hear a rustling sound nearby, as if someone is in the bushes."
     },
     {
       "Media": {
@@ -163,19 +161,19 @@
         {
           "RemoveAfterUse": true,
           "TextIsVisible": true,
-          "Hint": "Het klinkt als gehuil van een kind. {{ChatResult.ForestHike}} {{TeacherName}} en je klas zijn al bijna uit het zicht.",
+          "Hint": "It sounds like a child crying. {{TeacherName}} and your class are almost out of sight.",
           "Identifier": "SoundInvestigationBackToTeacher",
-          "Text": "Terug naar {{ChatResult.ForestHike}} {{TeacherName}}"
+          "Text": "Back to {{TeacherName}}"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
           "Link": "SoundInvestigation",
-          "Text": "Ga kijken wat het is"
+          "Text": "Go see what it is"
         }
       ],
       "Identifier": "SoundReaction",
-      "Text": "Je draait je om. Wat ga je doen?"
+      "Text": "You turn around. What are you going to do?"
     },
     {
       "Media": {
@@ -189,7 +187,7 @@
           "Width": 0.23978758169934644,
           "XPosition": 0.15870098039215685,
           "YPosition": 0.12914624183006537,
-          "Hint": "Ik raak deze paddenstoel niet aan. Maar hij is wel mooi!",
+          "Hint": "I don\u0027t touch this mushroom. But it is beautiful!",
           "Text": "Mushroom"
         },
         {
@@ -198,7 +196,7 @@
           "Width": 0.4747080176767676,
           "XPosition": 0.19136320592286502,
           "YPosition": 0.678116391184573,
-          "Hint": "Wat ligt er hier een rommel. Gauw opruimen!",
+          "Hint": "What a mess here. Quickly clean up!",
           "Text": "Litter"
         },
         {
@@ -207,7 +205,7 @@
           "Width": 0.2408280245638199,
           "XPosition": 0.7603951446280992,
           "YPosition": 0.3455793732782369,
-          "Hint": "De planten hebben vandaag een mooie kleur.",
+          "Hint": "The plants have a beautiful color today.",
           "Text": "Leafs"
         },
         {
@@ -225,12 +223,12 @@
           "Width": 0.25714358660130715,
           "XPosition": 0.4141237745098039,
           "YPosition": 0.01664624183006536,
-          "Hint": "Het moet iets zijn op de achtergrond.",
+          "Hint": "It must be something in the background.",
           "Text": "Background"
         }
       ],
       "Identifier": "SoundInvestigation",
-      "Text": "Erg dapper van je, zeg! Je staat nu in de buurt van het geluid.\nRaak de afbeelding aan om te gaan ontdekken."
+      "Text": "Very brave of you! You are now near the sound.\nTouch the image to start exploring."
     },
     {
       "Media": {
@@ -242,23 +240,23 @@
           "SetsResult": true,
           "TextIsVisible": true,
           "Link": "HandsUsage",
-          "Text": "Pak de puppy"
+          "Text": "Pick up the puppy"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
           "Link": "StickUsage",
-          "Text": "Zoek een stok\nDuw de takken opzij\nPak de puppy"
+          "Text": "Find a stick\nPush the branches aside\nPick up the puppy"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
           "Link": "SleevesUsage",
-          "Text": "Handen in je mouwen\nPak de puppy"
+          "Text": "Hands in your sleeves\nPick up the puppy"
         }
       ],
       "Identifier": "PuppyRescue",
-      "Text": "Je ziet een puppy. De puppy is in de war, huilt en zegt: \u0022Ik zit vast!\u0022. Wat doe je?"
+      "Text": "You see a puppy. The puppy is confused, crying and says: \u0022I\u0027m stuck!\u0022. What do you do?"
     },
     {
       "CloseDelay": 12000,
@@ -267,7 +265,7 @@
       "Interactions": [],
       "Identifier": "HandsUsage",
       "Link": "BloodPaw",
-      "Text": "Je haalt de puppy voorzichtig uit de struiken. Het doet pijn, maar je hebt de puppy gered!\nDe puppy kwispelt wat en kijkt je dankbaar aan, {{PlayerName}}!"
+      "Text": "You carefully take the puppy out of the bushes. It hurts, but you saved the puppy!\nThe puppy wags its tail and looks at you gratefully, {{PlayerName}}!"
     },
     {
       "CloseDelay": 12000,
@@ -276,7 +274,7 @@
       "Interactions": [],
       "Identifier": "StickUsage",
       "Link": "BloodPaw",
-      "Text": "Je vindt vlakbij een stok en duwt daarmee de takken opzij.\nDe puppy kwispelt wat en wordt door jou opgetild, {{PlayerName}}!"
+      "Text": "You find a stick nearby and push the branches aside with it.\nThe puppy wags its tail and is picked up by you, {{PlayerName}}!"
     },
     {
       "CloseDelay": 12000,
@@ -285,7 +283,7 @@
       "Interactions": [],
       "Identifier": "SleevesUsage",
       "Link": "BloodPaw",
-      "Text": "Vervelende doorns...\n\nJe doet je handen eerst in de mouwen van je jas.\nDe puppy kwispelt wat en wordt door jou opgetild, {{PlayerName}}!"
+      "Text": "Annoying thorns...\n\nYou first put your hands in the sleeves of your jacket.\nThe puppy wags its tail and is picked up by you, {{PlayerName}}!"
     },
     {
       "Media": {
@@ -296,31 +294,31 @@
         {
           "SetsResult": true,
           "TextIsVisible": true,
-          "Hint": "Goed gedaan! De puppy voelt zich een stukje beter hierdoor.",
+          "Hint": "Well done! The puppy feels a bit better because of this.",
           "Link": "PuppyMeetHandkerchief",
-          "Text": "Wikkel zakdoek erom"
+          "Text": "Wrap handkerchief around it"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
-          "Hint": "Je bent lief. De puppy kwispelt ietsjes, en likt de wond schoon.",
+          "Hint": "You are kind. The puppy wags a little and licks the wound clean.",
           "Link": "PuppyMeet",
-          "Text": "Geef kus erop"
+          "Text": "Give it a kiss"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
-          "Hint": "De puppy kijkt wat verdrietig, likt de wond schoon en hinkt nog wat.",
+          "Hint": "The puppy looks a bit sad, licks the wound clean and still limps a bit.",
           "Link": "PuppyMeet",
-          "Text": "Niets doen"
+          "Text": "Do nothing"
         }
       ],
       "Identifier": "BloodPaw",
-      "Text": "De blijdschap duurt niet lang... de puppy kijkt weer verward, en heeft bloed op zijn pootje.\nWat ga je doen?"
+      "Text": "The joy doesn\u0027t last long... the puppy looks confused again and has blood on its paw.\nWhat are you going to do?"
     },
     {
       "ChatFallback": "Max",
-      "ChatMessage": "Geef een passende en gangbare naam voor een puppy. Haal inspiratie uit de woorden: \u0022{{PlayerName}}\u0022, \u0022{{AvatarSelection}}\u0022 en \u0022{{AgeSelection}}\u0022. Het antwoord mag maar een woord zijn, en niet meer dan dat",
+      "ChatMessage": "Give a suitable and common name for a puppy. Draw inspiration from the words: \u0022{{PlayerName}}\u0022, \u0022{{AvatarSelection}}\u0022 and \u0022{{AgeSelection}}\u0022. The answer can only be one word, and no more than that",
       "Media": {
         "ImagePath": "images/PuppyMeet.webp"
       },
@@ -329,23 +327,23 @@
         {
           "RemoveAfterUse": true,
           "TextIsVisible": true,
-          "Hint": "\u0022I-I-I-Ik vind {{ChatResult.PuppyMeet}} wel even goed...\u0022 zegt de puppy iets twijfelend.",
+          "Hint": "\u0022I-I-I think {{ChatResult.PuppyMeet}} is fine for now...\u0022 says the puppy hesitantly.",
           "Identifier": "PuppyMeetName",
-          "Text": "Noem hem {{ChatResult.PuppyMeet}}"
+          "Text": "Name him {{ChatResult.PuppyMeet}}"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
           "Link": "MagpieLaugh1",
-          "Text": "Ga de halsband zoeken"
+          "Text": "Go find the collar"
         }
       ],
       "Identifier": "PuppyMeet",
-      "Text": "\u0022D-D-D-Dank je wel!\u0022 zegt de puppy nog wat bang. \u0022Mijn naam is... ik weet mijn naam even niet.\u0022, piept de puppy droevig.\nDe pup is duidelijk verdwaald en mist zijn halsband."
+      "Text": "\u0022T-T-T-Thank you!\u0022 says the puppy still a bit scared. \u0022My name is... I don\u0027t remember my name right now.\u0022 squeaks the puppy sadly.\nThe pup is clearly lost and missing its collar."
     },
     {
       "ChatFallback": "Max",
-      "ChatMessage": "Geef een passende en gangbare naam voor een puppy. Haal inspiratie uit de woorden: \u0022{{PlayerName}}\u0022, \u0022{{AvatarSelection}}\u0022 en \u0022{{AgeSelection}}\u0022. Het antwoord mag maar een woord zijn, en niet meer dan dat",
+      "ChatMessage": "Give a suitable and common name for a puppy. Draw inspiration from the words: \u0022{{PlayerName}}\u0022, \u0022{{AvatarSelection}}\u0022 and \u0022{{AgeSelection}}\u0022. The answer can only be one word, and no more than that",
       "Media": {
         "ImagePath": "images/PuppyMeetHandkerchief.webp"
       },
@@ -354,19 +352,19 @@
         {
           "RemoveAfterUse": true,
           "TextIsVisible": true,
-          "Hint": "\u0022I-I-I-Ik vind {{ChatResult.PuppyMeetHandkerchief}} wel even goed...\u0022 zegt de puppy iets twijfelend.",
+          "Hint": "\u0022I-I-I think {{ChatResult.PuppyMeetHandkerchief}} is fine for now...\u0022 says the puppy hesitantly.",
           "Identifier": "PuppyMeetHandkerchief",
-          "Text": "Noem hem {{ChatResult.PuppyMeetHandkerchief}}"
+          "Text": "Name him {{ChatResult.PuppyMeetHandkerchief}}"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
           "Link": "MagpieLaugh1",
-          "Text": "Ga de halsband zoeken"
+          "Text": "Go find the collar"
         }
       ],
       "Identifier": "PuppyMeetHandkerchief",
-      "Text": "\u0022D-D-D-Dank je wel!\u0022 zegt de puppy nog wat bang. \u0022Mijn naam is... ik weet mijn naam even niet.\u0022, piept de puppy droevig.\nDe pup is duidelijk verdwaald en mist zijn halsband."
+      "Text": "\u0022T-T-T-Thank you!\u0022 says the puppy still a bit scared. \u0022My name is... I don\u0027t remember my name right now.\u0022 squeaks the puppy sadly.\nThe pup is clearly lost and missing its collar."
     },
     {
       "Media": {
@@ -378,7 +376,7 @@
           "SetsResult": true,
           "TextIsVisible": true,
           "Link": "MagpieLaugh2",
-          "Text": "Even nadenken..."
+          "Text": "Think for a moment..."
         },
         {
           "Height": 0.3590482026143791,
@@ -386,7 +384,7 @@
           "Width": 0.2639501633986928,
           "XPosition": 0.21607945261437908,
           "YPosition": 0.2601511437908497,
-          "Hint": "\u0022Hoe vind je mijn kapsel? Mooi, h\u00E8?\u0022, roept de spottende ekster.",
+          "Hint": "\u0022How do you like my hairstyle? Nice, right?\u0022 says the mocking magpie.",
           "Text": "MagpieHair"
         },
         {
@@ -395,12 +393,12 @@
           "Width": 0.07747651143790857,
           "XPosition": 0.8133323120915033,
           "YPosition": 0.678564133986928,
-          "Hint": "Nee, deze vogel is het niet. Volgens mij is het de ekster.",
+          "Hint": "No, this bird is not it. I think it\u0027s the magpie.",
           "Text": "NotTheBird"
         }
       ],
       "Identifier": "MagpieLaugh1",
-      "Text": "\u0022Hahaha! Zo, die puppy zat lelijk vast... Wat een grap, joh!\u0022 hoor je een spottende ekster vanuit een hoge boom zeggen."
+      "Text": "\u0022Hahaha! That puppy was really stuck... What a joke!\u0022 you hear a mocking magpie say from a high tree."
     },
     {
       "Media": {
@@ -411,26 +409,26 @@
         {
           "RemoveAfterUse": true,
           "TextIsVisible": true,
-          "Hint": "\u0022Ga toch weg? Dikke pech. Hahaha! Je kan me toch niet pakken!\u0022 lacht de spottende ekster.",
+          "Hint": "\u0022Go away? Tough luck. Hahaha! You can\u0027t catch me!\u0022 laughs the mocking magpie.",
           "Identifier": "MagpieLaugh2GoAway",
-          "Text": "Ga toch weg!"
+          "Text": "Go away!"
         },
         {
           "RemoveAfterUse": true,
           "TextIsVisible": true,
-          "Hint": "\u0022Ik ben hier niet om vrienden te maken.\u0022 zegt de ekster spottend.",
+          "Hint": "\u0022I\u0027m not here to make friends.\u0022 says the mocking magpie.",
           "Identifier": "MagpieLaugh2NotHelping",
-          "Text": "Je helpt niet!"
+          "Text": "You\u0027re not helping!"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
           "Link": "BerriesPick",
-          "Text": "Laat maar"
+          "Text": "Never mind"
         }
       ],
       "Identifier": "MagpieLaugh2",
-      "Text": "\u0022Ik heb een glimmende halsband gezien, maar ik wil hem niet halen.\u0022, zegt de ekster smakkend."
+      "Text": "\u0022I saw a shiny collar, but I don\u0027t want to get it.\u0022 says the magpie smacking."
     },
     {
       "Media": {
@@ -444,7 +442,7 @@
           "Width": 0.137515318627451,
           "XPosition": 0.2016595179738562,
           "YPosition": 0.4876736111111111,
-          "Hint": "Je pakt de munt en houdt deze omhoog voor de ekster. De ekster zegt: \u0022De 100 munten in mijn nest zijn mooier.\u0022.",
+          "Hint": "You pick up the coin and hold it up for the magpie. The magpie says: \u0022The 100 coins in my nest are prettier.\u0022",
           "Text": "CoinSelect"
         },
         {
@@ -453,7 +451,7 @@
           "Width": 0.4268790849673203,
           "XPosition": 0.36197406045751634,
           "YPosition": 0.6946895424836601,
-          "Hint": "Wat glinstert het water mooi vandaag. En wat zijn die paarse dingen daar?",
+          "Hint": "The water glistens beautifully today. And what are those purple things there?",
           "Text": "WaterSelect"
         },
         {
@@ -462,7 +460,7 @@
           "Width": 0.18889399509803917,
           "XPosition": 0.6420904820261438,
           "YPosition": 0.009334150326797385,
-          "Hint": "Deze boom is perfect voor de ekster om in te wonen! Maar de ekster vindt je voorstel niet interessant.",
+          "Hint": "This tree is perfect for the magpie to live in! But the magpie is not interested in your suggestion.",
           "Text": "Tree1Select"
         },
         {
@@ -471,7 +469,7 @@
           "Width": 0.38140829248366015,
           "XPosition": 0.014705882352941176,
           "YPosition": 0.019240196078431374,
-          "Hint": "Het bos bloeit echt op met al deze mooie kleuren!",
+          "Hint": "The forest really comes alive with all these beautiful colors!",
           "Text": "ColorSelect"
         },
         {
@@ -480,7 +478,7 @@
           "Width": 0.16204044117647054,
           "XPosition": 0.8296568627450981,
           "YPosition": 0.6449550653594771,
-          "Hint": "Je pakt wat besjes, omdat de ekster aan het smakken was. \u0022Heerlijk!\u0022, zegt de ekster.",
+          "Hint": "You pick some berries because the magpie was smacking. \u0022Delicious!\u0022 says the magpie.",
           "Link": "MagpieDinner",
           "Text": "BerriesSelect"
         },
@@ -490,12 +488,12 @@
           "Width": 0.1741319444444444,
           "XPosition": 0.4532015931372549,
           "YPosition": 0.42685866013071894,
-          "Hint": "Er glinstert iets in het gras, maar het is vanaf hier lastig te zien.",
+          "Hint": "Something glistens in the grass, but it\u0027s hard to see from here.",
           "Text": "GrassSelect"
         }
       ],
       "Identifier": "BerriesPick",
-      "Text": "Goed bedacht! Laat de ekster maar. Onderzoek en ontdek door de afbeelding aan te raken.\nMisschien vind je wel iets..."
+      "Text": "Good idea! Leave the magpie alone. Investigate and discover by touching the image.\nMaybe you\u0027ll find something..."
     },
     {
       "Media": {
@@ -509,21 +507,21 @@
           "Width": 0.5472732843137256,
           "XPosition": 0.020557598039215686,
           "YPosition": 0.03577410130718954,
-          "Hint": "\u0022Laat mij rustig eten!\u0022, zegt de ekster met de snavel vol.",
+          "Hint": "\u0022Let me eat in peace!\u0022 says the magpie with its beak full.",
           "Text": "MagpieInterrupt"
         },
         {
           "RemoveAfterUse": true,
           "TextIsVisible": true,
-          "Hint": "\u0022Pfff... ik help geen kinderen!\u0022, zegt de ekster. En eet weer schrokkend verder.",
+          "Hint": "\u0022Pfff... I don\u0027t help children!\u0022 says the magpie. And continues eating greedily.",
           "Identifier": "MagpieDinnerAskHelp",
-          "Text": "Vraag de ekster om hulp"
+          "Text": "Ask the magpie for help"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
           "Link": "MagpieFlight",
-          "Text": "Wacht nog een minuut"
+          "Text": "Wait another minute"
         },
         {
           "Height": 0.2504391339869281,
@@ -531,12 +529,12 @@
           "Width": 0.4317146650326798,
           "XPosition": 0.42472937091503266,
           "YPosition": 0.6583741830065359,
-          "Hint": "De ekster wordt opeens boos: \u0022Blijf eens van die heerlijke besjes af, of ik pik je!\u0022.",
+          "Hint": "The magpie suddenly gets angry: \u0022Stay away from those delicious berries, or I\u0027ll peck you!\u0022.",
           "Text": "BerriesTouchWhileEating"
         }
       ],
       "Identifier": "MagpieDinner",
-      "Text": "Je gooit de besjes op de grond. De ekster vliegt naar beneden en begint te eten."
+      "Text": "You throw the berries on the ground. The magpie flies down and starts eating."
     },
     {
       "Media": {
@@ -547,20 +545,20 @@
         {
           "RemoveAfterUse": true,
           "TextIsVisible": true,
-          "Hint": "De puppy vindt het erg fijn dat je bij hem blijft. Het is soms zo eng in het bos!",
+          "Hint": "The puppy is very happy that you stay with him. It\u0027s sometimes so scary in the forest!",
           "Identifier": "MagpieFlightStay",
-          "Text": "Blijf bij de puppy"
+          "Text": "Stay with the puppy"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
-          "Hint": "Je tilt de puppy op, en gaat snel achter de ekster aan. \u0022Wat een vervelende ekster!\u0022 denk je.",
+          "Hint": "You pick up the puppy and quickly go after the magpie. \u0022What an annoying magpie!\u0022 you think.",
           "Link": "MagpieRun",
-          "Text": "Til de puppy op\nGa er achteraan"
+          "Text": "Pick up the puppy\nGo after it"
         }
       ],
       "Identifier": "MagpieFlight",
-      "Text": "De pup huilt weer, en jij draait je om om hem even te troosten.\nEn zomaar: vliegt de spottende ekster weg! Wat nu?"
+      "Text": "The pup cries again, and you turn around to comfort him.\nAnd suddenly: the mocking magpie flies away! What now?"
     },
     {
       "CloseDelay": 12000,
@@ -569,7 +567,7 @@
       "Interactions": [],
       "Identifier": "MagpieRun",
       "Link": "PuppyCollar",
-      "Text": "Je rent hard. In de verte hoor je de ekster lachen: \u0022Hahaha! Sneller!\u0022.\n\nKom op!!! Rennen, {{PlayerName}}!!!"
+      "Text": "You run fast. In the distance, you hear the magpie laughing: \u0022Hahaha! Faster!\u0022.\n\nCome on!!! Run, {{PlayerName}}!!!"
     },
     {
       "Media": {
@@ -580,20 +578,20 @@
         {
           "RemoveAfterUse": true,
           "TextIsVisible": true,
-          "Hint": "\u0022Mijn halsband!\u0022, zegt de puppy blij. \u0022Maar nu weet ik nog steeds mijn naam niet...\u0022",
+          "Hint": "\u0022My collar!\u0022 says the puppy happily. \u0022But I still don\u0027t know my name...\u0022",
           "Identifier": "PuppyCollarAroundNeck",
-          "Text": "Doe om de hals"
+          "Text": "Put on the collar"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
-          "Hint": "Je kijkt aan de binnenkant van de halsband, en ziet het woord \u0022Bijou\u0022 staan.",
+          "Hint": "You look inside the collar and see the word \u0022Bijou\u0022.",
           "Link": "PuppyHappy",
-          "Text": "Zoek naar de naam"
+          "Text": "Look for the name"
         }
       ],
       "Identifier": "PuppyCollar",
-      "Text": "En dan opeens stop je. \u0022Daar ligt ie hoor!\u0022, schreeuwt de ekster vanuit een hoge boom.\nJe hebt de halsband gevonden! Wat is het toch een mooie halsband..."
+      "Text": "And then suddenly you stop. \u0022There it is!\u0022 shouts the magpie from a high tree.\nYou found the collar! What a beautiful collar it is..."
     },
     {
       "CloseDelay": 8000,
@@ -605,20 +603,20 @@
         {
           "RemoveAfterUse": true,
           "TextIsVisible": true,
-          "Hint": "\u0022Uhm... i-i-i-ik weet ook even niet waar ik woon.\u0022, stottert Bijou.",
+          "Hint": "\u0022Uhm... I-I-I don\u0027t know where I live either.\u0022 stutters Bijou.",
           "Identifier": "PuppyHappyTakeHome",
-          "Text": "Breng Bijou naar huis"
+          "Text": "Take Bijou home"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
-          "Hint": "\u0022Dat weet ik even niet.\u0022, zegt Bijou.\nWat moet je doen, {{PlayerName}}? Kijk om je heen of je verder kunt komen.",
+          "Hint": "\u0022I don\u0027t know right now.\u0022 says Bijou.\nWhat should you do, {{PlayerName}}? Look around to see if you can get further.",
           "Link": "AnimalPuzzle",
-          "Text": "Vraag: \u0022Waar woon je\u0022?"
+          "Text": "Ask: \u0022Where do you live?\u0022"
         }
       ],
       "Identifier": "PuppyHappy",
-      "Text": "Al zittend, kwispelt de puppy en zegt: \u0022Oh ja! Ik heet Bijou. Mag ik nu naar huis?\u0022."
+      "Text": "Sitting down, the puppy wags its tail and says: \u0022Oh yes! My name is Bijou. Can I go home now?\u0022."
     },
     {
       "Media": {
@@ -632,7 +630,7 @@
           "Width": 0.0689593545751634,
           "XPosition": 0.02044015522875817,
           "YPosition": 0.2647160947712418,
-          "Hint": "De eekhoorn zegt: \u0022Het hert spreekt de waarheid.\u0022.",
+          "Hint": "The squirrel says: \u0022The deer speaks the truth.\u0022.",
           "Text": "SquirrelTalk"
         },
         {
@@ -641,7 +639,7 @@
           "Width": 0.17207924836601307,
           "XPosition": 0.2034313725490196,
           "YPosition": 0.5164726307189542,
-          "Hint": "Het hert zegt: \u0022De vos liegt.\u0022.",
+          "Hint": "The deer says: \u0022The fox is lying.\u0022.",
           "Text": "DeerTalk"
         },
         {
@@ -650,7 +648,7 @@
           "Width": 0.05568831699346405,
           "XPosition": 0.46504289215686273,
           "YPosition": 0.03875612745098039,
-          "Hint": "De uil zegt: \u0022De eekhoorn liegt niet.\u0022.",
+          "Hint": "The owl says: \u0022The squirrel is not lying.\u0022.",
           "Text": "OwlTalk"
         },
         {
@@ -659,37 +657,37 @@
           "Width": 0.10190972222222228,
           "XPosition": 0.6785590277777778,
           "YPosition": 0.5171058006535948,
-          "Hint": "De vos zegt: \u0022De uil spreekt niet de waarheid.\u0022.",
+          "Hint": "The fox says: \u0022The owl is not telling the truth.\u0022.",
           "Text": "FoxTalk"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
-          "Hint": "De eekhoorn kijkt je boos aan: \u0022Noem je mij een leugenaar?\u0022.",
-          "Text": "De eekhoorn"
+          "Hint": "The squirrel looks at you angrily: \u0022Are you calling me a liar?\u0022.",
+          "Text": "The squirrel"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
-          "Hint": "Het hert kauwt rustig verder: \u0022Het zal wel...\u0022.",
-          "Text": "Het hert"
+          "Hint": "The deer chews calmly: \u0022Whatever...\u0022.",
+          "Text": "The deer"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
-          "Hint": "\u0022Oehoe! Ik ben geen leugenaar.\u0022, zegt de uil verbaasd.",
-          "Text": "De uil"
+          "Hint": "\u0022Hoo-hoo! I\u0027m not a liar.\u0022 says the owl surprised.",
+          "Text": "The owl"
         },
         {
           "SetsResult": true,
           "TextIsVisible": true,
-          "Hint": "\u0022Getverderrie! Hoe wist je dat ik loog?\u0022 vraagt de vos.",
+          "Hint": "\u0022Yuck! How did you know I was lying?\u0022 asks the fox.",
           "Link": "Intersection",
-          "Text": "De vos"
+          "Text": "The fox"
         }
       ],
       "Identifier": "AnimalPuzzle",
-      "Text": "Je ziet een paar dieren in het bos. Bijou zegt: \u0022Een van de dieren weet waar ik woon, maar het is een leugenaar!\u0022\nWelk dier liegt?"
+      "Text": "You see a few animals in the forest. Bijou says: \u0022One of the animals knows where I live, but it\u0027s a liar!\u0022\nWhich animal is lying?"
     },
     {
       "Media": {
@@ -701,7 +699,7 @@
           "Height": 1,
           "SetsResult": true,
           "Width": 0.5,
-          "Hint": "Je neemt het donkere pad, en loopt wel een half uur in de modder. Dan zegt Bijou: \u0022Dit klopt niet, hoor!\u0022.\nWeer heeft de vos gelogen. Je moet nu het hele stuk terug.",
+          "Hint": "You take the dark path and walk for half an hour in the mud. Then Bijou says: \u0022This doesn\u0027t seem right!\u0022.\nAgain, the fox lied. You have to go all the way back.",
           "Text": "DarkRoad"
         },
         {
@@ -714,7 +712,7 @@
         }
       ],
       "Identifier": "Intersection",
-      "Text": "De vos zegt: \u0022Ik weet waar Bijou woont. Volg het donkere pad. Zeker weten!\u0022 Bijou kijkt je vragend aan.\nWelk pad kies jij?"
+      "Text": "The fox says: \u0022I know where Bijou lives. Follow the dark path for sure!\u0022 Bijou looks at you questioningly.\nWhich path do you choose?"
     },
     {
       "Media": {
@@ -729,7 +727,7 @@
           "Width": 0.1721966911764706,
           "XPosition": 0.24659926470588237,
           "YPosition": 0.09160539215686274,
-          "Hint": "Nee, dit huis is het niet.",
+          "Hint": "No, this house is not it.",
           "Text": "Nyumbani"
         },
         {
@@ -739,7 +737,7 @@
           "Width": 0.17808415032679736,
           "XPosition": 0.5178002450980392,
           "YPosition": 0.1145016339869281,
-          "Hint": "Ja, daar woon Bijou! Goed gedaan, {{PlayerName}}!",
+          "Hint": "Yes, that\u0027s where Bijou lives! Well done, {{PlayerName}}!",
           "Link": "PuppyHouse",
           "Text": "Heimili"
         },
@@ -750,7 +748,7 @@
           "Width": 0.20220077614379087,
           "XPosition": 0.0773999183006536,
           "YPosition": 0.47849264705882355,
-          "Hint": "Nee, dit huis is het niet.",
+          "Hint": "No, this house is not it.",
           "Text": "Ekhaya"
         },
         {
@@ -760,7 +758,7 @@
           "Width": 0.19582312091503262,
           "XPosition": 0.7463337418300654,
           "YPosition": 0.3749591503267974,
-          "Hint": "Nee, dit is het huis niet",
+          "Hint": "No, this is not the house.",
           "Text": "Nanglog"
         },
         {
@@ -769,7 +767,7 @@
           "Width": 0.1574652777777778,
           "XPosition": 0.08125,
           "YPosition": 0.10413602941176471,
-          "Hint": "Dit huis heeft geen naambordje.",
+          "Hint": "This house has no nameplate.",
           "Text": "NoSignHouse1"
         },
         {
@@ -778,12 +776,12 @@
           "Width": 0.17155330882352943,
           "XPosition": 0.4404718137254902,
           "YPosition": 0.34882557189542485,
-          "Hint": "Dit huis heeft geen naambordje.",
+          "Hint": "This house has no nameplate.",
           "Text": "NoSignHouse2"
         }
       ],
       "Identifier": "Houses",
-      "Text": "Na een tijdje zie je samen met Bijou een aantal huizen.\nMaak nu het kistje naast je open. Kan jij erachter komen waar Bijou woont?"
+      "Text": "After a while, you and Bijou see a number of houses.\nCan you figure out where Bijou lives?"
     },
     {
       "CloseDelay": 10000,
@@ -794,7 +792,7 @@
       "Interactions": [],
       "Identifier": "PuppyHouse",
       "Link": "BrotherMeet",
-      "Text": "Bijou is zo blij: \u0022Daar woon ik! Yes!\u0022."
+      "Text": "Bijou is so happy: \u0022That\u0027s where I live! Yes!\u0022."
     },
     {
       "CloseDelay": 8000,
@@ -805,7 +803,7 @@
       "Interactions": [],
       "Identifier": "BrotherMeet",
       "Link": "PuppyCuddle",
-      "Text": "Er komt een andere pup naar buiten. \u0022Dat is mijn broer!\u0022 zegt Bijou blij. Bijou rent naar hem toe."
+      "Text": "Another pup comes out. \u0022That\u0027s my brother!\u0022 says Bijou happily. Bijou runs to him."
     },
     {
       "Media": {
@@ -817,19 +815,19 @@
           "SetsResult": true,
           "TextIsVisible": true,
           "Link": "Conclusion",
-          "Text": "Op zoek naar {{ChatResult.ForestHike}} {{TeacherName}}!"
+          "Text": "Look for {{TeacherName}}!"
         },
         {
           "RemoveAfterUse": true,
           "TextIsVisible": true,
-          "Hint": "Bijou vindt het heerlijk dat je hem aait!",
+          "Hint": "Bijou loves it when you pet him!",
           "Identifier": "PuppyCuddleAgain",
-          "Text": "Nog een keer Bijou aaien"
+          "Text": "Pet Bijou again"
         }
       ],
       "Identifier": "PuppyCuddle",
       "Link": "Conclusion",
-      "Text": "Bijou komt bij je en zegt: \u0022Dank je wel, {{PlayerName}}!\u0022 Je geeft Bijou een knuffel. Wat doe je nu?"
+      "Text": "Bijou comes to you and says: \u0022Thank you, {{PlayerName}}!\u0022 You give Bijou a hug. What do you do now?"
     },
     {
       "CloseDelay": 12000,
@@ -840,18 +838,18 @@
       "Interactions": [],
       "Identifier": "Conclusion",
       "Link": "SpuneStory.Finished",
-      "Text": "Je loopt het pad af en hoort... een schoolbel! Je ziet je school weer. {{ChatResult.ForestHike}} {{TeacherName}} staat bij de deur.\n\u0022Waar was jij?\u0022 wordt er gevraagd. Je grinnikt en zegt:"
+      "Text": "You walk down the path and hear... a school bell! You see your school again. {{TeacherName}} is standing at the door.\n\u0022Where were you?\u0022 is asked. You chuckle and say:"
     },
     {
       "Media": {},
       "RandomizeInteractions": true,
       "Interactions": [],
       "Identifier": "SpuneStory.Finished",
-      "Text": "\u0022Ik was een puppy aan het redden... want een hond in nood maakt vriendschap groot!\u0022\n\nHet einde."
+      "Text": "\u0022I was rescuing a pup, you see, For a friend in need is a friend indeed!\u0022\n\nThe end."
     }
   ],
   "EmailOrganizer": "martin.bosgra@nhlstenden.com",
-  "ValueInputIsMandatoryText": "Je moet het invullen, anders kun je niet verder.",
-  "ValueSelectIsMandatoryText": "Je moet minimaal eentje uitkiezen, anders kun je niet verder.",
-  "Text": "De verdwaalde puppy in het magische bos"
+  "ValueInputIsMandatoryText": "You must fill it in, otherwise you cannot continue.",
+  "ValueSelectIsMandatoryText": "You must choose at least one, otherwise you cannot continue.",
+  "Text": "The lost puppy in the magical forest"
 }
