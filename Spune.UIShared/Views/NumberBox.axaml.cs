@@ -81,7 +81,7 @@ public partial class NumberBox : TextBox
     /// </summary>
     /// <param name="sender">Sender of the change.</param>
     /// <param name="e">Parameter containing the entered text.</param>
-    void OnTextInput(object? sender, TextInputEventArgs e)
+    static void OnTextInput(object? sender, TextInputEventArgs e)
     {
         if (!Regex.IsMatch(e.Text ?? string.Empty))
             e.Handled = true;

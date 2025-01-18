@@ -33,17 +33,13 @@ public static class ObjectFunction
 	static object Clone(object obj)
 	{
 		var result = InternalCopy(obj, new Dictionary<object, object>(new ReferenceEqualityComparer()));
-		if (result is Stream { CanSeek: true } stream)
+		if (result is not Stream { CanSeek: true } stream) return result;
+		try
 		{
-			try
-			{
-				stream.Position = 0;
-			}
-			catch (NotSupportedException)
-			{
-			}
-
-			return result;
+			stream.Position = 0;
+		}
+		catch (NotSupportedException)
+		{
 		}
 
 		return result;

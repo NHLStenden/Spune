@@ -155,19 +155,19 @@ public partial class MainControl : UserControl
         var masterStories = new MasterStories { FilePath = DefaultMasterStory.Directory };
         await masterStories.LoadAsync();
         var items = masterStories.Items;
-        if (items.Count == 0)
+        switch (items.Count)
         {
-            await _runningStory.StartAsync();
-            await CreateChapterAsync();
-        }
-        else if (items.Count == 1)
-        {
-            await _runningStory.StartAsync(items[0].GetCombinedFileName());
-            await CreateChapterAsync();
-        }
-        else
-        {
-            CreateStoryListBox(items);
+            case 0:
+                await _runningStory.StartAsync();
+                await CreateChapterAsync();
+                break;
+            case 1:
+                await _runningStory.StartAsync(items[0].GetCombinedFileName());
+                await CreateChapterAsync();
+                break;
+            default:
+                CreateStoryListBox(items);
+                break;
         }
     }
 
@@ -369,7 +369,7 @@ public partial class MainControl : UserControl
     /// <param name="e">The event data containing information about the selection change.</param>
     async void ChapterListBoxSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (sender is not ListBox listBox || listBox.SelectedItem is not Chapter chapter)
+        if (sender is not ListBox { SelectedItem: Chapter chapter })
             return;
 
         MainGrid.IsHitTestVisible = true;
