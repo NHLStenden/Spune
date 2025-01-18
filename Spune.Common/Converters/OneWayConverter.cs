@@ -25,10 +25,7 @@ public sealed class OneWayConverter<TSource, TTarget> : IValueConverter
     /// Initializes a new instance of the <see cref="OneWayConverter{TSource, TTarget}" /> class.
     /// </summary>
     /// <param name="convert">Convert function to pass.</param>
-    OneWayConverter(Func<TSource, object?, CultureInfo, TTarget> convert)
-    {
-        _convert = convert;
-    }
+    OneWayConverter(Func<TSource, object?, CultureInfo, TTarget> convert) => _convert = convert;
 
     /// <inheritdoc />
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -46,18 +43,12 @@ public sealed class OneWayConverter<TSource, TTarget> : IValueConverter
     }
 
     /// <inheritdoc />
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return BindingOperations.DoNothing;
-    }
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => BindingOperations.DoNothing;
 
     /// <summary>
     /// Gets the instance of this class.
     /// </summary>
     /// <param name="convert">Convert function to pass.</param>
     /// <returns>An instance of this class.</returns>
-    public static OneWayConverter<TSource, TTarget> GetInstance(Func<TSource, object?, CultureInfo, TTarget> convert)
-    {
-        return new OneWayConverter<TSource, TTarget>(convert);
-    }
+    public static OneWayConverter<TSource, TTarget> GetInstance(Func<TSource, object?, CultureInfo, TTarget> convert) => new(convert);
 }

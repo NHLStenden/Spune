@@ -21,14 +21,11 @@ public sealed class MultiOneWayConverter<TTarget> : IMultiValueConverter
 	/// </summary>
 	readonly Func<IList<object?>, object?, CultureInfo, TTarget> _convert;
 
-	/// <summary>
-	/// Initializes a new instance of the <see cref="MultiOneWayConverter{TTarget}" /> class.
-	/// </summary>
-	/// <param name="convert">Convert function to pass.</param>
-	MultiOneWayConverter(Func<IList<object?>, object?, CultureInfo, TTarget> convert)
-    {
-        _convert = convert;
-    }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MultiOneWayConverter{TTarget}" /> class.
+    /// </summary>
+    /// <param name="convert">Convert function to pass.</param>
+    MultiOneWayConverter(Func<IList<object?>, object?, CultureInfo, TTarget> convert) => _convert = convert;
 
     /// <inheritdoc />
     public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
@@ -51,8 +48,5 @@ public sealed class MultiOneWayConverter<TTarget> : IMultiValueConverter
     /// </summary>
     /// <param name="convert">Convert function to pass.</param>
     /// <returns>An instance of this class.</returns>
-    public static MultiOneWayConverter<TTarget> GetInstance(Func<IList<object?>, object?, CultureInfo, TTarget> convert)
-    {
-        return new MultiOneWayConverter<TTarget>(convert);
-    }
+    public static MultiOneWayConverter<TTarget> GetInstance(Func<IList<object?>, object?, CultureInfo, TTarget> convert) => new(convert);
 }
