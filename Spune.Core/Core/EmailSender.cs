@@ -9,10 +9,10 @@ using Google.Protobuf;
 using Grpc.Core;
 using Spune.Common.Grpc;
 using Spune.Common.Interfaces;
-using Spune.UIShared.Common;
-using Spune.UIShared.Miscellaneous;
+using Spune.Core.Common;
+using Spune.Core.Miscellaneous;
 
-namespace Spune.UIShared.Core;
+namespace Spune.Core.Core;
 
 /// <summary>
 /// This class represents an email sender on the client side of the application.

@@ -8,7 +8,7 @@
 using System.Text.Json;
 using Spune.Common.Miscellaneous;
 
-namespace Spune.UIShared.Miscellaneous;
+namespace Spune.Core.Miscellaneous;
 
 /// <summary>
 /// Represents client-specific properties and provides methods for loading, saving,

@@ -7,7 +7,7 @@
 
 using Avalonia;
 using Spune.UIShared;
-using Spune.UIShared.Core;
+using Spune.Core.Core;
 
 RunningStory.EmailSenderCreator = () => new Spune.ServiceBase.Service.EmailSender();
 

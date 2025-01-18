@@ -17,6 +17,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Spune.Common.Functions;
+using Spune.Core.Core;
 using Spune.UIShared.Core;
 using Spune.UIShared.Functions;
 

@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Spune.Common.Miscellaneous;
 
-namespace Spune.UIShared.Core;
+namespace Spune.Core.Core;
 
 /// <summary>
 /// Represents a media entity that encapsulates both image and audio content functionalities.

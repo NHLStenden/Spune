@@ -11,9 +11,9 @@ using Spune.Common.Extensions;
 using Spune.Common.Functions;
 using Spune.Common.Handlers;
 using Spune.Common.Interfaces;
-using Spune.UIShared.Miscellaneous;
+using Spune.Core.Miscellaneous;
 
-namespace Spune.UIShared.Core;
+namespace Spune.Core.Core;
 
 /// <summary>
 /// Represents the running state of a story, handling its lifecycle, tracking results, and managing navigation between story chapters.

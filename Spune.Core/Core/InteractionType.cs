@@ -5,7 +5,7 @@
 // </copyright>
 //--------------------------------------------------------------------------------------------------
 
-namespace Spune.UIShared.Core;
+namespace Spune.Core.Core;
 
 /// <summary>
 /// Represents the categories of interactions available for user input or system behavior.

@@ -8,7 +8,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 
-namespace Spune.UIShared.Resolvers;
+namespace Spune.Core.Resolvers;
 
 /// <summary>
 /// A custom type info resolver that skips serialization of string properties with empty values.

@@ -17,7 +17,7 @@ using Avalonia.Threading;
 using Spune.Common.Converters;
 using Spune.Common.Extensions;
 using Spune.Common.Functions;
-using Spune.UIShared.Core;
+using Spune.Core.Core;
 
 namespace Spune.UIShared.Views;
 

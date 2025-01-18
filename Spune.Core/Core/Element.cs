@@ -8,7 +8,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Spune.UIShared.Core;
+namespace Spune.Core.Core;
 
 /// <summary>
 /// Represents a core element within the system that includes functionality for handling media, text, and AI prompt

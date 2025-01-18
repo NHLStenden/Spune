@@ -5,7 +5,7 @@
 // </copyright>
 //--------------------------------------------------------------------------------------------------
 
-namespace Spune.UIShared.Core;
+namespace Spune.Core.Core;
 
 /// <summary>
 /// Represents a master story consisting of multiple chapters and interactions.

@@ -13,9 +13,10 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Spune.Common.Functions;
+using Spune.Core.Core;
+using Spune.Core.Miscellaneous;
 using Spune.UIShared.Core;
 using Spune.UIShared.Functions;
-using Spune.UIShared.Miscellaneous;
 
 namespace Spune.UIShared.Views;
 

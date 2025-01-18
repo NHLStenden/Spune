@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spune.Common", "Spune.Common\Spune.Common.csproj", "{3BB3EFE3-4782-4631-940F-E5AE2F37A658}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spune.Core", "Spune.Core\Spune.Core.csproj", "{54DD1DE4-19A9-4265-8D08-F1AF950D65B9}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spune.Browser", "Spune.Browser\Spune.Browser.csproj", "{E4F4063D-D082-4C35-86A7-48B4D2F464FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spune.Desktop", "Spune.Desktop\Spune.Desktop.csproj", "{38804D5A-6F14-467B-9272-47C35EE8C085}"
@@ -23,6 +25,10 @@ Global
 		{3BB3EFE3-4782-4631-940F-E5AE2F37A658}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BB3EFE3-4782-4631-940F-E5AE2F37A658}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BB3EFE3-4782-4631-940F-E5AE2F37A658}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54DD1DE4-19A9-4265-8D08-F1AF950D65B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54DD1DE4-19A9-4265-8D08-F1AF950D65B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54DD1DE4-19A9-4265-8D08-F1AF950D65B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54DD1DE4-19A9-4265-8D08-F1AF950D65B9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E4F4063D-D082-4C35-86A7-48B4D2F464FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E4F4063D-D082-4C35-86A7-48B4D2F464FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4F4063D-D082-4C35-86A7-48B4D2F464FE}.Release|Any CPU.ActiveCfg = Release|Any CPU

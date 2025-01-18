@@ -6,7 +6,7 @@
 //--------------------------------------------------------------------------------------------------
 using Spune.Common.Miscellaneous;
 
-namespace Spune.UIShared.Core;
+namespace Spune.Core.Core;
 
 /// <summary>
 /// Represents an interaction within a system, extending SubElement functionality.

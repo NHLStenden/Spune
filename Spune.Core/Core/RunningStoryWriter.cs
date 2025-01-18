@@ -10,7 +10,7 @@ using System.Text;
 using Spune.Common.Functions;
 using Spune.Common.Miscellaneous;
 
-namespace Spune.UIShared.Core;
+namespace Spune.Core.Core;
 
 /// <summary>
 /// Provides functionality to write and export running story results to a CSV file or initiate browser downloads.

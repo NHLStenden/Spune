@@ -5,7 +5,7 @@
 // </copyright>
 //--------------------------------------------------------------------------------------------------
 
-namespace Spune.UIShared.Core;
+namespace Spune.Core.Core;
 
 /// <summary>
 /// Represents a sub-element derived from the core `Element` class within the system.

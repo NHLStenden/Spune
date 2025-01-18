@@ -10,7 +10,7 @@ using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
 using Spune.Common.Miscellaneous;
 
-namespace Spune.UIShared.Common;
+namespace Spune.Core.Common;
 
 /// <summary>
 /// Manages the creation and disposal of gRPC channels.

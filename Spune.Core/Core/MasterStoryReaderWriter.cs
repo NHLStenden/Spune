@@ -8,9 +8,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Spune.Common.Miscellaneous;
-using Spune.UIShared.Resolvers;
+using Spune.Core.Resolvers;
 
-namespace Spune.UIShared.Core;
+namespace Spune.Core.Core;
 
 /// <summary>
 /// Provides functionality for reading and writing master story files in JSON format.
