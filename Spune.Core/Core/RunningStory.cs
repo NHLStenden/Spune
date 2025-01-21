@@ -11,6 +11,7 @@ using Spune.Common.Extensions;
 using Spune.Common.Functions;
 using Spune.Common.Handlers;
 using Spune.Common.Interfaces;
+using Spune.Core.Functions;
 using Spune.Core.Miscellaneous;
 
 namespace Spune.Core.Core;
@@ -135,7 +136,7 @@ public class RunningStory
     public static async Task InitializeChatClientAsync()
     {
         var clientProperties = await ClientProperties.GetInstanceAsync();
-        var uri = new Uri(clientProperties.GetFullChatServerUri());
+        var uri = new Uri(ClientPropertiesFunction.GetFullChatServerUri(clientProperties));
         var selectedModel = clientProperties.ChatServerModel;
         if (string.IsNullOrEmpty(selectedModel)) return;
         IChatClient client = new OllamaApiClient(uri, selectedModel);
@@ -508,7 +509,7 @@ public class RunningStory
             return ReplaceTextWithResults(text);
 
         var clientProperties = await ClientProperties.GetInstanceAsync();
-        var uri = new Uri(clientProperties.GetFullChatServerUri());
+        var uri = new Uri(ClientPropertiesFunction.GetFullChatServerUri(clientProperties));
         var selectedModel = clientProperties.ChatServerModel;
         IChatClient client = new OllamaApiClient(uri, selectedModel);
 

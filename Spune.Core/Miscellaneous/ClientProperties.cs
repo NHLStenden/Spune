@@ -7,6 +7,7 @@
 
 using System.Text.Json;
 using Spune.Common.Miscellaneous;
+using Spune.Core.Interfaces;
 
 namespace Spune.Core.Miscellaneous;
 
@@ -14,7 +15,7 @@ namespace Spune.Core.Miscellaneous;
 /// Represents client-specific properties and provides methods for loading, saving,
 /// and retrieving configuration specific to the client application.
 /// </summary>
-public class ClientProperties
+public class ClientProperties : IClientProperties
 {
     /// <summary>
     /// A static instance of the <see cref="ClientProperties" /> class,
@@ -23,58 +24,34 @@ public class ClientProperties
     /// </summary>
     static ClientProperties? _instance;
 
-    /// <summary>
-    /// Gets or sets the base URI of the application.
-    /// This property is primarily used to construct full URIs
-    /// for other components, ensuring they are relative to the
-    /// base application URI.
-    /// </summary>
+    /// <inheritdoc />
     public string ApplicationUri { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Gets or sets the URI for the chat server.
-    /// </summary>
+    /// <inheritdoc />
     public string ChatServerUri { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Represents the model used for the chat server in the application.
-    /// It defines the specific AI model that should be utilized by the chat server implementation.
-    /// </summary>
+    /// <inheritdoc />
     public string ChatServerModel { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Represents the from field for the e-mail.
-    /// </summary>
+    /// <inheritdoc />
     public string EmailFrom { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Represents the password for the e-mail.
-    /// </summary>
+    /// <inheritdoc />
     public string EmailPassword { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Represents the port for the e-mail.
-    /// </summary>
+    /// <inheritdoc />
     public int EmailPort { get; set; } = 587;
 
-    /// <summary>
-    /// Represents the SMTP host for the e-mail.
-    /// </summary>
+    /// <inheritdoc />
     public string EmailSmtpHost { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Represents the user name for the e-mail.
-    /// </summary>
+    /// <inheritdoc />
     public string EmailUserName { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Gets or sets a value indicating whether the splash screen should be displayed at application startup.
-    /// </summary>
+    /// <inheritdoc />
     public bool SplashScreen { get; set; }
 
-    /// <summary>
-    /// Gets or sets the URI for the Spune server.
-    /// </summary>
+    /// <inheritdoc />
     public string SpuneServerUri { get; set; } = string.Empty;
 
     /// <summary>
@@ -88,10 +65,7 @@ public class ClientProperties
         return _instance;
     }
 
-    /// <summary>
-    /// Commits the current state of the client properties asynchronously to a file.
-    /// </summary>
-    /// <returns>A task that represents the asynchronous commit operation.</returns>
+    /// <inheritdoc />
     public async Task CommitAsync()
     {
         if (OperatingSystem.IsBrowser())
@@ -102,34 +76,6 @@ public class ClientProperties
 
         var json = JsonSerializer.Serialize(this);
         await File.WriteAllLinesAsync(fileName, [json]);
-    }
-
-    /// <summary>
-    /// Gets the full URI of the Spune server. If the SpuneServerUri is not a complete URI, it combines it with the
-    /// ApplicationUri to form a full URI.
-    /// </summary>
-    /// <returns>The full Spune server URI as a string.</returns>
-    public string GetFullSpuneServerUri()
-    {
-        if (SpuneServerUri.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || SpuneServerUri.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
-            return SpuneServerUri;
-
-        var uriBuilder = new UriBuilder(ApplicationUri) { Path = SpuneServerUri };
-        return uriBuilder.Uri.ToString();
-    }
-
-    /// <summary>
-    /// Gets the full URI of the chat server. If the ChatServerUri is not a complete URI, it combines it with the
-    /// ApplicationUri to form a full URI.
-    /// </summary>
-    /// <returns>The full chat server URI as a string.</returns>
-    public string GetFullChatServerUri()
-    {
-        if (ChatServerUri.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || ChatServerUri.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
-            return ChatServerUri;
-
-        var uriBuilder = new UriBuilder(ApplicationUri) { Path = ChatServerUri };
-        return uriBuilder.Uri.ToString();
     }
 
     /// <summary>

@@ -10,6 +10,7 @@ using Grpc.Core;
 using Spune.Common.Grpc;
 using Spune.Common.Interfaces;
 using Spune.Core.Common;
+using Spune.Core.Functions;
 using Spune.Core.Miscellaneous;
 
 namespace Spune.Core.Core;
@@ -43,7 +44,7 @@ public class EmailSender : IEmailSender
     public async Task<string> SendAsync()
     {
         var clientProperties = await ClientProperties.GetInstanceAsync();
-        var uri = new Uri(clientProperties.GetFullSpuneServerUri());
+        var uri = new Uri(ClientPropertiesFunction.GetFullSpuneServerUri(clientProperties));
         var channelManager = new ChannelManager(uri.AbsoluteUri);
         var client = new EmailService.EmailServiceClient(channelManager.Channel);
         try
