@@ -40,6 +40,16 @@ public class MasterStory : Element, IDisposable
     string _filePath = string.Empty;
 
     /// <summary>
+    /// The inventory text member.
+    /// </summary>
+    string _inventoryText = string.Empty;
+
+    /// <summary>
+    /// The inventory item is not valid text member.
+    /// </summary>
+    string _inventoryItemIsNotValidText = string.Empty;
+
+    /// <summary>
     /// The value is mandatory text member.
     /// </summary>
     string _valueInputIsMandatoryText = string.Empty;
@@ -87,6 +97,31 @@ public class MasterStory : Element, IDisposable
         set
         {
             _emailOrganizer = value;
+            NotifyPropertyChanged();
+        }
+    }
+    /// <summary>
+    /// Gets a text for the inventory.
+    /// </summary>
+    public string InventoryText
+    {
+        get => _inventoryText;
+        set
+        {
+            _inventoryText = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Gets a text message that is used if the selected inventory item is not valid.
+    /// </summary>
+    public string InventoryItemIsNotValidText
+    {
+        get => _inventoryItemIsNotValidText;
+        set
+        {
+            _inventoryItemIsNotValidText = value;
             NotifyPropertyChanged();
         }
     }

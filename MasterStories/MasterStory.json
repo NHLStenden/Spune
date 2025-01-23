@@ -19,7 +19,7 @@
       "RandomizeInteractions": true,
       "Interactions": [
         {
-          "PostProcessing": "Trim(?),UpperCaseFirstChar(?)",
+          "PostProcessingItems": "Trim(?),UpperCaseFirstChar(?)",
           "Prompt": "What is your name?",
           "SetsResult": true,
           "TextIsVisible": true,
@@ -118,7 +118,7 @@
       "RandomizeInteractions": true,
       "Interactions": [
         {
-          "PostProcessing": "Trim(?),UpperCaseFirstChar(?)",
+          "PostProcessingItems": "Trim(?),UpperCaseFirstChar(?)",
           "Prompt": "What is the name of your teacher?",
           "SetsResult": true,
           "TextIsVisible": true,
@@ -192,11 +192,13 @@
         },
         {
           "Height": 0.27293531910009183,
+          "IsInventory": true,
           "SetsResult": true,
           "Width": 0.4747080176767676,
           "XPosition": 0.19136320592286502,
           "YPosition": 0.678116391184573,
           "Hint": "What a mess here. Quickly clean up!",
+          "Identifier": "Litter",
           "Text": "Litter"
         },
         {
@@ -231,6 +233,7 @@
       "Text": "Very brave of you! You are now near the sound.\nTouch the image to start exploring."
     },
     {
+      "InventoryConditions": "Litter",
       "Media": {
         "ImagePath": "images/PuppyRescue.webp"
       },
@@ -256,7 +259,17 @@
         }
       ],
       "Identifier": "PuppyRescue",
+      "Link": "LitterUsage",
       "Text": "You see a puppy. The puppy is confused, crying and says: \u0022I\u0027m stuck!\u0022. What do you do?"
+    },
+    {
+      "CloseDelay": 12000,
+      "Media": {},
+      "RandomizeInteractions": true,
+      "Interactions": [],
+      "Identifier": "LitterUsage",
+      "Link": "BloodPaw",
+      "Text": "Annoying thorns...\n\nYou take the litter you\u0027ve found and wrap it around your hands.\nThe puppy wags its tail and is picked up by you, {{PlayerName}}!"
     },
     {
       "CloseDelay": 12000,
@@ -849,6 +862,8 @@
     }
   ],
   "EmailOrganizer": "martin.bosgra@nhlstenden.com",
+  "InventoryText": "Check your pockets",
+  "InventoryItemIsNotValidText": "This item doesn\u0027t seem to work here.",
   "ValueInputIsMandatoryText": "You must fill it in, otherwise you cannot continue.",
   "ValueSelectIsMandatoryText": "You must choose at least one, otherwise you cannot continue.",
   "Text": "The lost puppy in the magical forest"

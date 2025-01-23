@@ -38,6 +38,11 @@ public class RunningStory
     string _currentIdentifier = string.Empty;
 
     /// <summary>
+    /// Inventory elements list member.
+    /// </summary>
+    readonly List<Element> _inventoryElements = [];
+
+    /// <summary>
     /// Hidden elements list member.
     /// </summary>
     readonly List<Element> _hiddenElements = [];
@@ -51,6 +56,11 @@ public class RunningStory
     /// Navigate to link event handler.
     /// </summary>
     event AsyncEventHandler<Element>? NavigateToLinkEvent;
+
+    /// <summary>
+    /// Put in inventory element event handler.
+    /// </summary>
+    event AsyncEventHandler<Element>? PutInInventoryElementEvent;
 
     /// <summary>
     /// Show message event handler.
@@ -93,6 +103,15 @@ public class RunningStory
     {
         add => NavigateToLinkEvent += value;
         remove => NavigateToLinkEvent -= value;
+    }
+
+    /// <summary>
+    /// Occurs when put in inventory element is called.
+    /// </summary>
+    public event AsyncEventHandler<Element> OnPutInInventoryElement
+    {
+        add => PutInInventoryElementEvent += value;
+        remove => PutInInventoryElementEvent -= value;
     }
 
     /// <summary>
@@ -191,6 +210,7 @@ public class RunningStory
         MasterStory.Dispose();
         _chatResults.Clear();
         _currentIdentifier = string.Empty;
+        _inventoryElements.Clear();
         _hiddenElements.Clear();
         EndDateTime = new DateTime();
         StartDateTime = new DateTime();
@@ -204,7 +224,7 @@ public class RunningStory
     public ObservableCollection<Interaction> GetInteractions()
     {
         var chapter = GetChapter();
-        return chapter != null ? new ObservableCollection<Interaction>(chapter.Interactions.Where(x => !IsHidden(x))) : [];
+        return chapter != null ? new ObservableCollection<Interaction>(chapter.Interactions.Where(x => !IsInInventory(x) && !IsHidden(x))) : [];
     }
 
     /// <summary>
@@ -212,7 +232,13 @@ public class RunningStory
     /// </summary>
     /// <param name="chapter">Chapter to get interactions for.</param>
     /// <returns>Collection with interactions.</returns>
-    public ObservableCollection<Interaction> GetInteractions(Chapter chapter) => new(chapter.Interactions.Where(x => !IsHidden(x)));
+    public ObservableCollection<Interaction> GetInteractions(Chapter chapter) => new(chapter.Interactions.Where(x => !IsInInventory(x) && !IsHidden(x)));
+
+    /// <summary>
+    /// Gets the inventory elements for the given chapter.
+    /// </summary>
+    /// <returns>Collection with interactions.</returns>
+    public List<Element> GetInventoryElements() => _inventoryElements;
 
     /// <summary>
     /// Handles the action of an element.
@@ -238,6 +264,12 @@ public class RunningStory
         {
             await InvokeShowMessageAsync(MasterStory.ValueInputIsMandatoryText);
             return;
+        }
+
+        if (element is Interaction { IsInventory: true } interaction0 )
+        {
+            PutInInventoryElement(interaction0);
+            await InvokePutInInventoryElementAsync(interaction0);
         }
 
         if (element is Interaction { RemoveAfterUse: true } interaction1)
@@ -289,6 +321,25 @@ public class RunningStory
     bool IsHidden(Element element) => _hiddenElements.Any(x => string.Equals(x.Identifier, element.Identifier, StringComparison.Ordinal));
 
     /// <summary>
+    /// Adds an element to the inventory collection.
+    /// </summary>
+    /// <param name="element">Element to put in inventory.</param>
+    void PutInInventoryElement(Element element)
+    {
+        if (!element.HasIdentifier())
+            return;
+        if (!IsInInventory(element))
+            _inventoryElements.Add(element);
+    }
+
+    /// <summary>
+    /// Checks if the given element is in the inventory.
+    /// </summary>
+    /// <param name="element">Element to check.</param>
+    /// <returns>True if it is and false otherwise.</returns>
+    bool IsInInventory(Element element) => _inventoryElements.Any(x => string.Equals(x.Identifier, element.Identifier, StringComparison.Ordinal));
+
+    /// <summary>
     /// Starts the master story by initializing the current chapter and setting the start date and time.
     /// </summary>
     /// <param name="masterStory">The master story to be started. This parameter contains the chapters to initialize the execution.</param>
@@ -338,6 +389,17 @@ public class RunningStory
     {
         if (NavigateToLinkEvent == null) return;
         await NavigateToLinkEvent.InvokeAsync(this, element);
+    }
+
+    /// <summary>
+    /// Invokes the put in inventory element event asynchronously.
+    /// </summary>
+    /// <param name="element">The element to put in the inventory.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    async Task InvokePutInInventoryElementAsync(Element element)
+    {
+        if (PutInInventoryElementEvent == null) return;
+        await PutInInventoryElementEvent.InvokeAsync(this, element);
     }
 
     /// <summary>
@@ -418,6 +480,29 @@ public class RunningStory
     public async Task<string> GetTextAsync(Element element) => await GetTextAsync(element, null);
 
     /// <summary>
+    /// Uses a given inventory item for the specified chapter.
+    /// </summary>
+    /// <param name="chapter">Chapter to use inventory for.</param>
+    /// <param name="inventoryItem">Inventory item to use in the given chapter.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains true if the inventory is used, and false otherwise.</returns>
+    public async Task<bool> UseInventoryAsync(Chapter chapter, Element inventoryItem)
+    {
+        if (!inventoryItem.HasIdentifier())
+            return false;
+        var inventoryCondititions = chapter.InventoryConditions.Split('.').ToArray();
+        if (!inventoryCondititions.Any(x => string.Equals(x, inventoryItem.Identifier, StringComparison.Ordinal)))
+        {
+            await InvokeShowMessageAsync(MasterStory.InventoryItemIsNotValidText);
+            return false;
+        }
+        await SetResultAsync(chapter, inventoryItem.Text);
+        if (!await NavigateToLinkAsync(chapter))
+            return false;
+        await InvokeNavigateToLinkAsync(chapter);
+        return true;
+    }
+
+    /// <summary>
     /// Asynchronously generates and retrieves the hint based on a provided element.
     /// </summary>
     /// <param name="element">The element to get hint from.</param>
@@ -440,16 +525,16 @@ public class RunningStory
     async Task SetResultAsync(Element element, object? value)
     {
         string? textOverride;
-        if (element is Chapter)
-            textOverride = string.Empty;
-        else if (value is string s)
+        if (value is string s)
             textOverride = s;
+        else if (element is Chapter)
+            textOverride = string.Empty;
         else
             textOverride = null;
 
         var result = await GetTextAsync(element, textOverride);
 
-        if (element is Interaction interaction && interaction.HasPostProcessing())
+        if (element is Interaction interaction && interaction.HasPostProcessingItems())
             result = interaction.PostProcess(result);
 
         if (value is bool b)

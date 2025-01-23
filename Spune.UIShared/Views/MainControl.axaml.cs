@@ -59,6 +59,7 @@ public partial class MainControl : UserControl
     {
         InitializeComponent();
         _runningStory.OnHideElement += RunningStoryHandlerHideElement;
+        _runningStory.OnPutInInventoryElement += RunningStoryHandlerPutInInventoryElement;
         _runningStory.OnShowMessage += RunningStoryHandlerShowMessage;
         _runningStory.OnNavigateToLink += RunningStoryHandlerNavigateToLink;
         _runningStoryView = new RunningStoryView(_runningStory, this);
@@ -360,6 +361,14 @@ public partial class MainControl : UserControl
     /// <param name="e">The element to hide.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     async Task RunningStoryHandlerHideElement(object sender, Element e) => await RecreateChapterNoAnimAsync();
+
+    /// <summary>
+    /// Handles putting an element in the inventory asynchronously.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The element to hide.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    async Task RunningStoryHandlerPutInInventoryElement(object sender, Element e) => await RecreateChapterNoAnimAsync();
 
     /// <summary>
     /// Handles the selection change event of the ChapterListBox.

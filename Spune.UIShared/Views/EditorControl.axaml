@@ -36,8 +36,20 @@
                     <Button Grid.Column="2" Click="SaveMasterStoryButtonClick" Margin="12,0,0,0" VerticalAlignment="Stretch" VerticalContentAlignment="Center">Save master story
                     </Button>
                 </Grid>
-                <TextBlock Margin="0,0,0,-4">E-mail organiser</TextBlock>
-                <TextBox Text="{Binding EmailOrganizer}" />
+                <Grid ColumnDefinitions="*,*,*">
+                    <StackPanel Grid.Column="0" Spacing="12">
+                        <TextBlock Margin="0,0,0,-4">E-mail organiser</TextBlock>
+                        <TextBox Text="{Binding EmailOrganizer}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
+                        <TextBlock Margin="0,0,0,-4">Inventory text</TextBlock>
+                        <TextBox Text="{Binding InventoryText}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Spacing="12" Margin="12,0,0,0">
+                        <TextBlock Margin="0,0,0,-4">Text for inventory item is not valid</TextBlock>
+                        <TextBox Text="{Binding InventoryItemIsNotValidText}" />
+                    </StackPanel>
+                </Grid>
             </StackPanel>
             <Grid Grid.Row="1" RowDefinitions="Auto,*">
                 <TextBlock Grid.Row="0" Margin="0,12,0,-4">Chapters</TextBlock>
@@ -98,6 +110,8 @@
                                             Text="{Binding $parent[v:EditorControl].SelectedChapter.Media.ImagePath}" />
                                     </StackPanel>
                                 </Grid>
+                                <TextBlock Margin="0,0,0,-4">Inventory conditions</TextBlock>
+                                <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedChapter.InventoryConditions}" />
                                 <TextBlock Margin="0,0,0,-4">Text</TextBlock>
                                 <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedChapter.Text}" />
                                 <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.RandomizeInteractions}">Randomize the interactions</CheckBox>
@@ -133,6 +147,7 @@
                                             <TextBox Text="{Binding $parent[v:EditorControl].SelectedInteraction.Link}" />
                                             <TextBlock Margin="0,0,0,-4">Text</TextBlock>
                                             <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedInteraction.Text}" />
+                                            <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedInteraction.IsInventory}">Is inventory</CheckBox>
                                             <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedInteraction.TextIsVisible}">Text is visible</CheckBox>
                                             <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedInteraction.RemoveAfterUse}">Remove after use</CheckBox>
                                             <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedInteraction.SetsResult}">Sets the result of the chapter</CheckBox>
@@ -156,8 +171,8 @@
                                             </Grid>
                                             <Grid ColumnDefinitions="*,*">
                                                 <StackPanel Grid.Column="0" Spacing="12">
-                                                    <TextBlock Margin="0,0,0,-4">PostProcessing</TextBlock>
-                                                    <TextBox Text="{Binding $parent[v:EditorControl].SelectedInteraction.PostProcessing}" />
+                                                    <TextBlock Margin="0,0,0,-4">Post-processing items</TextBlock>
+                                                    <TextBox Text="{Binding $parent[v:EditorControl].SelectedInteraction.PostProcessingItems}" />
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
                                                     <TextBlock Margin="0,0,0,-4">Prompt</TextBlock>

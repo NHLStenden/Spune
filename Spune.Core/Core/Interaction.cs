@@ -29,9 +29,14 @@ public class Interaction : SubElement
     double _height;
 
     /// <summary>
-    /// The Post-processing member.
+    /// The is inventory member.
     /// </summary>
-    string _postProcessing = string.Empty;
+    bool _isInventory;
+
+    /// <summary>
+    /// The Post-processing items member.
+    /// </summary>
+    string _postProcessingItems = string.Empty;
 
     /// <summary>
     /// The prompt member.
@@ -87,14 +92,27 @@ public class Interaction : SubElement
     }
 
     /// <summary>
-    /// Gets or sets the post-processing content associated with the element.
+    /// Indicates whether the interaction is inventory or not.
     /// </summary>
-    public string PostProcessing
+    public bool IsInventory
     {
-        get => _postProcessing;
+        get => _isInventory;
         set
         {
-            _postProcessing = value;
+            _isInventory = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the post-processing items associated with the element.
+    /// </summary>
+    public string PostProcessingItems
+    {
+        get => _postProcessingItems;
+        set
+        {
+            _postProcessingItems = value;
             NotifyPropertyChanged();
         }
     }
@@ -212,10 +230,10 @@ public class Interaction : SubElement
     }
 
     /// <summary>
-    /// Determines whether the element contains post-processing.
+    /// Determines whether the element contains post-processing items.
     /// </summary>
     /// <returns>True if has it, and false otherwise.</returns>
-    public bool HasPostProcessing() => !string.IsNullOrEmpty(PostProcessing);
+    public bool HasPostProcessingItems() => !string.IsNullOrEmpty(PostProcessingItems);
 
     /// <summary>
     /// Indicates whether the interaction is in the image or separately.
@@ -223,13 +241,13 @@ public class Interaction : SubElement
     public bool InImage() => _width > 0.0 && _height > 0.0;
 
     /// <summary>
-    /// Post-processing the given string with the post-processing operations specified in property PostProcessing.
+    /// Post-processing the given string with the post-processing operations specified in property PostProcessingItems.
     /// </summary>
     /// <param name="text">Text to handle.</param>
     /// <returns>The processed text.</returns>
     public string PostProcess(string text)
     {
-        foreach (var function in PostProcessing.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()))
+        foreach (var function in PostProcessingItems.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()))
         {
             var f = function;
             if (!f.Contains('.', StringComparison.Ordinal))

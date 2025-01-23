@@ -28,6 +28,11 @@ public class Chapter : SubElement, IDisposable
     double _closeDelay;
 
     /// <summary>
+    /// The inventory conditions member.
+    /// </summary>
+    string _inventoryConditions = string.Empty;
+
+    /// <summary>
     /// Indicates whether the media resources linked to the element have been disposed.
     /// This flag is used to ensure that media resources are released only once during the object's lifecycle.
     /// </summary>
@@ -81,6 +86,19 @@ public class Chapter : SubElement, IDisposable
     }
 
     /// <summary>
+    /// Gets or sets the inventory conditions.
+    /// </summary>
+    public string InventoryConditions
+    {
+        get => _inventoryConditions;
+        set
+        {
+            _inventoryConditions = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
     /// Represents a media object associated with an element,
     /// providing support for managing image and audio content,
     /// including loading, accessing, and determining the presence of media.
@@ -109,6 +127,12 @@ public class Chapter : SubElement, IDisposable
 
     /// <inheritdoc />
     public override bool HasText() => !string.IsNullOrEmpty(ChatMessage) || base.HasText();
+
+    /// <summary>
+    /// Checks if there are inventory conditions.
+    /// </summary>
+    /// <returns>True if there is, and false otherwise.</returns>
+    public bool HasInventoryConditions() => !string.IsNullOrEmpty(_inventoryConditions);
 
     /// <inheritdoc />
     /// <summary>
