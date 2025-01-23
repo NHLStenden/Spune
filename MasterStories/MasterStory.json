@@ -861,6 +861,7 @@
       "Text": "\u0022I was rescuing a pup, you see, For a friend in need is a friend indeed!\u0022\n\nThe end."
     }
   ],
+  "CloseButtonText": "Hands out",
   "EmailOrganizer": "martin.bosgra@nhlstenden.com",
   "InventoryText": "Check your pockets",
   "InventoryItemIsNotValidText": "This item doesn\u0027t seem to work here.",

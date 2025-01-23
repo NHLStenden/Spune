@@ -229,7 +229,7 @@ public partial class MainControl : UserControl
     /// </summary>
     async Task CreateChapterAsync()
     {
-        var control = await _runningStoryView.CreateControlFromChapter(null);
+        var control = await _runningStoryView.CreateControlFromChapter();
         var currentControl = MainGrid.Children.Count > 0 ? MainGrid.Children[0] : null;
         MainGrid.Children.Add(control);
         if (currentControl != null)
@@ -255,7 +255,14 @@ public partial class MainControl : UserControl
     /// and updates the user interface by setting the created control
     /// to the main grid of the application. There's no animation displayed.
     /// </summary>
-    async Task RecreateChapterNoAnimAsync() => await _runningStoryView.CreateControlFromChapter(MainGrid.Children.Count > 0 ? MainGrid.Children[0] : null);
+    async Task RecreateChapterNoAnimAsync()
+    {
+        var control = await _runningStoryView.CreateControlFromChapter();
+        var currentControl = MainGrid.Children.Count > 0 ? MainGrid.Children[0] : null;
+        MainGrid.Children.Add(control);
+        if (currentControl != null)
+            MainGrid.Children.Remove(currentControl);
+    }
 
     /// <inheritdoc />
     protected override void OnUnloaded(RoutedEventArgs e)

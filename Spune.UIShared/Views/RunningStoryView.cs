@@ -53,14 +53,13 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
     /// Asynchronously creates a control based on the current state of the story or its current chapter.
     /// Handles the creation of UI components like media, text, and interactions for chapters when applicable.
     /// </summary>
-    /// <param name="recycleControl">Control to use for recycling if set (not null).</param>
     /// <returns>A <see cref="Control" /> representing the generated UI for the story or its chapter.</returns>
-    public async Task<Control> CreateControlFromChapter(Control? recycleControl)
+    public async Task<Control> CreateControlFromChapter()
     {
         var chapter = _runningStory.GetChapter();
 
         Grid? chapterGrid = null;
-        if (!CreatePanelAndGrid(chapter, recycleControl, out var storyPanel, ref chapterGrid) || chapterGrid == null)
+        if (!CreatePanelAndGrid(chapter, out var storyPanel, ref chapterGrid) || chapterGrid == null)
             return storyPanel;
 
         if (chapter == null) return storyPanel;
@@ -400,77 +399,54 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
     }
 
     /// <summary>
-    /// Creates a panel and grid structure, or reuses an existing panel if provided.
+    /// Creates a panel and grid structure.
     /// </summary>
     /// <param name="chapter">Chapter (when not null) associated with the panel.</param>
-    /// <param name="recycleControl">An optional control to recycle. If it is a Panel, it will be reused.</param>
     /// <param name="storyPanel">The created or recycled panel.</param>
     /// <param name="chapterGrid">The grid to be created or cleared.</param>
     /// <returns>True if the panel and grid were successfully created or reused; otherwise, false.</returns>
-    bool CreatePanelAndGrid(Chapter? chapter, Control? recycleControl, out Panel storyPanel, ref Grid? chapterGrid)
+    bool CreatePanelAndGrid(Chapter? chapter, out Panel storyPanel, ref Grid? chapterGrid)
     {
-        if (recycleControl is not Panel p)
+        storyPanel = new Panel();
+        storyPanel.Classes.Set("fade_in", true);
+        var chapterPanel = new Panel();
+
+        if (chapter?.HasInventoryConditions() == true)
         {
-            storyPanel = new Panel();
-            storyPanel.Classes.Set("fade_in", true);
-            var chapterPanel = new Panel();
-
-            if (chapter?.HasInventoryConditions() == true)
-            {
-                var storyGrid = new Grid
-                {
-                    RowDefinitions =
-                    [
-                        new RowDefinition { Height = GridLength.Auto },
-                        new RowDefinition { Height = GridLength.Star }
-                    ]
-                };
-                storyPanel.Children.Add(storyGrid);
-
-                var inventoryButton = new Button { Content = _runningStory.MasterStory.InventoryText };
-                var copyOfStoryPanel = storyPanel;
-                inventoryButton.Click += (s, e) => ShowInventory(chapter, copyOfStoryPanel);
-                Grid.SetRow(inventoryButton, 0);
-                storyGrid.Children.Add(inventoryButton);
-                storyGrid.Children.Add(chapterPanel);
-                Grid.SetRow(chapterPanel, 1);
-            }
-            else
-            {
-                storyPanel.Children.Add(chapterPanel);
-            }
-
-            chapterGrid = new Grid
+            var storyGrid = new Grid
             {
                 RowDefinitions =
                 [
-                    new RowDefinition { Height = new GridLength(GoldenRatio, GridUnitType.Star) },
-                    new RowDefinition { Height = new GridLength((1.0 - GoldenRatio) * GoldenRatio, GridUnitType.Star) },
-                    new RowDefinition { Height = new GridLength((1.0 - GoldenRatio) * (1.0 - GoldenRatio), GridUnitType.Star) }
+                    new RowDefinition { Height = GridLength.Auto },
+                        new RowDefinition { Height = GridLength.Star }
                 ]
             };
-            chapterPanel.Children.Add(chapterGrid);
+            storyPanel.Children.Add(storyGrid);
+
+            var inventoryButton = new Button { Content = _runningStory.MasterStory.InventoryText, Margin = new Thickness(0.0, 0.0, 0.0, DefaultGridMargin) };
+            inventoryButton.Classes.Set("accent", true);
+            var copyOfStoryPanel = storyPanel;
+            inventoryButton.Click += (s, e) => ShowInventory(chapter, copyOfStoryPanel);
+            Grid.SetRow(inventoryButton, 0);
+            storyGrid.Children.Add(inventoryButton);
+            storyGrid.Children.Add(chapterPanel);
+            Grid.SetRow(chapterPanel, 1);
         }
         else
         {
-            storyPanel = p;
-            Panel? chapterPanel;
-            if (chapter?.HasInventoryConditions() == true)
-            {
-                var storyGrid = storyPanel.Children.Count > 0 ? storyPanel.Children[0] as Grid : null;
-                if (storyGrid == null) return false;
-                chapterPanel = storyGrid.Children.Count > 1 ? storyGrid.Children[1] as Panel : null;
-                if (chapterPanel == null) return false;
-            }
-            else
-            {
-                chapterPanel = storyPanel.Children.Count > 0 ? storyPanel.Children[0] as Panel : null;
-                if (chapterPanel == null) return false;
-            }
-            chapterGrid = chapterPanel.Children.Count > 0 ? chapterPanel.Children[0] as Grid : null;
-            if (chapterGrid == null) return false;
-            chapterGrid.Children.Clear();
+            storyPanel.Children.Add(chapterPanel);
         }
+
+        chapterGrid = new Grid
+        {
+            RowDefinitions =
+            [
+                new RowDefinition { Height = new GridLength(GoldenRatio, GridUnitType.Star) },
+                    new RowDefinition { Height = new GridLength((1.0 - GoldenRatio) * GoldenRatio, GridUnitType.Star) },
+                    new RowDefinition { Height = new GridLength((1.0 - GoldenRatio) * (1.0 - GoldenRatio), GridUnitType.Star) }
+            ]
+        };
+        chapterPanel.Children.Add(chapterGrid);
         return true;
     }
 
@@ -480,17 +456,43 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
     /// <param name="storyPanel">Story panel to use.</param>
     void ShowInventory(Chapter chapter, Panel storyPanel)
     {
-        var inventoryPanel = new Panel();
+        var inventoryPanel = new Panel
+        {
+            Background = new SolidColorBrush(new Color(0x60, 0x00, 0x00, 0x00))
+        };
         storyPanel.Children.Add(inventoryPanel);
+
+        var inventoryGrid = new Grid
+        {
+            RowDefinitions =
+            [
+                new RowDefinition { Height = new GridLength(GoldenRatio, GridUnitType.Auto) },
+                new RowDefinition { Height = new GridLength(GoldenRatio, GridUnitType.Star) }
+            ]
+        };
+        inventoryPanel.Children.Add(inventoryGrid);
+
+        var closeButton = new Button()
+        {
+            Content = _runningStory.MasterStory.CloseButtonText,
+            HorizontalAlignment = HorizontalAlignment.Right,
+            Margin = new Thickness(0.0, 0.0, 0.0, DefaultGridMargin)
+        };
+        closeButton.Classes.Set("accent", true);
+        closeButton.Click += (_, _) => storyPanel.Children.Remove(inventoryPanel);
+        Grid.SetRow(closeButton, 0);
+
         var listBox = new ListBox
         {
             ItemsSource = _runningStory.GetInventoryElements(),
             ItemTemplate = new FuncDataTemplate<object>((_, _) => new TextBlock
-                {
-                    [!TextBlock.TextProperty] = new Binding("Text")
-                })
+            {
+                [!TextBlock.TextProperty] = new Binding("Text")
+            })
         };
-        inventoryPanel.Children.Add(listBox);
+        Grid.SetRow(listBox, 1);
+        inventoryGrid.Children.Add(closeButton);
+        inventoryGrid.Children.Add(listBox);
         listBox.SelectionChanged += async (_, _) =>
         {
             storyPanel.Children.Remove(inventoryPanel);

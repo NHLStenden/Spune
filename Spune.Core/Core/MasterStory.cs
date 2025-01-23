@@ -30,6 +30,11 @@ public class MasterStory : Element, IDisposable
     bool _chaptersDisposed;
 
     /// <summary>
+    /// Close button text member.
+    /// </summary>
+    string _closeButtonText = string.Empty;
+
+    /// <summary>
     /// E-mail of organiser member.
     /// </summary>
     string _emailOrganizer = string.Empty;
@@ -89,6 +94,19 @@ public class MasterStory : Element, IDisposable
     public ObservableCollection<Chapter> Chapters { get; set; } = [];
 
     /// <summary>
+    /// Represent the text for a close button.
+    /// </summary>
+    public string CloseButtonText
+    {
+        get => _closeButtonText;
+        set
+        {
+            _closeButtonText = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
     /// Represent the e-mail address of the organiser.
     /// </summary>
     public string EmailOrganizer
@@ -100,6 +118,7 @@ public class MasterStory : Element, IDisposable
             NotifyPropertyChanged();
         }
     }
+
     /// <summary>
     /// Gets a text for the inventory.
     /// </summary>
