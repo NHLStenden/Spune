@@ -58,10 +58,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
     {
         var chapter = _runningStory.GetChapter();
 
-        Grid? chapterGrid = null;
-        if (!CreatePanelAndGrid(chapter, out var storyPanel, ref chapterGrid) || chapterGrid == null)
-            return storyPanel;
-
+        CreatePanelAndGrid(chapter, out var storyPanel, out var chapterGrid);
         if (chapter == null) return storyPanel;
 
         if (chapter.CloseDelay > 0.0)
@@ -404,8 +401,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
     /// <param name="chapter">Chapter (when not null) associated with the panel.</param>
     /// <param name="storyPanel">The created or recycled panel.</param>
     /// <param name="chapterGrid">The grid to be created or cleared.</param>
-    /// <returns>True if the panel and grid were successfully created or reused; otherwise, false.</returns>
-    bool CreatePanelAndGrid(Chapter? chapter, out Panel storyPanel, ref Grid? chapterGrid)
+    void CreatePanelAndGrid(Chapter? chapter, out Panel storyPanel, out Grid chapterGrid)
     {
         storyPanel = new Panel();
         storyPanel.Classes.Set("fade_in", true);
@@ -426,7 +422,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
             var inventoryButton = new Button { Content = _runningStory.MasterStory.InventoryText, Margin = new Thickness(0.0, 0.0, 0.0, DefaultGridMargin) };
             inventoryButton.Classes.Set("accent", true);
             var copyOfStoryPanel = storyPanel;
-            inventoryButton.Click += (s, e) => ShowInventory(chapter, copyOfStoryPanel);
+            inventoryButton.Click += (_, _) => ShowInventory(chapter, copyOfStoryPanel);
             Grid.SetRow(inventoryButton, 0);
             storyGrid.Children.Add(inventoryButton);
             storyGrid.Children.Add(chapterPanel);
@@ -447,12 +443,12 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
             ]
         };
         chapterPanel.Children.Add(chapterGrid);
-        return true;
     }
 
     /// <summary>
-    /// Shows the inventory panel.
+    /// Shows the inventory panel for the given chapter.
     /// </summary>
+    /// <param name="chapter">Chapter to use.</param>
     /// <param name="storyPanel">Story panel to use.</param>
     void ShowInventory(Chapter chapter, Panel storyPanel)
     {
@@ -472,7 +468,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
         };
         inventoryPanel.Children.Add(inventoryGrid);
 
-        var closeButton = new Button()
+        var closeButton = new Button
         {
             Content = _runningStory.MasterStory.CloseButtonText,
             HorizontalAlignment = HorizontalAlignment.Right,

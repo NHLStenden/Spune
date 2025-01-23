@@ -484,22 +484,20 @@ public class RunningStory
     /// </summary>
     /// <param name="chapter">Chapter to use inventory for.</param>
     /// <param name="inventoryItem">Inventory item to use in the given chapter.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains true if the inventory is used, and false otherwise.</returns>
-    public async Task<bool> UseInventoryAsync(Chapter chapter, Element inventoryItem)
+    public async Task UseInventoryAsync(Chapter chapter, Element inventoryItem)
     {
         if (!inventoryItem.HasIdentifier())
-            return false;
+            return;
         var inventoryCondititions = chapter.InventoryConditions.Split('.').ToArray();
         if (!inventoryCondititions.Any(x => string.Equals(x, inventoryItem.Identifier, StringComparison.Ordinal)))
         {
             await InvokeShowMessageAsync(MasterStory.InventoryItemIsNotValidText);
-            return false;
+            return;
         }
         await SetResultAsync(chapter, inventoryItem.Text);
         if (!await NavigateToLinkAsync(chapter))
-            return false;
+            return;
         await InvokeNavigateToLinkAsync(chapter);
-        return true;
     }
 
     /// <summary>
