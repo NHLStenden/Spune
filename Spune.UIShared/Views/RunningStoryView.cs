@@ -479,12 +479,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
         {
             inventoryPanel.Opacity = 0.0;
             inventoryPanel.Classes.Set("fade_out", true);
-            inventoryPanel.PropertyChanged += (_, e) =>
-            {
-                if (!string.Equals(e.Property.Name, "Opacity", StringComparison.Ordinal) || e.NewValue is not double opacity || opacity > 0.0)
-                    return;
-                storyPanel.Children.Remove(inventoryPanel);
-            };
+            inventoryPanel.PropertyChanged += (_, e) => WaitAndRemoveChild(storyPanel, inventoryPanel, e);
         };
         Grid.SetRow(closeButton, 0);
 
@@ -505,9 +500,8 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
             inventoryPanel.Classes.Set("fade_out", true);
             inventoryPanel.PropertyChanged += async (_, e) =>
             {
-                if (!string.Equals(e.Property.Name, "Opacity", StringComparison.Ordinal) || e.NewValue is not double opacity || opacity > 0.0)
+                if (!WaitAndRemoveChild(storyPanel, inventoryPanel, e))
                     return;
-                storyPanel.Children.Remove(inventoryPanel);
                 if (listBox.SelectedItem is not Element inventoryItem)
                     return;
                 await _runningStory.UseInventoryAsync(chapter, inventoryItem);
@@ -516,5 +510,20 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
 
         inventoryPanel.Opacity = 1.0;
         inventoryPanel.Classes.Set("fade_in", true);
+    }
+
+    /// <summary>
+    /// Waits for the opacity to reach 0.0 and then remove the given child.
+    /// </summary>
+    /// <param name="panel">Panel to remove child from.</param>
+    /// <param name="child">Child to remove.</param>
+    /// <param name="propertChangedEvent">Property changed event to handle (containing the opacity).</param>
+    /// <returns>True if removed and false otherwise.</returns>
+    static bool WaitAndRemoveChild(Panel panel, Control child, AvaloniaPropertyChangedEventArgs propertChangedEvent)
+    {
+        if (!string.Equals(propertChangedEvent.Property.Name, "Opacity", StringComparison.Ordinal) || propertChangedEvent.NewValue is not double opacity || opacity > 0.0)
+            return false;
+        panel.Children.Remove(child);
+        return true;
     }
 }
