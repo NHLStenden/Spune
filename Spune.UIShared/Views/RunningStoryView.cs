@@ -193,7 +193,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
         shape.Opacity = 0.0;
         shape.PropertyChanged += async (_, e) =>
         {
-            if (!string.Equals(e.Property.Name, "Opacity", StringComparison.Ordinal) || e.NewValue is not double opacity || opacity > 0.0)
+            if (!PropertyFunction.TryGetPropertyNewValue<double>(e, Visual.OpacityProperty, out var opacity) || opacity > 0.0)
                 return;
             shape.Classes.Set("click_animation", false);
             await _runningStory.HandleElementAsync(interaction, null);
@@ -519,7 +519,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
     /// <returns>True if removed and false otherwise.</returns>
     static bool WaitAndRemoveChild(Panel panel, Control child, AvaloniaPropertyChangedEventArgs propertyChangedEvent)
     {
-        if (!PropertyFunction.TryGetPropertyNewValue<double>(propertyChangedEvent, "Opacity", out var opacity) || opacity > 0.0)
+        if (!PropertyFunction.TryGetPropertyNewValue<double>(propertyChangedEvent, Visual.OpacityProperty, out var opacity) || opacity > 0.0)
             return false;
         panel.Children.Remove(child);
         return true;

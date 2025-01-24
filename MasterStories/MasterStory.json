@@ -4,7 +4,7 @@
     {
       "IsInventory": true,
       "SetsResult": true,
-      "Hint": "Useful to open doors",
+      "Hint": "Useful to open doors or unlock locks",
       "Identifier": "Keychain",
       "Text": "Keychain"
     }

@@ -34,4 +34,20 @@ public static class PropertyFunction
         value = t;
         return true;
     }
+
+    /// <summary>
+    /// Tries to get the new value of a property change event if the property name matches the specified property.
+    /// </summary>
+    /// <typeparam name="T">The type of the property value.</typeparam>
+    /// <param name="e">The event arguments containing the property change information.</param>
+    /// <param name="property">The property to match.</param>
+    /// <param name="value">When this method returns, contains the new value of the property if the name matches; otherwise, the default value for the type of the value parameter.</param>
+    /// <returns>
+    /// <c>true</c> if the property name matches and the new value is of type <typeparamref name="T"/>; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool TryGetPropertyNewValue<T>(AvaloniaPropertyChangedEventArgs e, AvaloniaProperty property, out T? value)
+    {
+        var name = property.Name;
+        return TryGetPropertyNewValue(e, name, out value);
+    }
 }

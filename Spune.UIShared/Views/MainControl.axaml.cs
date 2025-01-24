@@ -238,7 +238,7 @@ public partial class MainControl : UserControl
             currentControl.Classes.Set("grow_and_fade_out", true);
             currentControl.PropertyChanged += (_, e) =>
             {
-                if (!PropertyFunction.TryGetPropertyNewValue<double>(e, "Opacity", out var opacity) || opacity > 0.0)
+                if (!PropertyFunction.TryGetPropertyNewValue<double>(e, OpacityProperty, out var opacity) || opacity > 0.0)
                     return;
 
                 MainGrid.Children.RemoveAt(0);
