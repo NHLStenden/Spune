@@ -5,6 +5,7 @@
 // </copyright>
 //--------------------------------------------------------------------------------------------------
 
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -452,10 +453,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
     /// <param name="storyPanel">Story panel to use.</param>
     void ShowInventory(Chapter chapter, Panel storyPanel)
     {
-        var inventoryPanel = new Panel
-        {
-            Background = new SolidColorBrush(new Color(0x60, 0x00, 0x00, 0x00))
-        };
+        var inventoryPanel = new Panel { Background = new SolidColorBrush(new Color(0x60, 0x00, 0x00, 0x00)) };
         storyPanel.Children.Add(inventoryPanel);
 
         var inventoryGrid = new Grid
@@ -517,11 +515,11 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
     /// </summary>
     /// <param name="panel">Panel to remove child from.</param>
     /// <param name="child">Child to remove.</param>
-    /// <param name="propertChangedEvent">Property changed event to handle (containing the opacity).</param>
+    /// <param name="propertyChangedEvent">Property changed event to handle (containing the opacity).</param>
     /// <returns>True if removed and false otherwise.</returns>
-    static bool WaitAndRemoveChild(Panel panel, Control child, AvaloniaPropertyChangedEventArgs propertChangedEvent)
+    static bool WaitAndRemoveChild(Panel panel, Control child, AvaloniaPropertyChangedEventArgs propertyChangedEvent)
     {
-        if (!string.Equals(propertChangedEvent.Property.Name, "Opacity", StringComparison.Ordinal) || propertChangedEvent.NewValue is not double opacity || opacity > 0.0)
+        if (!PropertyFunction.TryGetPropertyNewValue<double>(propertyChangedEvent, "Opacity", out var opacity) || opacity > 0.0)
             return false;
         panel.Children.Remove(child);
         return true;
