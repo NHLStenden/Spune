@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <sys:TimeSpan x:Key="FadeInDuration">0:0:0.300</sys:TimeSpan>
+            <sys:TimeSpan x:Key="FadeOutDuration">0:0:0.300</sys:TimeSpan>
             <sys:TimeSpan x:Key="GrowAndFadeOutDuration">0:0:0.300</sys:TimeSpan>
             <sys:TimeSpan x:Key="RectangleClickDuration">0:0:0.150</sys:TimeSpan>
             <ResourceDictionary.ThemeDictionaries>
@@ -121,6 +122,18 @@
                     </KeyFrame>
                     <KeyFrame Cue="100%">
                         <Setter Property="Opacity" Value="1" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <Style Selector="Panel.fade_out">
+            <Style.Animations>
+                <Animation Easing="SineEaseInOut" Duration="{StaticResource FadeOutDuration}">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="1" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="0" />
                     </KeyFrame>
                 </Animation>
             </Style.Animations>

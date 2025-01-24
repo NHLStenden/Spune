@@ -475,7 +475,17 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
             Margin = new Thickness(0.0, 0.0, 0.0, DefaultGridMargin)
         };
         closeButton.Classes.Set("accent2", true);
-        closeButton.Click += (_, _) => storyPanel.Children.Remove(inventoryPanel);
+        closeButton.Click += (_, _) =>
+        {
+            inventoryPanel.Opacity = 0.0;
+            inventoryPanel.Classes.Set("fade_out", true);
+            inventoryPanel.PropertyChanged += (_, e) =>
+            {
+                if (!string.Equals(e.Property.Name, "Opacity", StringComparison.Ordinal) || e.NewValue is not double opacity || opacity > 0.0)
+                    return;
+                storyPanel.Children.Remove(inventoryPanel);
+            };
+        };
         Grid.SetRow(closeButton, 0);
 
         var listBox = new ListBox
@@ -489,14 +499,22 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
         Grid.SetRow(listBox, 1);
         inventoryGrid.Children.Add(closeButton);
         inventoryGrid.Children.Add(listBox);
-        listBox.SelectionChanged += async (_, _) =>
+        listBox.SelectionChanged += (_, _) =>
         {
-            storyPanel.Children.Remove(inventoryPanel);
-            if (listBox.SelectedItem is not Element inventoryItem)
-                return;
-
-            // Small delay of 300 ms to see the message: "This doesn't work" or "Great work!"
-            await TimerFunction.DelayInvokeAsync(async () => await _runningStory.UseInventoryAsync(chapter, inventoryItem), 300.0);
+            inventoryPanel.Opacity = 0.0;
+            inventoryPanel.Classes.Set("fade_out", true);
+            inventoryPanel.PropertyChanged += async (_, e) =>
+            {
+                if (!string.Equals(e.Property.Name, "Opacity", StringComparison.Ordinal) || e.NewValue is not double opacity || opacity > 0.0)
+                    return;
+                storyPanel.Children.Remove(inventoryPanel);
+                if (listBox.SelectedItem is not Element inventoryItem)
+                    return;
+                await _runningStory.UseInventoryAsync(chapter, inventoryItem);
+            };
         };
+
+        inventoryPanel.Opacity = 1.0;
+        inventoryPanel.Classes.Set("fade_in", true);
     }
 }
