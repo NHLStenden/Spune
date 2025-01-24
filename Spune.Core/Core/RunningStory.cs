@@ -38,9 +38,9 @@ public class RunningStory
     string _currentIdentifier = string.Empty;
 
     /// <summary>
-    /// Inventory elements list member.
+    /// Inventory items list member.
     /// </summary>
-    readonly List<Element> _inventoryElements = [];
+    readonly List<Element> _inventoryItems = [];
 
     /// <summary>
     /// Hidden elements list member.
@@ -210,7 +210,7 @@ public class RunningStory
         MasterStory.Dispose();
         _chatResults.Clear();
         _currentIdentifier = string.Empty;
-        _inventoryElements.Clear();
+        _inventoryItems.Clear();
         _hiddenElements.Clear();
         EndDateTime = new DateTime();
         StartDateTime = new DateTime();
@@ -235,10 +235,10 @@ public class RunningStory
     public ObservableCollection<Interaction> GetInteractions(Chapter chapter) => new(chapter.Interactions.Where(x => !IsInInventory(x) && !IsHidden(x)));
 
     /// <summary>
-    /// Gets the inventory elements for the given chapter.
+    /// Gets the inventory items.
     /// </summary>
-    /// <returns>Collection with interactions.</returns>
-    public List<Element> GetInventoryElements() => _inventoryElements;
+    /// <returns>Collection with elements.</returns>
+    public List<Element> GetInventoryItems() => _inventoryItems;
 
     /// <summary>
     /// Handles the action of an element.
@@ -297,6 +297,8 @@ public class RunningStory
             MasterStory.Dispose();
         MasterStory = masterStory;
         _currentIdentifier = masterStory.Chapters.Count > 0 ? masterStory.Chapters[0].Identifier : string.Empty;
+        _inventoryItems.Clear();
+        _inventoryItems.AddRange(masterStory.InventoryItems);
         StartDateTime = DateTime.Now;
         await CheckEndAsync();
     }
@@ -329,7 +331,7 @@ public class RunningStory
         if (!element.HasIdentifier())
             return;
         if (!IsInInventory(element))
-            _inventoryElements.Add(element);
+            _inventoryItems.Add(element);
     }
 
     /// <summary>
@@ -337,7 +339,7 @@ public class RunningStory
     /// </summary>
     /// <param name="element">Element to check.</param>
     /// <returns>True if it is and false otherwise.</returns>
-    bool IsInInventory(Element element) => _inventoryElements.Any(x => string.Equals(x.Identifier, element.Identifier, StringComparison.Ordinal));
+    bool IsInInventory(Element element) => _inventoryItems.Any(x => string.Equals(x.Identifier, element.Identifier, StringComparison.Ordinal));
 
     /// <summary>
     /// Starts the master story by initializing the current chapter and setting the start date and time.

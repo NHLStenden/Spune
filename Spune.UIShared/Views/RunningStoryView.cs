@@ -480,7 +480,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
 
         var listBox = new ListBox
         {
-            ItemsSource = _runningStory.GetInventoryElements(),
+            ItemsSource = _runningStory.GetInventoryItems(),
             ItemTemplate = new FuncDataTemplate<object>((_, _) => new TextBlock
             {
                 [!TextBlock.TextProperty] = new Binding("Text")

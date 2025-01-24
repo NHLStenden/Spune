@@ -1,5 +1,14 @@
 {
   "Author": "martin.bosgra",
+  "InventoryItems": [
+    {
+      "IsInventory": true,
+      "SetsResult": true,
+      "Hint": "Useful to open doors",
+      "Identifier": "Keychain",
+      "Text": "Keychain"
+    }
+  ],
   "Chapters": [
     {
       "CloseDelay": 12000,

@@ -120,6 +120,11 @@ public class MasterStory : Element, IDisposable
     }
 
     /// <summary>
+    /// Gets or sets the collection of inventory items.
+    /// </summary>
+    public ObservableCollection<Interaction> InventoryItems { get; set; } = [];
+
+    /// <summary>
     /// Gets a text for the inventory.
     /// </summary>
     public string InventoryText
