@@ -17,9 +17,23 @@
                 <!-- Took FluentTheme accent color, and rotated +180 degrees using hue (HSV) -->
                 <ResourceDictionary x:Key="Default">
                     <Color x:Key="SystemSecondaryAccentColor">#FFFF8500</Color>
+                    <Color x:Key="SystemSecondaryAccentColorDark1">#FFC66700</Color>
                     <Color x:Key="SystemSecondaryAccentColorLight1">#FFFFAA4E</Color>
-
+                    <SolidColorBrush x:Key="SystemControlBackgroundSecondaryAccentBrush" Color="{DynamicResource SystemSecondaryAccentColor}" />
                     <SolidColorBrush x:Key="SystemControlHighlightSecondaryAccentBrush" Color="{DynamicResource SystemSecondaryAccentColor}" />
+
+                    <StaticResource x:Key="SecondaryAccentButtonBackground" ResourceKey="SystemControlBackgroundSecondaryAccentBrush" />
+                    <SolidColorBrush x:Key="SecondaryAccentButtonBackgroundPointerOver" Color="{DynamicResource SystemSecondaryAccentColorLight1}" />
+                    <SolidColorBrush x:Key="SecondaryAccentButtonBackgroundPressed" Color="{DynamicResource SystemSecondaryAccentColorDark1}" />
+                    <StaticResource x:Key="SecondaryAccentButtonBackgroundDisabled" ResourceKey="SystemControlBackgroundBaseLowBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonForeground" ResourceKey="SystemControlBackgroundChromeWhiteBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonForegroundPointerOver" ResourceKey="SystemControlBackgroundChromeWhiteBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonForegroundPressed" ResourceKey="SystemControlBackgroundChromeWhiteBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonForegroundDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonBorderBrush" ResourceKey="SystemControlForegroundTransparentBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonBorderBrushPointerOver" ResourceKey="SystemControlForegroundTransparentBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonBorderBrushPressed" ResourceKey="SystemControlHighlightTransparentBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonBorderBrushDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
 
                     <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="{DynamicResource SystemSecondaryAccentColor}" />
                     <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="{DynamicResource SystemSecondaryAccentColorLight1}" />
@@ -30,9 +44,23 @@
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <Color x:Key="SystemSecondaryAccentColor">#FFFF8500</Color>
+                    <Color x:Key="SystemSecondaryAccentColorLight1">#FFFFAA4E</Color>
                     <Color x:Key="SystemSecondaryAccentColorDark1">#FFC66700</Color>
-
+                    <SolidColorBrush x:Key="SystemControlBackgroundSecondaryAccentBrush" Color="{DynamicResource SystemSecondaryAccentColor}" />
                     <SolidColorBrush x:Key="SystemControlHighlightSecondaryAccentBrush" Color="{DynamicResource SystemSecondaryAccentColor}" />
+
+                    <StaticResource x:Key="SecondaryAccentButtonBackground" ResourceKey="SystemControlBackgroundSecondaryAccentBrush" />
+                    <SolidColorBrush x:Key="SecondaryAccentButtonBackgroundPointerOver" Color="{DynamicResource SystemSecondaryAccentColorLight1}" />
+                    <SolidColorBrush x:Key="SecondaryAccentButtonBackgroundPressed" Color="{DynamicResource SystemSecondaryAccentColorDark1}" />
+                    <StaticResource x:Key="SecondaryAccentButtonBackgroundDisabled" ResourceKey="SystemControlBackgroundBaseLowBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonForeground" ResourceKey="SystemControlBackgroundChromeWhiteBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonForegroundPointerOver" ResourceKey="SystemControlBackgroundChromeWhiteBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonForegroundPressed" ResourceKey="SystemControlBackgroundChromeWhiteBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonForegroundDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonBorderBrush" ResourceKey="SystemControlForegroundTransparentBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonBorderBrushPointerOver" ResourceKey="SystemControlForegroundTransparentBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonBorderBrushPressed" ResourceKey="SystemControlHighlightTransparentBrush" />
+                    <StaticResource x:Key="SecondaryAccentButtonBorderBrushDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
 
                     <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="{DynamicResource SystemSecondaryAccentColor}" />
                     <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="{DynamicResource SystemSecondaryAccentColorDark1}" />
@@ -45,6 +73,30 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.Styles>
+        <Style Selector="Button.accent2">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource SecondaryAccentButtonBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentButtonBorderBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentButtonForeground}" />
+            </Style>
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource SecondaryAccentButtonBackgroundPointerOver}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentButtonBorderBrushPointerOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentButtonForegroundPointerOver}" />
+            </Style>
+
+            <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource SecondaryAccentButtonBackgroundPressed}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentButtonBorderBrushPressed}" />
+                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentButtonForegroundPressed}" />
+            </Style>
+
+            <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource SecondaryAccentButtonBackgroundDisabled}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentButtonBorderBrushDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentButtonForegroundDisabled}" />
+            </Style>
+        </Style>
         <Style Selector="Panel.grow_and_fade_out">
             <Style.Animations>
                 <Animation Easing="SineEaseInOut" Duration="{StaticResource GrowAndFadeOutDuration}">
