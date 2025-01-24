@@ -106,7 +106,7 @@ public class Chapter : SubElement, IDisposable
     public Media Media { get; set; } = new();
 
     /// <summary>
-    /// Randomize the interactions property.
+    /// Randomize the property Interactions.
     /// </summary>
     public bool RandomizeInteractions
     {

@@ -5,7 +5,6 @@
 // </copyright>
 //--------------------------------------------------------------------------------------------------
 
-using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;

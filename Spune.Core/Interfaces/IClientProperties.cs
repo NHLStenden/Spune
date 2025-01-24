@@ -53,7 +53,7 @@ public interface IClientProperties
     string EmailSmtpHost { get; set; }
 
     /// <summary>
-    /// Represents the user name for the e-mail.
+    /// Represents the username for the e-mail.
     /// </summary>
     string EmailUserName { get; set; }
 

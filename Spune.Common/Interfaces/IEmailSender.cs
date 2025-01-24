@@ -23,7 +23,7 @@ public interface IEmailSender
     int Port { get; set; }
 
     /// <summary>
-    /// Gets or sets the user name for authentication.
+    /// Gets or sets the username for authentication.
     /// </summary>
     string UserName { get; set; }
 
