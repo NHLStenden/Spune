@@ -1,14 +1,5 @@
 {
   "Author": "martin.bosgra",
-  "InventoryItems": [
-    {
-      "IsInventory": true,
-      "SetsResult": true,
-      "Hint": "Useful to open doors or unlock locks",
-      "Identifier": "Keychain",
-      "Text": "Keychain"
-    }
-  ],
   "Chapters": [
     {
       "CloseDelay": 12000,
@@ -185,6 +176,7 @@
       "Text": "You turn around. What are you going to do?"
     },
     {
+      "InventoryIsVisible": true,
       "Media": {
         "ImagePath": "images/SoundInvestigation.webp"
       },
@@ -206,7 +198,7 @@
           "Width": 0.4747080176767676,
           "XPosition": 0.19136320592286502,
           "YPosition": 0.678116391184573,
-          "Hint": "What a mess here. Quickly clean up!",
+          "Hint": "What a mess here. You quickly clean it up by putting it in your pockets.",
           "Identifier": "Litter",
           "Text": "Litter"
         },
@@ -243,6 +235,7 @@
     },
     {
       "InventoryConditions": "Litter",
+      "InventoryIsVisible": true,
       "Media": {
         "ImagePath": "images/PuppyRescue.webp"
       },
@@ -872,6 +865,15 @@
   ],
   "CloseButtonText": "Hands out",
   "EmailOrganizer": "martin.bosgra@nhlstenden.com",
+  "InventoryItems": [
+    {
+      "IsInventory": true,
+      "SetsResult": true,
+      "Hint": "Useful to open doors or unlock locks",
+      "Identifier": "Keychain",
+      "Text": "Keychain"
+    }
+  ],
   "InventoryText": "Check your pockets",
   "InventoryItemIsNotValidText": "This item doesn\u0027t seem to work here.",
   "ValueInputIsMandatoryText": "You must fill it in, otherwise you cannot continue.",

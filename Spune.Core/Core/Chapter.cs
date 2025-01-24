@@ -33,6 +33,11 @@ public class Chapter : SubElement, IDisposable
     string _inventoryConditions = string.Empty;
 
     /// <summary>
+    /// The inventory is visible member.
+    /// </summary>
+    bool _inventoryIsVisible;
+
+    /// <summary>
     /// Indicates whether the media resources linked to the element have been disposed.
     /// This flag is used to ensure that media resources are released only once during the object's lifecycle.
     /// </summary>
@@ -94,6 +99,19 @@ public class Chapter : SubElement, IDisposable
         set
         {
             _inventoryConditions = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the visibility for the inventory.
+    /// </summary>
+    public bool InventoryIsVisible
+    {
+        get => _inventoryIsVisible;
+        set
+        {
+            _inventoryIsVisible = value;
             NotifyPropertyChanged();
         }
     }

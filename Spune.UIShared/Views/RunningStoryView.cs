@@ -407,7 +407,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
         storyPanel.Classes.Set("fade_in", true);
         var chapterPanel = new Panel();
 
-        if (chapter?.HasInventoryConditions() == true)
+        if (chapter?.InventoryIsVisible == true)
         {
             var storyGrid = new Grid
             {

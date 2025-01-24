@@ -116,6 +116,7 @@
                                 </Grid>
                                 <TextBlock Margin="0,0,0,-4">Inventory conditions</TextBlock>
                                 <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedChapter.InventoryConditions}" />
+                                <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.InventoryIsVisible}">Inventory is visible</CheckBox>
                                 <TextBlock Margin="0,0,0,-4">Text</TextBlock>
                                 <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedChapter.Text}" />
                                 <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.RandomizeInteractions}">Randomize the interactions</CheckBox>
