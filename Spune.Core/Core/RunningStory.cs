@@ -490,8 +490,8 @@ public class RunningStory
     {
         if (!inventoryItem.HasIdentifier())
             return;
-        var inventoryCondititions = chapter.InventoryConditions.Split('.').ToArray();
-        if (!inventoryCondititions.Any(x => string.Equals(x, inventoryItem.Identifier, StringComparison.Ordinal)))
+        var inventoryConditions = chapter.InventoryConditions.Split('.').ToArray();
+        if (!inventoryConditions.Any(x => string.Equals(x, inventoryItem.Identifier, StringComparison.Ordinal)))
         {
             await InvokeShowMessageAsync(MasterStory.InventoryItemIsNotValidText);
             return;
