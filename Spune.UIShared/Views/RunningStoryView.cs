@@ -495,7 +495,8 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
             if (listBox.SelectedItem is not Element inventoryItem)
                 return;
 
-            await _runningStory.UseInventoryAsync(chapter, inventoryItem);
+            // Small delay of 300 ms to see the message: "This doesn't work" or "Great work!"
+            await TimerFunction.DelayInvokeAsync(async () => await _runningStory.UseInventoryAsync(chapter, inventoryItem), 300.0);
         };
     }
 }
