@@ -147,7 +147,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
             {
                 Background = new SolidColorBrush(new Color(0x60, 0x00, 0x00, 0x00)),
                 // Standard font size is 14 (with Fluent). This is 1.25 * 14
-                FontSize = 17.5,
+                FontSize = 1.25 * 14.0,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Padding = new Thickness(2.0, 2.0, 2.0, 2.0),
                 Text = await _runningStory.GetTextAsync(interaction),
@@ -213,7 +213,7 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
         var textBlock = new TextBlock
         {
             // Standard font size is 14 (with Fluent). This is 1.5 * 14
-            FontSize = 21,
+            FontSize = 1.5 * 14.0,
             Text = await _runningStory.GetTextAsync(chapter),
             TextAlignment = TextAlignment.Center,
             TextWrapping = TextWrapping.Wrap
@@ -483,9 +483,27 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
         var listBox = new ListBox
         {
             ItemsSource = _runningStory.GetInventoryItems(),
-            ItemTemplate = new FuncDataTemplate<object>((_, _) => new TextBlock
+            ItemTemplate = new FuncDataTemplate<object>((_, _) =>
             {
-                [!TextBlock.TextProperty] = new Binding("Text")
+                var stackPanel = new StackPanel
+                {
+                    Spacing = 12.0
+                };
+                var texTextBlock = new TextBlock
+                {
+                    Margin= new Thickness(0.0, 0.0, 0.0, -8.0),
+                    [!TextBlock.TextProperty] = new Binding("Text")
+                };
+                var hintTextBlock = new TextBlock
+                {
+                    // Standard font size is 14 (with Fluent). This is 0.875 * 14
+                    FontSize = 0.875 * 14.0,
+                    FontWeight = FontWeight.Light,
+                    [!TextBlock.TextProperty] = new Binding("Hint")
+                };
+                stackPanel.Children.Add(texTextBlock);
+                stackPanel.Children.Add(hintTextBlock);
+                return stackPanel;
             })
         };
         Grid.SetRow(listBox, 1);
