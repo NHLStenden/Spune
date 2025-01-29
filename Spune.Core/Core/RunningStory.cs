@@ -678,12 +678,10 @@ public class RunningStory
     /// <returns>The converted <see cref="Element"/>.</returns>
     static Element ElementToInventoryItem(Element element)
     {
-        if (element is Interaction interaction && !string.IsNullOrEmpty(interaction.HintForInventory))
-        {
-            interaction.Hint = interaction.HintForInventory;
-            return interaction;
-        }
-        return element;
+        if (element is not Interaction interaction || string.IsNullOrEmpty(interaction.HintForInventory))
+            return element;
+        interaction.Hint = interaction.HintForInventory;
+        return interaction;
     }
 
     /// <summary>
