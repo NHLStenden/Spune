@@ -62,6 +62,11 @@ public partial class EditorControl : UserControl
     const double DefaultGridMargin = 8.0;
 
     /// <summary>
+    /// Identifies the <see cref="SelectedInventoryItem" /> styled property.
+    /// </summary>
+    public static readonly StyledProperty<Interaction> SelectedInventoryItemProperty = AvaloniaProperty.Register<EditorControl, Interaction>(nameof(SelectedInventoryItem));
+
+    /// <summary>
     /// Identifies the <see cref="SelectedChapter" /> styled property.
     /// </summary>
     public static readonly StyledProperty<Chapter> SelectedChapterProperty = AvaloniaProperty.Register<EditorControl, Chapter>(nameof(SelectedChapter));
@@ -95,6 +100,16 @@ public partial class EditorControl : UserControl
     public EditorControl()
     {
         InitializeComponent();
+    }
+
+    /// <summary>
+    /// Gets or sets the selected inventory item.
+    /// </summary>
+    /// <value>The selected inventory item.</value>
+    public Interaction SelectedInventoryItem
+    {
+        get => GetValue(SelectedInventoryItemProperty);
+        set => SetValue(SelectedInventoryItemProperty, value);
     }
 
     /// <summary>
@@ -141,6 +156,9 @@ public partial class EditorControl : UserControl
     async Task InitializeAsync()
     {
         // Set up the UI
+        InventoryItemListBox.SelectionChanged +=
+            (_, _) => SelectedInventoryItem = InventoryItemListBox.SelectedItem as Interaction ?? new Interaction();
+
         ChapterListBox.SelectionChanged += (_, _) =>
         {
             SelectedChapter = ChapterListBox.SelectedItem as Chapter ?? new Chapter();
@@ -224,6 +242,15 @@ public partial class EditorControl : UserControl
         _currentMasterStory.Dispose();
         _currentMasterStory = await MasterStoryReaderWriter.ReadMasterStoryAsync(_currentFileName);
         DataContext = _currentMasterStory;
+
+        if (_currentMasterStory.InventoryItems.Count > 0)
+        {
+            InventoryItemListBox.SelectedIndex = 0;
+        }
+        else
+        {
+            InventoryItemListBox.SelectedItem = null;
+        }
         if (_currentMasterStory.Chapters.Count > 0)
         {
             ChapterListBox.SelectedIndex = 0;
@@ -325,6 +352,71 @@ public partial class EditorControl : UserControl
     /// <param name="sender">Sender of the event.</param>
     /// <param name="e">Arguments of the event.</param>
     void SaveMasterStoryButtonClick(object? sender, RoutedEventArgs e) => MasterStoryReaderWriter.WriteMasterStory(_currentFileName, _currentMasterStory);
+
+    /// <summary>
+    /// Add inventory item button click.
+    /// </summary>
+    /// <param name="sender">Sender of the event.</param>
+    /// <param name="e">Arguments of the event.</param>
+    void AddInventoryItemButtonClick(object? sender, RoutedEventArgs e)
+    {
+        var inventoryItem = new Interaction { Text = InventoryItemTextTextBox.Text ?? "", IsInventory = true, SetsResult = true };
+        _currentMasterStory.InventoryItems.Add(inventoryItem);
+    }
+
+    /// <summary>
+    /// Delete inventory item button click.
+    /// </summary>
+    /// <param name="sender">Sender of the event.</param>
+    /// <param name="e">Arguments of the event.</param>
+    void DeleteInventoryItemButtonClick(object? sender, RoutedEventArgs e)
+    {
+        if (InventoryItemListBox.SelectedIndex < 0 || InventoryItemListBox.SelectedIndex >= _currentMasterStory.InventoryItems.Count)
+            return;
+
+        var index = InventoryItemListBox.SelectedIndex;
+        _currentMasterStory.InventoryItems.RemoveAt(index);
+    }
+
+    /// <summary>
+    /// Move up inventory item button click.
+    /// </summary>
+    /// <param name="sender">Sender of the event.</param>
+    /// <param name="e">Arguments of the event.</param>
+    void MoveUpInventoryItemButtonClick(object? sender, RoutedEventArgs e)
+    {
+        if (InventoryItemListBox.SelectedIndex <= 0 || InventoryItemListBox.SelectedIndex >= _currentMasterStory.InventoryItems.Count)
+            return;
+
+        var inventoryItem = _currentMasterStory.InventoryItems[InventoryItemListBox.SelectedIndex];
+        var index = InventoryItemListBox.SelectedIndex;
+        _currentMasterStory.InventoryItems.RemoveAt(index);
+        index--;
+        if (index < 0)
+            index = 0;
+        _currentMasterStory.InventoryItems.Insert(index, inventoryItem);
+        InventoryItemListBox.SelectedIndex = index;
+    }
+
+    /// <summary>
+    /// Move down inventory item button click.
+    /// </summary>
+    /// <param name="sender">Sender of the event.</param>
+    /// <param name="e">Arguments of the event.</param>
+    void MoveDownInventoryItemButtonClick(object? sender, RoutedEventArgs e)
+    {
+        if (InventoryItemListBox.SelectedIndex < 0 || InventoryItemListBox.SelectedIndex >= _currentMasterStory.InventoryItems.Count - 1)
+            return;
+
+        var inventoryItem = _currentMasterStory.InventoryItems[InventoryItemListBox.SelectedIndex];
+        var index = InventoryItemListBox.SelectedIndex;
+        _currentMasterStory.InventoryItems.RemoveAt(index);
+        index++;
+        if (index > _currentMasterStory.InventoryItems.Count)
+            index = _currentMasterStory.InventoryItems.Count - 1;
+        _currentMasterStory.InventoryItems.Insert(index, inventoryItem);
+        InventoryItemListBox.SelectedIndex = index;
+    }
 
     /// <summary>
     /// Add chapter button click.

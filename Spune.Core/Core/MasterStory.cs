@@ -209,7 +209,11 @@ public class MasterStory : Element, IDisposable
     /// <summary>
     /// Initializes the instance.
     /// </summary>
-    public void Initialize() => Chapters.CollectionChanged += (_, _) => NotifyPropertyChanged(nameof(Chapters));
+    public void Initialize()
+    {
+        InventoryItems.CollectionChanged += (_, _) => NotifyPropertyChanged(nameof(InventoryItems));
+        Chapters.CollectionChanged += (_, _) => NotifyPropertyChanged(nameof(Chapters));
+    }
 
     /// <summary>
     /// Asynchronously initializes the master story by loading media resources and setting up chapter and interaction hierarchies.

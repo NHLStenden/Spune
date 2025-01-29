@@ -19,49 +19,89 @@
     </UserControl.Resources>
     <Grid x:Name="MainGrid">
         <Grid x:Name="EditorGrid" RowDefinitions="Auto,*" IsVisible="False">
-            <StackPanel Grid.Row="0" Spacing="12">
-                <Grid ColumnDefinitions="*,*,Auto">
-                    <StackPanel Grid.Column="0" Spacing="12">
-                        <TextBlock Margin="0,0,0,-4">Title</TextBlock>
-                        <TextBox Text="{Binding Text}" />
-                        <TextBlock Margin="0,0,0,-4">Text for value is mandatory</TextBlock>
-                        <TextBox Text="{Binding ValueInputIsMandatoryText}" />
+            <TabControl Grid.Row="0">
+                <TabItem Header="General">
+                    <StackPanel Spacing="12">
+                        <Grid ColumnDefinitions="*,*,Auto">
+                            <StackPanel Grid.Column="0" Spacing="12">
+                                <TextBlock Margin="0,0,0,-4">Title</TextBlock>
+                                <TextBox Text="{Binding Text}" />
+                                <TextBlock Margin="0,0,0,-4">Text for value is mandatory</TextBlock>
+                                <TextBox Text="{Binding ValueInputIsMandatoryText}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
+                                <TextBlock Margin="0,0,0,-4">Author</TextBlock>
+                                <TextBox Text="{Binding Author}" />
+                                <TextBlock Margin="0,0,0,-4">Text for selection is mandatory</TextBlock>
+                                <TextBox Text="{Binding ValueSelectIsMandatoryText}" />
+                            </StackPanel>
+                            <Button Grid.Column="2" Click="SaveMasterStoryButtonClick" Margin="12,0,0,0" VerticalAlignment="Stretch" VerticalContentAlignment="Center">Save master story
+                            </Button>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,*,*,*">
+                            <StackPanel Grid.Column="0" Spacing="12">
+                                <TextBlock Margin="0,0,0,-4">E-mail organiser</TextBlock>
+                                <TextBox Text="{Binding EmailOrganizer}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
+                                <TextBlock Margin="0,0,0,-4">Inventory text</TextBlock>
+                                <TextBox Text="{Binding InventoryText}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Spacing="12" Margin="12,0,0,0">
+                                <TextBlock Margin="0,0,0,-4">Text for close button</TextBlock>
+                                <TextBox Text="{Binding CloseButtonText}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="3" Spacing="12" Margin="12,0,0,0">
+                                <TextBlock Margin="0,0,0,-4">Text for inventory item is not valid</TextBlock>
+                                <TextBox Text="{Binding InventoryItemIsNotValidText}" />
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
-                        <TextBlock Margin="0,0,0,-4">Author</TextBlock>
-                        <TextBox Text="{Binding Author}" />
-                        <TextBlock Margin="0,0,0,-4">Text for selection is mandatory</TextBlock>
-                        <TextBox Text="{Binding ValueSelectIsMandatoryText}" />
+                </TabItem>
+                <TabItem Header="Inventory items">
+                    <StackPanel Spacing="12">
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Grid Grid.Column="0" RowDefinitions="*,Auto">
+                                <ListBox Grid.Row="0" x:Name="InventoryItemListBox" ItemsSource="{Binding InventoryItems}" Margin="0,0,0,12">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Text}" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <Grid Grid.Row="1">
+                                    <StackPanel Orientation="Vertical" Spacing="12">
+                                        <TextBox Margin="0,0,0,-4" x:Name="InventoryItemTextTextBox" Watermark="Text" />
+                                        <StackPanel Orientation="Horizontal" Spacing="12">
+                                            <Button Click="AddInventoryItemButtonClick">+</Button>
+                                            <Button Click="DeleteInventoryItemButtonClick">-</Button>
+                                            <Button Click="MoveUpInventoryItemButtonClick">&#x2191;</Button>
+                                            <Button Click="MoveDownInventoryItemButtonClick">&#x2193;</Button>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <Grid Grid.Column="1" x:Name="SelectedInventoryItemGrid" Margin="12,0,0,0">
+                                <StackPanel Spacing="12">
+                                    <TextBlock Margin="0,0,0,-4">Hint</TextBlock>
+                                    <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedInventoryItem.Hint}" />
+                                    <TextBlock Margin="0,0,0,-4">Identifier</TextBlock>
+                                    <TextBox Text="{Binding $parent[v:EditorControl].SelectedInventoryItem.Identifier}" />
+                                    <TextBlock Margin="0,0,0,-4">Text</TextBlock>
+                                    <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedInventoryItem.Text}" />
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
                     </StackPanel>
-                    <Button Grid.Column="2" Click="SaveMasterStoryButtonClick" Margin="12,0,0,0" VerticalAlignment="Stretch" VerticalContentAlignment="Center">Save master story
-                    </Button>
-                </Grid>
-                <Grid ColumnDefinitions="*,*,*,*">
-                    <StackPanel Grid.Column="0" Spacing="12">
-                        <TextBlock Margin="0,0,0,-4">E-mail organiser</TextBlock>
-                        <TextBox Text="{Binding EmailOrganizer}" />
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
-                        <TextBlock Margin="0,0,0,-4">Inventory text</TextBlock>
-                        <TextBox Text="{Binding InventoryText}" />
-                    </StackPanel>
-                    <StackPanel Grid.Column="2" Spacing="12" Margin="12,0,0,0">
-                        <TextBlock Margin="0,0,0,-4">Text for close button</TextBlock>
-                        <TextBox Text="{Binding CloseButtonText}" />
-                    </StackPanel>
-                    <StackPanel Grid.Column="3" Spacing="12" Margin="12,0,0,0">
-                        <TextBlock Margin="0,0,0,-4">Text for inventory item is not valid</TextBlock>
-                        <TextBox Text="{Binding InventoryItemIsNotValidText}" />
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
+                </TabItem>
+            </TabControl>
             <Grid Grid.Row="1" RowDefinitions="Auto,*">
                 <TextBlock Grid.Row="0" Margin="0,12,0,-4">Chapters</TextBlock>
                 <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="0,12,0,0">
                     <Grid Grid.Column="0" x:Name="ChaptersGrid">
                         <Grid RowDefinitions="*,Auto">
                             <ListBox Grid.Row="0" x:Name="ChapterListBox" ItemsSource="{Binding Chapters}"
-                                     Margin="0,0,0,12" MinWidth="240">
+                                     Margin="0,0,0,12">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Identifier}" />
@@ -127,7 +167,7 @@
                                 <TextBlock Margin="0,0,0,-4">Interactions</TextBlock>
                                 <Grid ColumnDefinitions="Auto,*">
                                     <Grid Grid.Column="0" RowDefinitions="*,Auto">
-                                        <ListBox Grid.Row="0" x:Name="InteractionListBox" ItemsSource="{Binding $parent[v:EditorControl].SelectedChapter.Interactions}" Margin="0,0,0,12" MinWidth="360">
+                                        <ListBox Grid.Row="0" x:Name="InteractionListBox" ItemsSource="{Binding $parent[v:EditorControl].SelectedChapter.Interactions}" Margin="0,0,0,12">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding Text}" />

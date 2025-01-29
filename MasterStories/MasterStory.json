@@ -872,6 +872,13 @@
       "Hint": "Useful to open doors or unlock locks",
       "Identifier": "Keychain",
       "Text": "Keychain"
+    },
+    {
+      "IsInventory": true,
+      "SetsResult": true,
+      "Hint": "Bubblegum to chew when the teacher is not looking",
+      "Identifier": "Gum",
+      "Text": "Gum"
     }
   ],
   "InventoryText": "Check your pockets",
