@@ -29,6 +29,11 @@ public class Interaction : SubElement
     double _height;
 
     /// <summary>
+    /// The hint when tranvering interaction to inventory.
+    /// </summary>
+    string _hintForInventory = string.Empty;
+
+    /// <summary>
     /// The is inventory member.
     /// </summary>
     bool _isInventory;
@@ -87,6 +92,19 @@ public class Interaction : SubElement
         set
         {
             _height = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Represents the hint for the inventory.
+    /// </summary>
+    public string HintForInventory
+    {
+        get => _hintForInventory;
+        set
+        {
+            _hintForInventory = value;
             NotifyPropertyChanged();
         }
     }

@@ -190,6 +190,8 @@
                                         <StackPanel Spacing="12">
                                             <TextBlock Margin="0,0,0,-4">Hint</TextBlock>
                                             <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedInteraction.Hint}" />
+                                            <TextBlock Margin="0,0,0,-4">Hint for inventory</TextBlock>
+                                            <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedInteraction.HintForInventory}" />
                                             <Grid ColumnDefinitions="*,*">
                                                 <StackPanel Grid.Column="0" Spacing="12">
                                                     <TextBlock Margin="0,0,0,-4">Identifier</TextBlock>

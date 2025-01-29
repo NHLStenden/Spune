@@ -193,6 +193,7 @@
         },
         {
           "Height": 0.27293531910009183,
+          "HintForInventory": "This is paper litter you\u0027ve picked up",
           "IsInventory": true,
           "SetsResult": true,
           "Width": 0.4747080176767676,

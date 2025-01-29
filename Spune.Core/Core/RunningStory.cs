@@ -331,7 +331,7 @@ public class RunningStory
         if (!element.HasIdentifier())
             return;
         if (!IsInInventory(element))
-            _inventoryItems.Add(element);
+            _inventoryItems.Add(ElementToInventoryItem(element));
     }
 
     /// <summary>
@@ -669,6 +669,21 @@ public class RunningStory
         }
 
         Results[key] = list;
+    }
+
+    /// <summary>
+    /// Converts an <see cref="Element"/> to an inventory item.
+    /// </summary>
+    /// <param name="element">The <see cref="Element"/> to be converted.</param>
+    /// <returns>The converted <see cref="Element"/>.</returns>
+    static Element ElementToInventoryItem(Element element)
+    {
+        if (element is Interaction interaction && !string.IsNullOrEmpty(interaction.HintForInventory))
+        {
+            interaction.Hint = interaction.HintForInventory;
+            return interaction;
+        }
+        return element;
     }
 
     /// <summary>
