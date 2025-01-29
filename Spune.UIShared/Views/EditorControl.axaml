@@ -114,9 +114,13 @@
                                             Text="{Binding $parent[v:EditorControl].SelectedChapter.Media.ImagePath}" />
                                     </StackPanel>
                                 </Grid>
-                                <TextBlock Margin="0,0,0,-4">Inventory conditions</TextBlock>
-                                <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedChapter.InventoryConditions}" />
-                                <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.InventoryIsVisible}">Inventory is visible</CheckBox>
+                                <Grid ColumnDefinitions="*,*">
+                                    <StackPanel Grid.Column="0" Spacing="12">
+                                        <TextBlock Margin="0,0,0,-4">Inventory conditions</TextBlock>
+                                        <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedChapter.InventoryConditions}" />
+                                    </StackPanel>
+                                    <CheckBox Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Bottom" IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.InventoryIsVisible}">Inventory is visible</CheckBox>
+                                </Grid>
                                 <TextBlock Margin="0,0,0,-4">Text</TextBlock>
                                 <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedChapter.Text}" />
                                 <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.RandomizeInteractions}">Randomize the interactions</CheckBox>
