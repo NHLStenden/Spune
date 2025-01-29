@@ -10,6 +10,7 @@
              x:DataType="c:MasterStory">
     <UserControl.Resources>
         <ResourceDictionary>
+            <x:Double x:Key="TabItemHeaderFontSize">17.5</x:Double>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <v:FilePathToSourceConverter x:Key="FilePathToSourceConverter" />
@@ -19,8 +20,8 @@
     </UserControl.Resources>
     <Grid x:Name="MainGrid">
         <Grid x:Name="EditorGrid" RowDefinitions="Auto,*" IsVisible="False">
-            <TabControl Grid.Row="0">
-                <TabItem Header="General">
+            <TabControl Grid.Row="0" Padding="0">
+                <TabItem Header="General" Padding="0,0,12,0">
                     <StackPanel Spacing="12">
                         <Grid ColumnDefinitions="*,*,Auto">
                             <StackPanel Grid.Column="0" Spacing="12">
@@ -58,7 +59,7 @@
                         </Grid>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Inventory items">
+                <TabItem Header="Inventory items" Padding="0,0,12,0">
                     <StackPanel Spacing="12">
                         <Grid ColumnDefinitions="Auto,*">
                             <Grid Grid.Column="0" RowDefinitions="*,Auto">
