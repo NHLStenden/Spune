@@ -551,7 +551,8 @@ public class RunningStory
     async Task<bool> NavigateToLinkAsync(Element element)
     {
         if (!HasValidLink(element)) return false;
-        _currentIdentifier = element.Link;
+        var link = element.DecodeLink(this);
+        _currentIdentifier = link;
         await CheckEndAsync();
         return true;
     }
@@ -561,7 +562,11 @@ public class RunningStory
     /// </summary>
     /// <param name="element">The element containing the link to check.</param>
     /// <returns>True if it is, and false otherwise.</returns>
-    bool HasValidLink(Element element) => !string.IsNullOrEmpty(element.Link) && MasterStory.Chapters.Any(x => string.Equals(x.Identifier, element.Link, StringComparison.Ordinal));
+    bool HasValidLink(Element element)
+    {
+        var link = element.DecodeLink(this);
+        return !string.IsNullOrEmpty(link) && MasterStory.Chapters.Any(x => string.Equals(x.Identifier, link, StringComparison.Ordinal));
+    }
 
     /// <summary>
     /// Checks if the identifier of the given element is valid.
@@ -600,7 +605,7 @@ public class RunningStory
 
         if (_chatResults.TryGetValue(element.Identifier, out _)) return ReplaceTextWithResults(text);
         var input = chapter.ChatMessage;
-        input = ReplacePlaceholders(input, Results);
+        input = PlaceholderFunction.ReplacePlaceholders(input, Results);
         string chatResult;
         if (!string.IsNullOrEmpty(selectedModel))
         {
@@ -633,8 +638,8 @@ public class RunningStory
     string ReplaceTextWithResults(string text)
     {
         var result = text;
-        result = ReplacePlaceholders(result, _chatResults, "ChatResult.");
-        result = ReplacePlaceholders(result, Results);
+        result = PlaceholderFunction.ReplacePlaceholders(result, _chatResults, "ChatResult.");
+        result = PlaceholderFunction.ReplacePlaceholders(result, Results);
         return result;
     }
 
@@ -682,61 +687,5 @@ public class RunningStory
             return element;
         interaction.Hint = interaction.HintForInventory;
         return interaction;
-    }
-
-    /// <summary>
-    /// Replaces placeholders in a string with corresponding values from a dictionary.
-    /// </summary>
-    /// <param name="text">The string containing placeholders.</param>
-    /// <param name="dictionary">A dictionary with keys as placeholder names and values as replacement values.</param>
-    /// <returns>The string with placeholders replaced by their corresponding values.</returns>
-    static string ReplacePlaceholders(string text, IDictionary<string, List<string>> dictionary)
-    {
-        return ReplacePlaceholders(text, dictionary, string.Empty);
-    }
-
-    /// <summary>
-    /// Replaces placeholders in a string with corresponding values from a dictionary.
-    /// </summary>
-    /// <param name="text">The string containing placeholders.</param>
-    /// <param name="dictionary">A dictionary with keys as placeholder names and values as replacement values.</param>
-    /// <param name="keyPrefix">A prefix for the key identifier.</param>
-    /// <returns>The string with placeholders replaced by their corresponding values.</returns>
-    static string ReplacePlaceholders(string text, IDictionary<string, List<string>> dictionary,
-        string keyPrefix)
-    {
-        var newDictionary = new Dictionary<string, string>();
-        foreach (var (key, value) in dictionary)
-            newDictionary[key] = StringFunction.StringsToString(value, ", ");
-        return ReplacePlaceholders(text, newDictionary, keyPrefix);
-    }
-
-    /// <summary>
-    /// Replaces placeholders in a string with corresponding values from a dictionary.
-    /// </summary>
-    /// <param name="text">The string containing placeholders.</param>
-    /// <param name="dictionary">A dictionary with keys as placeholder names and values as replacement values.</param>
-    /// <param name="keyPrefix">A prefix for the key identifier.</param>
-    /// <returns>The string with placeholders replaced by their corresponding values.</returns>
-    static string ReplacePlaceholders(string text, IDictionary<string, string> dictionary, string keyPrefix)
-    {
-        const string doubleLeftBrace = @"\{\{";
-        const string doubleRightBrace = @"\}\}";
-        // Escape literal double curly braces
-        var result = text.Replace("{{{{", doubleLeftBrace, StringComparison.Ordinal);
-        result = result.Replace("}}}}", doubleRightBrace, StringComparison.Ordinal);
-
-        // Replace placeholders with values
-        foreach (var (key, value) in dictionary)
-        {
-            var placeholder = !string.IsNullOrEmpty(keyPrefix) ? "{{" + keyPrefix + key + "}}" : "{{" + key + "}}";
-            result = result.Replace(placeholder, value, StringComparison.Ordinal);
-        }
-
-        // Unescape literal double curly braces
-        result = result.Replace(doubleLeftBrace, "{{", StringComparison.Ordinal);
-        result = result.Replace(doubleRightBrace, "}}", StringComparison.Ordinal);
-
-        return result;
     }
 }
