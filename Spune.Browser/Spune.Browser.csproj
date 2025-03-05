@@ -15,7 +15,7 @@
         <WasmExtraFilesToDeploy Include="../MasterStories/**/*" TargetPath="MasterStories/%(RecursiveDir)%(Filename)%(Extension)"/>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia.Browser" Version="11.2.3"/>
+        <PackageReference Include="Avalonia.Browser" Version="11.2.5"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="./../Spune.UIShared/Spune.UIShared.csproj"/>

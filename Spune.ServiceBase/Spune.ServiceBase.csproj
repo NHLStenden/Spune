@@ -4,7 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="MailKit" Version="4.9.0"/>
+        <PackageReference Include="MailKit" Version="4.10.0"/>
     </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="./../Spune.Common/Spune.Common.csproj"/>

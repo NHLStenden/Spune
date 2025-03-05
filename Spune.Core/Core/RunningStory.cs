@@ -163,7 +163,7 @@ public class RunningStory
 
         try
         {
-            await client.CompleteAsync(input);
+            await client.GetResponseAsync<string>(input);
         }
         catch (HttpRequestException)
         {
@@ -611,7 +611,7 @@ public class RunningStory
         {
             try
             {
-                chatResult = (await client.CompleteAsync(input)).Message.Text ?? "";
+                chatResult = (await client.GetResponseAsync<string>(input)).Result ?? "";
             }
             catch (HttpRequestException)
             {
