@@ -611,7 +611,7 @@ public class RunningStory
         {
             try
             {
-                chatResult = (await client.GetResponseAsync<string>(input)).Result ?? "";
+                chatResult = (await client.GetResponseAsync<string>(input)).Result;
             }
             catch (HttpRequestException)
             {
