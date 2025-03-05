@@ -153,7 +153,8 @@ public partial class MainControl : UserControl
     {
         _runningStory.Clear();
 
-        var masterStories = new MasterStories { FilePath = DefaultMasterStory.Directory };
+        var filePath = DefaultMasterStory.GetDirectory();
+        var masterStories = new MasterStories { FilePath = filePath };
         await masterStories.LoadAsync();
         var items = masterStories.Items;
         switch (items.Count)
@@ -179,7 +180,7 @@ public partial class MainControl : UserControl
     async Task LoadStoryBrowserAsync()
     {
         _runningStory.Clear();
-        await _runningStory.StartAsync(DefaultMasterStory.FilePath);
+        await _runningStory.StartAsync(DefaultMasterStory.GetFilePath());
         await CreateChapterAsync();
     }
 

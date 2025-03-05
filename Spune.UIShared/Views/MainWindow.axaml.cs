@@ -55,7 +55,7 @@ public partial class MainWindow : Window
         base.EndInit();
 
         var args = Environment.GetCommandLineArgs();
-        if (args.Length > 1 && args[1] == "edit")
+        if (args.Length > 1 && string.Equals(args[1], "edit", StringComparison.Ordinal))
             Content = new EditorControl();
         else
             Content = new MainControl();

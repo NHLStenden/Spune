@@ -35,7 +35,7 @@ internal class FilePathToSourceConverter : IValueConverter
             return ImageFunction.LoadNoImage();
         try
         {
-            return new Bitmap(Path.Join(DefaultMasterStory.Directory, s));
+            return new Bitmap(Path.Join(DefaultMasterStory.GetDirectory(), s));
         }
         catch (UnauthorizedAccessException)
         {
@@ -79,7 +79,7 @@ public partial class EditorControl : UserControl
     /// <summary>
     /// Current file name of the master story.
     /// </summary>
-    string _currentFileName = DefaultMasterStory.FilePath;
+    string _currentFileName = DefaultMasterStory.GetFilePath();
 
     /// <summary>
     /// Represents an instance of the <see cref="MasterStory" /> class used to manage the core logic
@@ -178,12 +178,13 @@ public partial class EditorControl : UserControl
         HandleCanvasToInteraction();
 
         // Load the master stories
-        var masterStories = new MasterStories { FilePath = DefaultMasterStory.Directory };
+        var filePath = DefaultMasterStory.GetDirectory();
+        var masterStories = new MasterStories { FilePath = filePath };
         await masterStories.LoadAsync();
         var items = masterStories.Items;
         if (items.Count == 0)
         {
-            _currentFileName = DefaultMasterStory.FilePath;
+            _currentFileName = DefaultMasterStory.GetFilePath();
             await LoadMasterStoryAsync();
         }
         else
@@ -338,7 +339,7 @@ public partial class EditorControl : UserControl
             return;
         }
 
-        _currentFileName = MasterStoryReaderWriter.CreateMasterStory(DefaultMasterStory.Directory, masterStoryTextTextBox.Text);
+        _currentFileName = MasterStoryReaderWriter.CreateMasterStory(DefaultMasterStory.GetDirectory(), masterStoryTextTextBox.Text);
 
         MainGrid.Children.Remove(storiesGrid);
         EditorGrid.IsVisible = true;
