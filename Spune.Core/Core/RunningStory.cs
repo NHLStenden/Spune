@@ -11,6 +11,7 @@ using Spune.Common.Extensions;
 using Spune.Common.Functions;
 using Spune.Common.Handlers;
 using Spune.Common.Interfaces;
+using Spune.Core.Extensions;
 using Spune.Core.Functions;
 using Spune.Core.Miscellaneous;
 
@@ -82,13 +83,6 @@ public class RunningStory
     public DateTime EndDateTime { get; set; }
 
     /// <summary>
-    /// Gets the identifier results of the story. The identifier results are represented as a dictionary where the keys are
-    /// unique identifiers corresponding to specific chapters or interactions within the story, and the values
-    /// are lists of strings representing the outcomes as an identifier or data related to those identifiers.
-    /// </summary>
-    public Dictionary<string, List<string>> IdentifierResults { get; } = [];
-
-    /// <summary>
     /// Gets the master story.
     /// </summary>
     /// <returns>The master story.</returns>
@@ -143,11 +137,11 @@ public class RunningStory
     public DateTime StartDateTime { get; set; }
 
     /// <summary>
-    /// Gets the text results of the story. The text results are represented as a dictionary where the keys are
+    /// Gets the results of the story. The results are represented as a dictionary where the keys are
     /// unique identifiers corresponding to specific chapters or interactions within the story, and the values
-    /// are lists of strings representing the outcomes or data related to those identifiers.
+    /// are multiple lists of strings representing the outcomes or data related to those identifiers.
     /// </summary>
-    public Dictionary<string, List<string>> TextResults { get; } = [];
+    public Dictionary<string, RunningStoryResult> Results { get; } = [];
 
     /// <summary>
     /// Starts the master story by initializing the current chapter and setting the start date and time.
@@ -192,9 +186,8 @@ public class RunningStory
         _inventoryItems.Clear();
         _hiddenElements.Clear();
         EndDateTime = new DateTime();
-        IdentifierResults.Clear();
         StartDateTime = new DateTime();
-        TextResults.Clear();
+        Results.Clear();
     }
 
     /// <summary>
@@ -246,7 +239,7 @@ public class RunningStory
             return;
         }
 
-        if (element is Interaction { IsInventory: true } interaction0 )
+        if (element is Interaction { IsInventory: true } interaction0)
         {
             PutInInventoryElement(interaction0);
             await InvokePutInInventoryElementAsync(interaction0);
@@ -550,7 +543,7 @@ public class RunningStory
         if (value is bool b)
             SetTextResult(_currentIdentifier, result, b);
         else
-            TextResults[_currentIdentifier] = [result];
+            Results[_currentIdentifier] = new RunningStoryResult { Texts = [result] };
     }
 
     /// <summary>
@@ -563,12 +556,12 @@ public class RunningStory
     void SetIdentifierResult(Element element, object? value)
     {
         var key = _currentIdentifier;
-        if (!IdentifierResults.TryGetValue(key, out var list))
+        if (!Results.TryGetValue(key, out var list))
         {
             if (value is bool b && !b)
                 return;
-            list = [element.Identifier];
-            IdentifierResults.Add(key, list);
+            list = new RunningStoryResult { Identifiers = [element.Identifier] };
+            Results.Add(key, list);
             return;
         }
 
@@ -576,16 +569,20 @@ public class RunningStory
         {
             if (enabled)
             {
-                if (!list.Contains(element.Identifier))
-                    list.Add(element.Identifier);
+                if (!list.Identifiers.Contains(element.Identifier))
+                    list.Identifiers.Add(element.Identifier);
             }
             else
             {
-                list.Remove(element.Identifier);
+                list.Identifiers.Remove(element.Identifier);
             }
         }
+        else
+        {
+            list.Identifiers.Add(element.Identifier);
+        }
 
-        IdentifierResults[key] = list;
+        Results[key] = list;
     }
 
     /// <summary>
@@ -650,7 +647,7 @@ public class RunningStory
 
         if (_chatResults.TryGetValue(element.Identifier, out _)) return ReplaceTextWithResults(text);
         var input = chapter.ChatMessage;
-        input = PlaceholderFunction.ReplacePlaceholders(input, TextResults);
+        input = PlaceholderFunction.ReplacePlaceholders(input, Results.ToDictionary(x => x.Key, x => x.Value.Texts));
         string chatResult;
         if (!string.IsNullOrEmpty(selectedModel))
         {
@@ -684,7 +681,7 @@ public class RunningStory
     {
         var result = text;
         result = PlaceholderFunction.ReplacePlaceholders(result, _chatResults, "ChatResult.");
-        result = PlaceholderFunction.ReplacePlaceholders(result, TextResults);
+        result = PlaceholderFunction.ReplacePlaceholders(result, Results.ToDictionary(x => x.Key, x => x.Value.Texts));
         return result;
     }
 
@@ -699,26 +696,26 @@ public class RunningStory
     /// </param>
     void SetTextResult(string key, string name, bool value)
     {
-        if (!TextResults.TryGetValue(key, out var list))
+        if (!Results.TryGetValue(key, out var list))
         {
             if (!value)
                 return;
-            list = [name];
-            TextResults.Add(key, list);
+            list = new RunningStoryResult { Texts = [name] };
+            Results.Add(key, list);
             return;
         }
 
         if (value)
         {
-            if (!list.Contains(name))
-                list.Add(name);
+            if (!list.Texts.Contains(name))
+                list.Texts.Add(name);
         }
         else
         {
-            list.Remove(name);
+            list.Texts.Remove(name);
         }
 
-        TextResults[key] = list;
+        Results[key] = list;
     }
 
     /// <summary>

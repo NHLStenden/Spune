@@ -8,7 +8,7 @@
 using Spune.Core.Core;
 using Spune.Core.Functions;
 
-namespace Spune.Common.Extensions;
+namespace Spune.Core.Extensions;
 
 /// <summary>An Element extension class.</summary>
 public static class ElementExtension
@@ -21,7 +21,7 @@ public static class ElementExtension
     /// <returns>A string representing the decoded link.</returns>
     public static string DecodeLink(this Element obj, RunningStory runningStory)
     {
-        var results = runningStory.IdentifierResults;
+        var results = runningStory.Results.ToDictionary(x => x.Key, x => x.Value.Identifiers);
         var link = PlaceholderFunction.ReplacePlaceholders(obj.Link, results);
         return link;
     }
