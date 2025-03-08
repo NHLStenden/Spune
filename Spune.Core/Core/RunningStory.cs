@@ -82,6 +82,13 @@ public class RunningStory
     public DateTime EndDateTime { get; set; }
 
     /// <summary>
+    /// Gets the identifier results of the story. The identifier results are represented as a dictionary where the keys are
+    /// unique identifiers corresponding to specific chapters or interactions within the story, and the values
+    /// are lists of strings representing the outcomes as an identifier or data related to those identifiers.
+    /// </summary>
+    public Dictionary<string, List<string>> IdentifierResults { get; } = [];
+
+    /// <summary>
     /// Gets the master story.
     /// </summary>
     /// <returns>The master story.</returns>
@@ -136,17 +143,11 @@ public class RunningStory
     public DateTime StartDateTime { get; set; }
 
     /// <summary>
-    /// Gets the results of the story. The results are represented as a dictionary where the keys are
+    /// Gets the text results of the story. The text results are represented as a dictionary where the keys are
     /// unique identifiers corresponding to specific chapters or interactions within the story, and the values
     /// are lists of strings representing the outcomes or data related to those identifiers.
     /// </summary>
-    /// <remarks>
-    /// The <c>Results</c> property allows tracking and storing information about the outcomes or intermediate
-    /// states of a story. It is used to facilitate dynamic content rendering and interaction logic
-    /// based on the story progression. The values in the dictionary can be manipulated through methods such as
-    /// <c>SetResult</c> or <c>SetResultAsync</c>.
-    /// </remarks>
-    public Dictionary<string, List<string>> Results { get; } = [];
+    public Dictionary<string, List<string>> TextResults { get; } = [];
 
     /// <summary>
     /// Starts the master story by initializing the current chapter and setting the start date and time.
@@ -191,8 +192,9 @@ public class RunningStory
         _inventoryItems.Clear();
         _hiddenElements.Clear();
         EndDateTime = new DateTime();
+        IdentifierResults.Clear();
         StartDateTime = new DateTime();
-        Results.Clear();
+        TextResults.Clear();
     }
 
     /// <summary>
@@ -258,7 +260,10 @@ public class RunningStory
         else
         {
             if (element is not Interaction interaction2 || interaction2.SetsResult)
-                await SetResultAsync(element, value);
+            {
+                await SetTextResultAsync(element, value);
+                SetIdentifierResult(element, value);
+            }
             if (!await NavigateToLinkAsync(element)) return;
             await InvokeNavigateToLinkAsync(element);
         }
@@ -500,7 +505,8 @@ public class RunningStory
         }
         if (inventoryItem is Interaction interaction && interaction.RemoveAfterUse)
             _inventoryItems.Remove(inventoryItem);
-        await SetResultAsync(chapter, inventoryItem.Text);
+        await SetTextResultAsync(chapter, inventoryItem.Text);
+        SetIdentifierResult(inventoryItem, null);
         if (!await NavigateToLinkAsync(chapter))
             return;
         await InvokeNavigateToLinkAsync(chapter);
@@ -518,7 +524,7 @@ public class RunningStory
     }
 
     /// <summary>
-    /// Asynchronously sets the result of the current chapter in the story.
+    /// Asynchronously sets the text result of the current chapter in the story.
     /// </summary>
     /// <param name="element">The element used to obtain the result for the current chapter.</param>
     /// <param name="value">
@@ -526,7 +532,7 @@ public class RunningStory
     /// take the value (text) from the element.
     /// </param>
     /// <returns>A task that represents the asynchronous operation of setting the current result.</returns>
-    async Task SetResultAsync(Element element, object? value)
+    async Task SetTextResultAsync(Element element, object? value)
     {
         string? textOverride;
         if (value is string s)
@@ -542,9 +548,44 @@ public class RunningStory
             result = interaction.PostProcess(result);
 
         if (value is bool b)
-            SetResult(_currentIdentifier, result, b);
+            SetTextResult(_currentIdentifier, result, b);
         else
-            Results[_currentIdentifier] = [result];
+            TextResults[_currentIdentifier] = [result];
+    }
+
+    /// <summary>
+    /// Asynchronously sets the identifier result of the current chapter in the story.
+    /// </summary>
+    /// <param name="element">The element used to obtain the result for the current chapter.</param>
+    /// <param name="value">
+    /// The object value indicating the result to be set. It can be a boolean or null. Null just sets the identifier.
+    /// </param>
+    void SetIdentifierResult(Element element, object? value)
+    {
+        var key = _currentIdentifier;
+        if (!IdentifierResults.TryGetValue(key, out var list))
+        {
+            if (value is bool b && !b)
+                return;
+            list = [element.Identifier];
+            IdentifierResults.Add(key, list);
+            return;
+        }
+
+        if (value is bool enabled)
+        {
+            if (enabled)
+            {
+                if (!list.Contains(element.Identifier))
+                    list.Add(element.Identifier);
+            }
+            else
+            {
+                list.Remove(element.Identifier);
+            }
+        }
+
+        IdentifierResults[key] = list;
     }
 
     /// <summary>
@@ -609,7 +650,7 @@ public class RunningStory
 
         if (_chatResults.TryGetValue(element.Identifier, out _)) return ReplaceTextWithResults(text);
         var input = chapter.ChatMessage;
-        input = PlaceholderFunction.ReplacePlaceholders(input, Results);
+        input = PlaceholderFunction.ReplacePlaceholders(input, TextResults);
         string chatResult;
         if (!string.IsNullOrEmpty(selectedModel))
         {
@@ -643,12 +684,12 @@ public class RunningStory
     {
         var result = text;
         result = PlaceholderFunction.ReplacePlaceholders(result, _chatResults, "ChatResult.");
-        result = PlaceholderFunction.ReplacePlaceholders(result, Results);
+        result = PlaceholderFunction.ReplacePlaceholders(result, TextResults);
         return result;
     }
 
     /// <summary>
-    /// Updates the result set for the specified key with the provided name based on the value parameter.
+    /// Updates the text result set for the specified key with the provided name based on the value parameter.
     /// </summary>
     /// <param name="key">The unique identifier associated with the result set to be updated.</param>
     /// <param name="name">The name to be added to or removed from the result set.</param>
@@ -656,14 +697,14 @@ public class RunningStory
     /// Indicates whether the name should be added or removed from the result set.
     /// If true, the name is added to the result set. If false, the name is removed.
     /// </param>
-    void SetResult(string key, string name, bool value)
+    void SetTextResult(string key, string name, bool value)
     {
-        if (!Results.TryGetValue(key, out var list))
+        if (!TextResults.TryGetValue(key, out var list))
         {
             if (!value)
                 return;
             list = [name];
-            Results.Add(key, list);
+            TextResults.Add(key, list);
             return;
         }
 
@@ -677,7 +718,7 @@ public class RunningStory
             list.Remove(name);
         }
 
-        Results[key] = list;
+        TextResults[key] = list;
     }
 
     /// <summary>

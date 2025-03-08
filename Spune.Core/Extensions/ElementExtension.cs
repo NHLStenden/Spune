@@ -21,7 +21,7 @@ public static class ElementExtension
     /// <returns>A string representing the decoded link.</returns>
     public static string DecodeLink(this Element obj, RunningStory runningStory)
     {
-        var results = runningStory.Results;
+        var results = runningStory.IdentifierResults;
         var link = PlaceholderFunction.ReplacePlaceholders(obj.Link, results);
         return link;
     }

@@ -25,7 +25,7 @@ public static class RunningStoryWriter
     /// <returns>A task that represents the asynchronous operation.</returns>
     public static async Task WriteToStreamAsync(RunningStory runningStory, Stream ms)
     {
-        var results = runningStory.Results.ToDictionary(x => x.Key, x => x.Value);
+        var results = runningStory.TextResults.ToDictionary(x => x.Key, x => x.Value);
         results.Add("SpuneStory.StartDateTime",
             [runningStory.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)]);
         results.Add("SpuneStory.EndDateTime",
