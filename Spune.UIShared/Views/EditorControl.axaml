@@ -49,10 +49,16 @@
                                 <TextBox Text="{Binding InventoryText}" />
                             </StackPanel>
                             <StackPanel Grid.Column="2" Spacing="12" Margin="12,0,0,0">
+                                <TextBlock Margin="0,0,0,-4">Chat server model</TextBlock>
+                                <TextBox Text="{Binding ChatServerModel}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="3" Spacing="12" Margin="12,0,0,0">
                                 <TextBlock Margin="0,0,0,-4">Text for close button</TextBlock>
                                 <TextBox Text="{Binding CloseButtonText}" />
                             </StackPanel>
-                            <StackPanel Grid.Column="3" Spacing="12" Margin="12,0,0,0">
+                        </Grid>
+                        <Grid ColumnDefinitions="*,*,*,*">
+                            <StackPanel Grid.Column="0" Spacing="12">
                                 <TextBlock Margin="0,0,0,-4">Text for inventory item is not valid</TextBlock>
                                 <TextBox Text="{Binding InventoryItemIsNotValidText}" />
                             </StackPanel>
@@ -90,6 +96,7 @@
                                     <TextBox Text="{Binding $parent[v:EditorControl].SelectedInventoryItem.Identifier}" />
                                     <TextBlock Margin="0,0,0,-4">Text</TextBlock>
                                     <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedInventoryItem.Text}" />
+                                    <CheckBox IsChecked="{Binding $parent[v:EditorControl].SelectedInventoryItem.RemoveAfterUse}">Remove after use</CheckBox>
                                 </StackPanel>
                             </Grid>
                         </Grid>

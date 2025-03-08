@@ -31,9 +31,6 @@ public class ClientProperties : IClientProperties
     public string ChatServerUri { get; set; } = string.Empty;
 
     /// <inheritdoc />
-    public string ChatServerModel { get; set; } = string.Empty;
-
-    /// <inheritdoc />
     public string EmailFrom { get; set; } = string.Empty;
 
     /// <inheritdoc />
@@ -145,7 +142,6 @@ public class ClientProperties : IClientProperties
     void DefaultValues()
     {
         ChatServerUri = "ollama/";
-        ChatServerModel = "gemma2:27b";
         EmailFrom = string.Empty;
         EmailPassword = string.Empty;
         EmailPort = 587;

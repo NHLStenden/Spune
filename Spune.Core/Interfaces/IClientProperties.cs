@@ -27,12 +27,6 @@ public interface IClientProperties
     string ChatServerUri { get; set; }
 
     /// <summary>
-    /// Represents the model used for the chat server in the application.
-    /// It defines the specific AI model that should be utilized by the chat server implementation.
-    /// </summary>
-    string ChatServerModel { get; set; }
-
-    /// <summary>
     /// Represents the from field for the e-mail.
     /// </summary>
     string EmailFrom { get; set; }

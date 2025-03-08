@@ -149,29 +149,6 @@ public class RunningStory
     public Dictionary<string, List<string>> Results { get; } = [];
 
     /// <summary>
-    /// Initializes the chat client asynchronously.
-    /// </summary>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    public static async Task InitializeChatClientAsync()
-    {
-        var clientProperties = await ClientProperties.GetInstanceAsync();
-        var uri = new Uri(ClientPropertiesFunction.GetFullChatServerUri(clientProperties));
-        var selectedModel = clientProperties.ChatServerModel;
-        if (string.IsNullOrEmpty(selectedModel)) return;
-        IChatClient client = new OllamaApiClient(uri, selectedModel);
-        var input = string.Empty;
-
-        try
-        {
-            await client.GetResponseAsync<string>(input);
-        }
-        catch (HttpRequestException)
-        {
-            // Eat it!
-        }
-    }
-
-    /// <summary>
     /// Starts the master story by initializing the current chapter and setting the start date and time.
     /// </summary>
     /// <param name="filePath">The file path of the master story to be loaded.</param>
@@ -179,6 +156,7 @@ public class RunningStory
     public async Task StartAsync(string filePath)
     {
         var masterStory = await MasterStoryReaderWriter.ReadMasterStoryAsync(filePath);
+        await InitializeChatClientAsync(masterStory);
         await StartAsync(masterStory);
     }
 
@@ -283,6 +261,30 @@ public class RunningStory
                 await SetResultAsync(element, value);
             if (!await NavigateToLinkAsync(element)) return;
             await InvokeNavigateToLinkAsync(element);
+        }
+    }
+
+    /// <summary>
+    /// Initializes the chat client asynchronously.
+    /// </summary>
+    /// <param name="masterStory">The master story to be started. This parameter contains the chapters to initialize the execution.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    static async Task InitializeChatClientAsync(MasterStory masterStory)
+    {
+        var clientProperties = await ClientProperties.GetInstanceAsync();
+        var uri = new Uri(ClientPropertiesFunction.GetFullChatServerUri(clientProperties));
+        var selectedModel = masterStory.ChatServerModel;
+        if (string.IsNullOrEmpty(selectedModel)) return;
+        IChatClient client = new OllamaApiClient(uri, selectedModel);
+        var input = string.Empty;
+
+        try
+        {
+            await client.GetResponseAsync<string>(input);
+        }
+        catch (HttpRequestException)
+        {
+            // Eat it!
         }
     }
 
@@ -496,6 +498,8 @@ public class RunningStory
             await InvokeShowMessageAsync(MasterStory.InventoryItemIsNotValidText);
             return;
         }
+        if (inventoryItem is Interaction interaction && interaction.RemoveAfterUse)
+            _inventoryItems.Remove(inventoryItem);
         await SetResultAsync(chapter, inventoryItem.Text);
         if (!await NavigateToLinkAsync(chapter))
             return;
@@ -600,7 +604,7 @@ public class RunningStory
 
         var clientProperties = await ClientProperties.GetInstanceAsync();
         var uri = new Uri(ClientPropertiesFunction.GetFullChatServerUri(clientProperties));
-        var selectedModel = clientProperties.ChatServerModel;
+        var selectedModel = MasterStory.ChatServerModel;
         IChatClient client = new OllamaApiClient(uri, selectedModel);
 
         if (_chatResults.TryGetValue(element.Identifier, out _)) return ReplaceTextWithResults(text);

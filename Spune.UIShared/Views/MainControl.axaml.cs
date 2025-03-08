@@ -136,8 +136,6 @@ public partial class MainControl : UserControl
     async Task LoadStoryAsync()
     {
         ShowMessage("Loading...");
-        await RunningStory.InitializeChatClientAsync();
-        HideMessage();
 
         if (OperatingSystem.IsBrowser())
             await LoadStoryBrowserAsync();
@@ -161,10 +159,12 @@ public partial class MainControl : UserControl
         {
             case 0:
                 await _runningStory.StartAsync();
+                HideMessage();
                 await CreateChapterAsync();
                 break;
             case 1:
                 await _runningStory.StartAsync(items[0].GetCombinedFileName());
+                HideMessage();
                 await CreateChapterAsync();
                 break;
             default:
@@ -181,6 +181,7 @@ public partial class MainControl : UserControl
     {
         _runningStory.Clear();
         await _runningStory.StartAsync(DefaultMasterStory.GetFilePath());
+        HideMessage();
         await CreateChapterAsync();
     }
 
@@ -216,6 +217,7 @@ public partial class MainControl : UserControl
             if (l.SelectedItem is not ShortMasterStory selectedItem)
                 return;
             await _runningStory.StartAsync(selectedItem.GetCombinedFileName());
+            HideMessage();
             await CreateChapterAsync();
         };
         masterStoriesGrid.Children.Add(textBlock);

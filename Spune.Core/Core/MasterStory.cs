@@ -30,6 +30,11 @@ public class MasterStory : Element, IDisposable
     bool _chaptersDisposed;
 
     /// <summary>
+    /// Chat server model member.
+    /// </summary>
+    string _chatServerModel = string.Empty;
+
+    /// <summary>
     /// Close button text member.
     /// </summary>
     string _closeButtonText = string.Empty;
@@ -92,6 +97,19 @@ public class MasterStory : Element, IDisposable
     /// and interactions within the master story.
     /// </remarks>
     public ObservableCollection<Chapter> Chapters { get; set; } = [];
+
+    /// <summary>
+    /// Represent the chat server model.
+    /// </summary>
+    public string ChatServerModel
+    {
+        get => _chatServerModel;
+        set
+        {
+            _chatServerModel = value;
+            NotifyPropertyChanged();
+        }
+    }
 
     /// <summary>
     /// Represent the text for a close button.
