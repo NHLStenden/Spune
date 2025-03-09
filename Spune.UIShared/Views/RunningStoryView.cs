@@ -438,8 +438,8 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
             RowDefinitions =
             [
                 new RowDefinition { Height = new GridLength(GoldenRatio, GridUnitType.Star) },
-                    new RowDefinition { Height = new GridLength((1.0 - GoldenRatio) * GoldenRatio, GridUnitType.Star) },
-                    new RowDefinition { Height = new GridLength((1.0 - GoldenRatio) * (1.0 - GoldenRatio), GridUnitType.Star) }
+                new RowDefinition { Height = new GridLength((1.0 - GoldenRatio) * GoldenRatio, GridUnitType.Star) },
+                new RowDefinition { Height = new GridLength((1.0 - GoldenRatio) * (1.0 - GoldenRatio), GridUnitType.Star) }
             ]
         };
         chapterPanel.Children.Add(chapterGrid);

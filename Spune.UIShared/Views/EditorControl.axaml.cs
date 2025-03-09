@@ -226,6 +226,7 @@ public partial class EditorControl : UserControl
                 YPosition = yPosition,
                 Width = width,
                 Height = height,
+                Identifier = Invariant($"Interaction{SelectedChapter.Interactions.Count + 1}"),
                 Text = Invariant($"Interaction {SelectedChapter.Interactions.Count + 1}"),
                 TextIsVisible = false
             };
@@ -361,7 +362,7 @@ public partial class EditorControl : UserControl
     /// <param name="e">Arguments of the event.</param>
     void AddInventoryItemButtonClick(object? sender, RoutedEventArgs e)
     {
-        var inventoryItem = new Interaction { Text = InventoryItemTextTextBox.Text ?? "", IsInventory = true, SetsResult = true };
+        var inventoryItem = new Interaction { Identifier = InventoryItemIdentifierTextBox.Text ?? "", IsInventory = true, SetsResult = true };
         _currentMasterStory.InventoryItems.Add(inventoryItem);
     }
 
@@ -504,7 +505,7 @@ public partial class EditorControl : UserControl
     /// <param name="e">Arguments of the event.</param>
     void AddInteractionButtonClick(object? sender, RoutedEventArgs e)
     {
-        var interaction = new Interaction { Text = InteractionTextTextBox.Text ?? "" };
+        var interaction = new Interaction { Identifier = InteractionIdentifierTextBox.Text ?? "" };
         SelectedChapter.Interactions.Add(interaction);
     }
 

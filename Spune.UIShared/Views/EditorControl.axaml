@@ -72,13 +72,13 @@
                                 <ListBox Grid.Row="0" x:Name="InventoryItemListBox" ItemsSource="{Binding InventoryItems}" Margin="0,0,0,12">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Text}" />
+                                            <TextBlock Text="{Binding Identifier}" />
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                                 <Grid Grid.Row="1">
                                     <StackPanel Orientation="Vertical" Spacing="12">
-                                        <TextBox Margin="0,0,0,-4" x:Name="InventoryItemTextTextBox" Watermark="Text" />
+                                        <TextBox Margin="0,0,0,-4" x:Name="InventoryItemIdentifierTextBox" Watermark="Identifier" />
                                         <StackPanel Orientation="Horizontal" Spacing="12">
                                             <Button Click="AddInventoryItemButtonClick">+</Button>
                                             <Button Click="DeleteInventoryItemButtonClick">-</Button>
@@ -178,13 +178,13 @@
                                         <ListBox Grid.Row="0" x:Name="InteractionListBox" ItemsSource="{Binding $parent[v:EditorControl].SelectedChapter.Interactions}" Margin="0,0,0,12">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding Text}" />
+                                                    <TextBlock Text="{Binding Identifier}" />
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
                                         <Grid Grid.Row="1">
                                             <StackPanel Orientation="Vertical" Spacing="12">
-                                                <TextBox Margin="0,0,0,-4" x:Name="InteractionTextTextBox" Watermark="Text" />
+                                                <TextBox Margin="0,0,0,-4" x:Name="InteractionIdentifierTextBox" Watermark="Identifier" />
                                                 <StackPanel Orientation="Horizontal" Spacing="12">
                                                     <Button Click="AddInteractionButtonClick">+</Button>
                                                     <Button Click="DeleteInteractionButtonClick">-</Button>
