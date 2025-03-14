@@ -13,6 +13,7 @@
     <ItemGroup>
         <WasmExtraFilesToDeploy Include="AppBundle/**/*" TargetPath="%(RecursiveDir)%(Filename)%(Extension)"/>
         <WasmExtraFilesToDeploy Include="../MasterStories/**/*" TargetPath="MasterStories/%(RecursiveDir)%(Filename)%(Extension)"/>
+        <WasmExtraFilesToDeploy Include="../publish.zip" TargetPath="%(RecursiveDir)%(Filename)%(Extension)"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Avalonia.Browser" Version="11.2.5"/>

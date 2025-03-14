@@ -1,5 +1,6 @@
 #!/bin/bash
 
+./publish.sh
 launchctl setenv OLLAMA_ORIGINS "*"
 brew services stop ollama
 brew services start ollama
