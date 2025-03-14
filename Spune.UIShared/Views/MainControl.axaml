@@ -74,6 +74,9 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.Styles>
+        <Style Selector="Button AccessText">
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
         <Style Selector="Button.accent2">
             <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="{DynamicResource SecondaryAccentButtonBackground}" />
@@ -168,7 +171,7 @@
         <Grid Grid.Row="0" x:Name="MessageGrid" Height="{Binding #MainGrid.Bounds.Height}" IsHitTestVisible="False"
               Opacity="0" v:ControlExtensions.PointerClick="MessageGridPointerClick">
             <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}" />
-            <TextBlock x:Name="MessageTextBlock" FontSize="21" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBlock x:Name="MessageTextBlock" FontSize="21" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" />
             <Grid.Transitions>
                 <Transitions>
                     <DoubleTransition Property="Opacity" Duration="0:0:0.300" Easing="SineEaseInOut" />
