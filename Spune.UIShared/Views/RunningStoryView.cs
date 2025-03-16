@@ -88,6 +88,8 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
     async Task CreateMediaAsync(Chapter chapter, Grid chapterGrid, int imageIndex)
     {
         await using var stream = await chapter.Media.GetImageStreamAsync();
+        if (stream.Length == 0)
+            return;
         var bitmap = new Bitmap(stream);
         var image = new Image
         {

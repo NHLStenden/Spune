@@ -60,6 +60,21 @@ public class MasterStory : Element, IDisposable
     string _inventoryItemIsNotValidText = string.Empty;
 
     /// <summary>
+    /// The maximum duration of a story member in ms. 0.0 or lower means: do not use.
+    /// </summary>
+    double _maxDuration;
+
+    /// <summary>
+    /// The remaining time text member.
+    /// </summary>
+    string _remainingTimeText = string.Empty;
+
+    /// <summary>
+    /// The timeout link member.
+    /// </summary>
+    string _timeoutLink = string.Empty;
+
+    /// <summary>
     /// The value is mandatory text member.
     /// </summary>
     string _valueInputIsMandatoryText = string.Empty;
@@ -169,6 +184,45 @@ public class MasterStory : Element, IDisposable
     }
 
     /// <summary>
+    /// Gets or sets the maximum duration of the master story in ms. 0.0 or lower means do not use.
+    /// </summary>
+    public double MaxDuration
+    {
+        get => _maxDuration;
+        set
+        {
+            _maxDuration = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets a text message that is used to show the remaining time.
+    /// </summary>
+    public string RemainingTimeText
+    {
+        get => _remainingTimeText;
+        set
+        {
+            _remainingTimeText = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Represents a navigational link associated with the timeout (if the maximum duration is used).
+    /// </summary>
+    public string TimeoutLink
+    {
+        get => _timeoutLink;
+        set
+        {
+            _timeoutLink = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
     /// Gets a text message indicating that an input value is mandatory.
     /// </summary>
     /// <remarks>
@@ -264,6 +318,12 @@ public class MasterStory : Element, IDisposable
     /// The file path of the master story as a string.
     /// </returns>
     public string GetFilePath() => _filePath;
+
+    /// <summary>
+    /// Checks if the maximum duration of the master story is used.
+    /// </summary>
+    /// <returns>True if it is and false otherwise.</returns>
+    public bool HasMaxDuration() => !double.IsInfinity(_maxDuration) && !double.IsNaN(_maxDuration) && _maxDuration > 0.0;
 
     /// <summary>
     /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

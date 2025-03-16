@@ -61,7 +61,9 @@ public partial class MainControl : UserControl
         _runningStory.OnHideElement += RunningStoryHandlerHideElement;
         _runningStory.OnPutInInventoryElement += RunningStoryHandlerPutInInventoryElement;
         _runningStory.OnShowMessage += RunningStoryHandlerShowMessage;
-        _runningStory.OnNavigateToLink += RunningStoryHandlerNavigateToLink;
+        _runningStory.OnStart += RunningStoryHandlerStart;
+        _runningStory.OnTimeLeft += RunningStoryHandlerTimeLeft;
+        _runningStory.OnNavigateTo += RunningStoryHandlerNavigateTo;
         _runningStoryView = new RunningStoryView(_runningStory, this);
     }
 
@@ -226,6 +228,17 @@ public partial class MainControl : UserControl
     }
 
     /// <summary>
+    /// Initializes the control from the given running story.
+    /// </summary>
+    /// <param name="runningStory">Running story to use.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task InitializeFromAsync(RunningStory runningStory)
+    {
+        TimeTextBlock.IsVisible = runningStory.MasterStory.HasMaxDuration();
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
     /// Asynchronously creates a control based on the current story state
     /// and updates the user interface by setting the created control
     /// to the main grid of the application.
@@ -340,6 +353,25 @@ public partial class MainControl : UserControl
     }
 
     /// <summary>
+    /// Displays the time left.
+    /// <param name="d">The time left in ms.</param>
+    /// </summary>
+    void TimeLeft(double d)
+    {
+        d = Math.Abs(d / 1000.0);
+        string remainingTimeText;
+        if (!string.IsNullOrEmpty(_runningStory.MasterStory.RemainingTimeText))
+        {
+            remainingTimeText = _runningStory.MasterStory.RemainingTimeText;
+        }
+        else
+        {
+            remainingTimeText = "Remaining time: ";
+        }
+        TimeTextBlock.Text = remainingTimeText + d.ToString("0");
+    }
+
+    /// <summary>
     /// Hides the message.
     /// </summary>
     void HideMessage()
@@ -349,12 +381,12 @@ public partial class MainControl : UserControl
     }
 
     /// <summary>
-    /// Handles the navigation to a link asynchronously.
+    /// Handles the navigation to asynchronously.
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The element to navigate to.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    async Task RunningStoryHandlerNavigateToLink(object sender, Element e) => await CreateChapterAsync();
+    async Task RunningStoryHandlerNavigateTo(object sender, Element e) => await CreateChapterAsync();
 
     /// <summary>
     /// Handles showing a message asynchronously.
@@ -363,6 +395,26 @@ public partial class MainControl : UserControl
     /// <param name="e">The message to show.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     async Task RunningStoryHandlerShowMessage(object sender, string e) => await ShowMessageAsync(e, HintCloseDelay);
+
+    /// <summary>
+    /// Handles the start event asynchronously.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The started running story.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    async Task RunningStoryHandlerStart(object sender, RunningStory e) => await InitializeFromAsync(e);
+
+    /// <summary>
+    /// Handles showing the time left asynchronously.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The message to show.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task RunningStoryHandlerTimeLeft(object sender, double e)
+    {
+        TimeLeft(e);
+        return Task.CompletedTask;
+    }
 
     /// <summary>
     /// Handles hiding an element asynchronously.

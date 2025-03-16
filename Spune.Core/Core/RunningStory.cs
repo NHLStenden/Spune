@@ -5,6 +5,7 @@
 // </copyright>
 //--------------------------------------------------------------------------------------------------
 
+using Avalonia.Threading;
 using Microsoft.Extensions.AI;
 using OllamaSharp;
 using Spune.Common.Extensions;
@@ -54,9 +55,14 @@ public class RunningStory
     event AsyncEventHandler<Element>? HideElementEvent;
 
     /// <summary>
-    /// Navigate to link event handler.
+    /// Maximum duration timer interval in ms member.
     /// </summary>
-    event AsyncEventHandler<Element>? NavigateToLinkEvent;
+    const double MaxDurationTimerInterval = 500.0;
+
+    /// <summary>
+    /// Navigate to event handler.
+    /// </summary>
+    event AsyncEventHandler<Element>? NavigateToEvent;
 
     /// <summary>
     /// Put in inventory element event handler.
@@ -64,9 +70,19 @@ public class RunningStory
     event AsyncEventHandler<Element>? PutInInventoryElementEvent;
 
     /// <summary>
+    /// Start event handler.
+    /// </summary>
+    event AsyncEventHandler<RunningStory>? StartEvent;
+
+    /// <summary>
     /// Show message event handler.
     /// </summary>
     event AsyncEventHandler<string>? ShowMessageEvent;
+
+    /// <summary>
+    /// Time left event handler.
+    /// </summary>
+    event AsyncEventHandler<double>? TimeLeftEvent;
 
     /// <summary>
     /// This property represents a function for creating an email sender interface.
@@ -98,12 +114,12 @@ public class RunningStory
     }
 
     /// <summary>
-    /// Occurs when navigate to link is called.
+    /// Occurs when navigate to is called.
     /// </summary>
-    public event AsyncEventHandler<Element> OnNavigateToLink
+    public event AsyncEventHandler<Element> OnNavigateTo
     {
-        add => NavigateToLinkEvent += value;
-        remove => NavigateToLinkEvent -= value;
+        add => NavigateToEvent += value;
+        remove => NavigateToEvent -= value;
     }
 
     /// <summary>
@@ -116,12 +132,30 @@ public class RunningStory
     }
 
     /// <summary>
+    /// Occurs when start is called.
+    /// </summary>
+    public event AsyncEventHandler<RunningStory> OnStart
+    {
+        add => StartEvent += value;
+        remove => StartEvent -= value;
+    }
+
+    /// <summary>
     /// Occurs when show message is called.
     /// </summary>
     public event AsyncEventHandler<string> OnShowMessage
     {
         add => ShowMessageEvent += value;
         remove => ShowMessageEvent -= value;
+    }
+
+    /// <summary>
+    /// Occurs when time left is called.
+    /// </summary>
+    public event AsyncEventHandler<double> OnTimeLeft
+    {
+        add => TimeLeftEvent += value;
+        remove => TimeLeftEvent -= value;
     }
 
     /// <summary>
@@ -258,7 +292,7 @@ public class RunningStory
                 SetIdentifierResult(element, value);
             }
             if (!await NavigateToLinkAsync(element)) return;
-            await InvokeNavigateToLinkAsync(element);
+            await InvokeNavigateToAsync(element);
         }
     }
 
@@ -296,11 +330,52 @@ public class RunningStory
         if (MasterStory != masterStory)
             MasterStory.Dispose();
         MasterStory = masterStory;
-        _currentIdentifier = masterStory.Chapters.Count > 0 ? masterStory.Chapters[0].Identifier : string.Empty;
+        _currentIdentifier = MasterStory.Chapters.Count > 0 ? MasterStory.Chapters[0].Identifier : string.Empty;
         _inventoryItems.Clear();
-        _inventoryItems.AddRange(masterStory.InventoryItems);
-        StartDateTime = DateTime.Now;
+        _inventoryItems.AddRange(MasterStory.InventoryItems);
+
+        CheckStart();
         await CheckEndAsync();
+        await InvokeStartAsync(this);
+    }
+
+    /// <summary>
+    /// Starts from the first chapter asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    void StartFirstChapter()
+    {
+        StartDateTime = DateTime.Now;
+        if (MasterStory.HasMaxDuration())
+            StartTimoutTimer();
+    }
+
+    /// <summary>
+    /// Starts the timeout timer.
+    /// </summary>
+    void StartTimoutTimer()
+    {
+        var timeSpan = TimeSpan.FromMilliseconds(MaxDurationTimerInterval);
+        var timeTimer = new DispatcherTimer { Interval = timeSpan };
+        timeTimer.Tick += async (sender, _) =>
+        {
+            if (sender is not DispatcherTimer t) return;
+            if (!MasterStory.HasMaxDuration() || HasEnded())
+            {
+                t.Stop();
+                return;
+            }
+            var now = DateTime.Now;
+
+            await InvokeTimeLeftAsync(MasterStory.MaxDuration - (now - StartDateTime).TotalMilliseconds);
+            if (now - StartDateTime > TimeSpan.FromMilliseconds(MasterStory.MaxDuration))
+            {
+                t.Stop();
+                await NavigateToTimeoutAsync();
+                await InvokeNavigateToAsync();
+            }
+        };
+        timeTimer.Start();
     }
 
     /// <summary>
@@ -354,10 +429,21 @@ public class RunningStory
         MasterStory = masterStory;
         var chapter =
             masterStory.Chapters.FirstOrDefault(x => string.Equals(x.Identifier, element.Identifier, StringComparison.Ordinal));
-        _currentIdentifier = chapter != null ? chapter.Identifier :
-            masterStory.Chapters.Count > 0 ? masterStory.Chapters[0].Identifier : string.Empty;
-        StartDateTime = DateTime.Now;
+        _currentIdentifier = chapter != null ? chapter.Identifier : masterStory.Chapters.Count > 0 ? masterStory.Chapters[0].Identifier : string.Empty;
+        CheckStart();
         await CheckEndAsync();
+        await InvokeStartAsync(this);
+    }
+
+    /// <summary>
+    /// Invokes the start event asynchronously.
+    /// </summary>
+    /// <param name="runningStory">The started running story.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    async Task InvokeStartAsync(RunningStory runningStory)
+    {
+        if (StartEvent == null) return;
+        await StartEvent.InvokeAsync(this, runningStory);
     }
 
     /// <summary>
@@ -372,6 +458,17 @@ public class RunningStory
     }
 
     /// <summary>
+    /// Invokes the time left event asynchronously.
+    /// </summary>
+    /// <param name="d">The time left in ms.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    async Task InvokeTimeLeftAsync(double d)
+    {
+        if (TimeLeftEvent == null) return;
+        await TimeLeftEvent.InvokeAsync(this, d);
+    }
+
+    /// <summary>
     /// Invokes the hide element event asynchronously.
     /// </summary>
     /// <param name="element">The element to hide.</param>
@@ -381,16 +478,27 @@ public class RunningStory
         if (HideElementEvent == null) return;
         await HideElementEvent.InvokeAsync(this, element);
     }
+    /// <summary>
+    /// Invokes the navigate to current chapter event asynchronously.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    async Task InvokeNavigateToAsync()
+    {
+        if (NavigateToEvent == null) return;
+        var chapter = GetChapter();
+        if (chapter == null) return;
+        await NavigateToEvent.InvokeAsync(this, chapter);
+    }
 
     /// <summary>
-    /// Invokes the navigate to link event asynchronously.
+    /// Invokes the navigate to event asynchronously.
     /// </summary>
     /// <param name="element">The element to navigate to.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    async Task InvokeNavigateToLinkAsync(Element element)
+    async Task InvokeNavigateToAsync(Element element)
     {
-        if (NavigateToLinkEvent == null) return;
-        await NavigateToLinkEvent.InvokeAsync(this, element);
+        if (NavigateToEvent == null) return;
+        await NavigateToEvent.InvokeAsync(this, element);
     }
 
     /// <summary>
@@ -402,6 +510,16 @@ public class RunningStory
     {
         if (PutInInventoryElementEvent == null) return;
         await PutInInventoryElementEvent.InvokeAsync(this, element);
+    }
+
+    /// <summary>
+    /// Checks if the running is started from the beginning.
+    /// </summary>
+    void CheckStart()
+    {
+        if (!IsAtStart())
+            return;
+        StartFirstChapter();
     }
 
     /// <summary>
@@ -470,6 +588,7 @@ public class RunningStory
     {
         if (!HasValidIdentifier(element)) return false;
         _currentIdentifier = element.Identifier;
+        CheckStart();
         await CheckEndAsync();
         return true;
     }
@@ -502,7 +621,7 @@ public class RunningStory
         SetIdentifierResult(inventoryItem, null);
         if (!await NavigateToLinkAsync(chapter))
             return;
-        await InvokeNavigateToLinkAsync(chapter);
+        await InvokeNavigateToAsync(chapter);
     }
 
     /// <summary>
@@ -595,6 +714,7 @@ public class RunningStory
         if (!HasValidLink(element)) return false;
         var link = element.DecodeLink(this);
         _currentIdentifier = link;
+        CheckStart();
         await CheckEndAsync();
         return true;
     }
@@ -618,14 +738,53 @@ public class RunningStory
     bool HasValidIdentifier(Element element) => !string.IsNullOrEmpty(element.Identifier) && MasterStory.Chapters.Any(x => string.Equals(x.Identifier, element.Identifier, StringComparison.Ordinal));
 
     /// <summary>
+    /// Navigate to the timeout chapter.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    async Task NavigateToTimeoutAsync()
+    {
+        if (MasterStory.Chapters.Count == 0)
+            return;
+        if (!string.IsNullOrEmpty(MasterStory.TimeoutLink))
+        {
+            var timeoutLinkChapter = MasterStory.Chapters.FirstOrDefault(x => string.Equals(x.Identifier, MasterStory.TimeoutLink, StringComparison.Ordinal));
+            if (timeoutLinkChapter != null)
+            {
+                _currentIdentifier = timeoutLinkChapter.Identifier;
+            }
+            else
+            {
+                _currentIdentifier = MasterStory.Chapters[^1].Identifier;
+            }
+        }
+        else
+        {
+            _currentIdentifier = MasterStory.Chapters[^1].Identifier;
+        }
+        CheckStart();
+        await CheckEndAsync();
+    }
+
+    /// <summary>
+    /// Checks whether the specified story is at the start.
+    /// </summary>
+    /// <returns>True if the story is at the start; otherwise, false.</returns>
+    bool IsAtStart()
+    {
+        var index = MasterStory.Chapters.FindIndex(x =>
+            string.Equals(x.Identifier, _currentIdentifier, StringComparison.Ordinal));
+        return index == 0;
+    }
+
+    /// <summary>
     /// Checks whether the specified story has ended.
     /// </summary>
     /// <returns>True if the story has ended; otherwise, false.</returns>
     bool HasEnded()
     {
-        var index = MasterStory.Chapters.FindIndex(x =>
-            string.Equals(x.Identifier, _currentIdentifier, StringComparison.Ordinal));
-        return index == MasterStory.Chapters.Count - 1;
+        var chapter = GetChapter();
+        if (chapter == null) return false;
+        return chapter.IsEnd;
     }
 
     /// <summary>

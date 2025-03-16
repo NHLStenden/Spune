@@ -38,6 +38,11 @@ public class Chapter : SubElement, IDisposable
     bool _inventoryIsVisible;
 
     /// <summary>
+    /// The is end member.
+    /// </summary>
+    bool _isEnd;
+
+    /// <summary>
     /// Indicates whether the media resources linked to the element have been disposed.
     /// This flag is used to ensure that media resources are released only once during the object's lifecycle.
     /// </summary>
@@ -112,6 +117,19 @@ public class Chapter : SubElement, IDisposable
         set
         {
             _inventoryIsVisible = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the is end flag.
+    /// </summary>
+    public bool IsEnd
+    {
+        get => _isEnd;
+        set
+        {
+            _isEnd = value;
             NotifyPropertyChanged();
         }
     }

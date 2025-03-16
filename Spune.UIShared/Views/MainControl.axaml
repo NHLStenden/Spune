@@ -14,6 +14,7 @@
             <sys:TimeSpan x:Key="FadeOutDuration">0:0:0.300</sys:TimeSpan>
             <sys:TimeSpan x:Key="GrowAndFadeOutDuration">0:0:0.300</sys:TimeSpan>
             <sys:TimeSpan x:Key="RectangleClickDuration">0:0:0.150</sys:TimeSpan>
+			<v:DoubleBoolConverter x:Key="DoubleBoolConverter" />
             <ResourceDictionary.ThemeDictionaries>
                 <!-- Took FluentTheme accent color, and rotated +180 degrees using hue (HSV) -->
                 <ResourceDictionary x:Key="Default">
@@ -180,8 +181,7 @@
         </Grid>
         <Grid Grid.Row="0" x:Name="ChapterGrid" Height="{Binding #MainGrid.Bounds.Height}" IsHitTestVisible="False"
               Opacity="0">
-            <ListBox Grid.Row="0" x:Name="ChapterListBox" x:DataType="c:RunningStory" ItemsSource="{Binding MasterStory.Chapters}"
-                     SelectionChanged="ChapterListBoxSelectionChanged">
+            <ListBox Grid.Row="0" x:Name="ChapterListBox" x:DataType="c:RunningStory" ItemsSource="{Binding MasterStory.Chapters}" SelectionChanged="ChapterListBoxSelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Identifier}" />
@@ -194,5 +194,6 @@
                 </Transitions>
             </Grid.Transitions>
         </Grid>
+        <TextBlock Grid.Row="1" x:Name="TimeTextBlock" />
     </Grid>
 </UserControl>

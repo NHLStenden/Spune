@@ -53,14 +53,26 @@
                                 <TextBox Text="{Binding ChatServerModel}" />
                             </StackPanel>
                             <StackPanel Grid.Column="3" Spacing="12" Margin="12,0,0,0">
-                                <TextBlock Margin="0,0,0,-4">Text for close button</TextBlock>
-                                <TextBox Text="{Binding CloseButtonText}" />
+                                <TextBlock Margin="0,0,0,-4">Maximum duration (ms)</TextBlock>
+                                <v:NumberBox Number="{Binding MaxDuration}" />
                             </StackPanel>
                         </Grid>
                         <Grid ColumnDefinitions="*,*,*,*">
                             <StackPanel Grid.Column="0" Spacing="12">
+                                <TextBlock Margin="0,0,0,-4">Remaining time text</TextBlock>
+                                <TextBox Text="{Binding RemainingTimeText}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
+                                <TextBlock Margin="0,0,0,-4">Text for close button</TextBlock>
+                                <TextBox Text="{Binding CloseButtonText}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Spacing="12" Margin="12,0,0,0">
                                 <TextBlock Margin="0,0,0,-4">Text for inventory item is not valid</TextBlock>
                                 <TextBox Text="{Binding InventoryItemIsNotValidText}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="3" Spacing="12" Margin="12,0,0,0">
+                                <TextBlock Margin="0,0,0,-4">Timeout link</TextBlock>
+                                <TextBox Text="{Binding TimeoutLink}" />
                             </StackPanel>
                         </Grid>
                     </StackPanel>
@@ -167,7 +179,10 @@
                                         <TextBlock Margin="0,0,0,-4">Inventory conditions</TextBlock>
                                         <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedChapter.InventoryConditions}" />
                                     </StackPanel>
-                                    <CheckBox Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Bottom" IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.InventoryIsVisible}">Inventory is visible</CheckBox>
+                                    <Grid Grid.Column="1" Margin="12,0,0,0" ColumnDefinitions="*,*">
+                                        <CheckBox Grid.Column="0" VerticalAlignment="Bottom" IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.InventoryIsVisible}">Inventory is visible</CheckBox>
+                                        <CheckBox Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Bottom" IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.IsEnd}">Is end</CheckBox>
+                                    </Grid>
                                 </Grid>
                                 <TextBlock Margin="0,0,0,-4">Text</TextBlock>
                                 <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedChapter.Text}" />
