@@ -421,10 +421,18 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
             };
             storyPanel.Children.Add(storyGrid);
 
-            var inventoryButton = new Button { Content = _runningStory.MasterStory.InventoryText, Margin = new Thickness(0.0, 0.0, 0.0, DefaultGridMargin) };
+            var inventoryButton = new Button
+            {
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                Content = _runningStory.MasterStory.InventoryText,
+                Margin = new Thickness(0.0, 0.0, 0.0, DefaultGridMargin)
+            };
             inventoryButton.Classes.Set("accent2", true);
+
             var copyOfStoryPanel = storyPanel;
             inventoryButton.Click += (_, _) => ShowInventory(chapter, copyOfStoryPanel);
+
             Grid.SetRow(inventoryButton, 0);
             storyGrid.Children.Add(inventoryButton);
             storyGrid.Children.Add(chapterPanel);
@@ -471,6 +479,8 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
         {
             Content = _runningStory.MasterStory.CloseButtonText,
             HorizontalAlignment = HorizontalAlignment.Right,
+            HorizontalContentAlignment = HorizontalAlignment.Center,
+            VerticalContentAlignment = VerticalAlignment.Center,
             Margin = new Thickness(0.0, 0.0, 0.0, DefaultGridMargin)
         };
         closeButton.Classes.Set("accent2", true);

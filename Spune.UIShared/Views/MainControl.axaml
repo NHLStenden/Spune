@@ -14,7 +14,6 @@
             <sys:TimeSpan x:Key="FadeOutDuration">0:0:0.300</sys:TimeSpan>
             <sys:TimeSpan x:Key="GrowAndFadeOutDuration">0:0:0.300</sys:TimeSpan>
             <sys:TimeSpan x:Key="RectangleClickDuration">0:0:0.150</sys:TimeSpan>
-			<v:DoubleBoolConverter x:Key="DoubleBoolConverter" />
             <ResourceDictionary.ThemeDictionaries>
                 <!-- Took FluentTheme accent color, and rotated +180 degrees using hue (HSV) -->
                 <ResourceDictionary x:Key="Default">
@@ -194,6 +193,6 @@
                 </Transitions>
             </Grid.Transitions>
         </Grid>
-        <TextBlock Grid.Row="1" x:Name="TimeTextBlock" />
+        <TextBlock Grid.Row="1" Margin="0,8,0,0" x:Name="TimeTextBlock" />
     </Grid>
 </UserControl>
