@@ -368,12 +368,10 @@ public class RunningStory
             var now = DateTime.Now;
 
             await InvokeTimeLeftAsync(MasterStory.MaxDuration - (now - StartDateTime).TotalMilliseconds);
-            if (now - StartDateTime > TimeSpan.FromMilliseconds(MasterStory.MaxDuration))
-            {
-                t.Stop();
-                await NavigateToTimeoutAsync();
-                await InvokeNavigateToAsync();
-            }
+            if (now - StartDateTime <= TimeSpan.FromMilliseconds(MasterStory.MaxDuration)) return;
+            t.Stop();
+            await NavigateToTimeoutAsync();
+            await InvokeNavigateToAsync();
         };
         timeTimer.Start();
     }
@@ -748,14 +746,7 @@ public class RunningStory
         if (!string.IsNullOrEmpty(MasterStory.TimeoutLink))
         {
             var timeoutLinkChapter = MasterStory.Chapters.FirstOrDefault(x => string.Equals(x.Identifier, MasterStory.TimeoutLink, StringComparison.Ordinal));
-            if (timeoutLinkChapter != null)
-            {
-                _currentIdentifier = timeoutLinkChapter.Identifier;
-            }
-            else
-            {
-                _currentIdentifier = MasterStory.Chapters[^1].Identifier;
-            }
+            _currentIdentifier = timeoutLinkChapter != null ? timeoutLinkChapter.Identifier : MasterStory.Chapters[^1].Identifier;
         }
         else
         {
@@ -783,8 +774,7 @@ public class RunningStory
     bool HasEnded()
     {
         var chapter = GetChapter();
-        if (chapter == null) return false;
-        return chapter.IsEnd;
+        return chapter != null && chapter.IsEnd;
     }
 
     /// <summary>
