@@ -762,9 +762,8 @@ public class RunningStory
     /// <returns>True if the story is at the start; otherwise, false.</returns>
     bool IsAtStart()
     {
-        var index = MasterStory.Chapters.FindIndex(x =>
-            string.Equals(x.Identifier, _currentIdentifier, StringComparison.Ordinal));
-        return index == 0;
+        var chapter = GetChapter();
+        return chapter?.IsStart == true;
     }
 
     /// <summary>
@@ -774,7 +773,7 @@ public class RunningStory
     bool HasEnded()
     {
         var chapter = GetChapter();
-        return chapter != null && chapter.IsEnd;
+        return chapter?.IsEnd == true;
     }
 
     /// <summary>

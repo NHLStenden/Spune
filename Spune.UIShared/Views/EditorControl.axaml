@@ -179,9 +179,10 @@
                                         <TextBlock Margin="0,0,0,-4">Inventory conditions</TextBlock>
                                         <TextBox AcceptsReturn="True" Text="{Binding $parent[v:EditorControl].SelectedChapter.InventoryConditions}" />
                                     </StackPanel>
-                                    <Grid Grid.Column="1" Margin="12,0,0,0" ColumnDefinitions="*,*">
+                                    <Grid Grid.Column="1" Margin="12,0,0,0" ColumnDefinitions="*,*,*">
                                         <CheckBox Grid.Column="0" VerticalAlignment="Bottom" IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.InventoryIsVisible}">Inventory is visible</CheckBox>
                                         <CheckBox Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Bottom" IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.IsEnd}">Is end</CheckBox>
+                                        <CheckBox Grid.Column="2" Margin="12,0,0,0" VerticalAlignment="Bottom" IsChecked="{Binding $parent[v:EditorControl].SelectedChapter.IsStart}">Is start</CheckBox>
                                     </Grid>
                                 </Grid>
                                 <TextBlock Margin="0,0,0,-4">Text</TextBlock>

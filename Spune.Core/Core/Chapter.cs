@@ -43,6 +43,11 @@ public class Chapter : SubElement, IDisposable
     bool _isEnd;
 
     /// <summary>
+    /// The is start member.
+    /// </summary>
+    bool _isStart;
+
+    /// <summary>
     /// Indicates whether the media resources linked to the element have been disposed.
     /// This flag is used to ensure that media resources are released only once during the object's lifecycle.
     /// </summary>
@@ -130,6 +135,19 @@ public class Chapter : SubElement, IDisposable
         set
         {
             _isEnd = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the is start flag.
+    /// </summary>
+    public bool IsStart
+    {
+        get => _isStart;
+        set
+        {
+            _isStart = value;
             NotifyPropertyChanged();
         }
     }
