@@ -357,23 +357,30 @@ public class RunningStory
     {
         var timeSpan = TimeSpan.FromMilliseconds(MaxDurationTimerInterval);
         var timeTimer = new DispatcherTimer { Interval = timeSpan };
-        timeTimer.Tick += async (sender, _) =>
-        {
-            if (sender is not DispatcherTimer t) return;
-            if (!MasterStory.HasMaxDuration() || HasEnded())
-            {
-                t.Stop();
-                return;
-            }
-            var now = DateTime.Now;
-
-            await InvokeTimeLeftAsync(MasterStory.MaxDuration - (now - StartDateTime).TotalMilliseconds);
-            if (now - StartDateTime <= TimeSpan.FromMilliseconds(MasterStory.MaxDuration)) return;
-            t.Stop();
-            await NavigateToTimeoutAsync();
-            await InvokeNavigateToAsync();
-        };
+        timeTimer.Tick += async (sender, _) => await TimeTimerTick(sender);
         timeTimer.Start();
+    }
+
+    /// <summary>
+    /// Handles the tick event of the timer.
+    /// </summary>
+    /// <param name="sender">The source of the event, expected to be a DispatcherTimer.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    async Task TimeTimerTick(object? sender)
+    {
+        if (sender is not DispatcherTimer t) return;
+        if (!MasterStory.HasMaxDuration() || HasEnded())
+        {
+            t.Stop();
+            return;
+        }
+        var now = DateTime.Now;
+
+        await InvokeTimeLeftAsync(MasterStory.MaxDuration - (now - StartDateTime).TotalMilliseconds);
+        if (now - StartDateTime <= TimeSpan.FromMilliseconds(MasterStory.MaxDuration)) return;
+        t.Stop();
+        await NavigateToTimeoutAsync();
+        await InvokeNavigateToAsync();
     }
 
     /// <summary>
