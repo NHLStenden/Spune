@@ -298,9 +298,9 @@ public partial class MainControl : UserControl
         {
             if (MessageGrid.DataContext is not TaskCompletionSource messageTask)
                 return;
-            HideMessage();
             messageTask.SetResult();
             MessageGrid.DataContext = null;
+            HideMessage();
         }
         catch (InvalidOperationException)
         {
@@ -339,11 +339,11 @@ public partial class MainControl : UserControl
         MessageGrid.DataContext = messageTask;
         TimerFunction.DelayInvoke(() =>
         {
-            HideMessage();
             try
             {
                 messageTask.SetResult();
                 MessageGrid.DataContext = null;
+                HideMessage();
             }
             catch (InvalidOperationException)
             {
