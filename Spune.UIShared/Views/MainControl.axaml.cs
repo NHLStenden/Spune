@@ -58,6 +58,7 @@ public partial class MainControl : UserControl
     public MainControl()
     {
         InitializeComponent();
+        _runningStory.OnElpasedTime += RunningStoryHandlerElpasedTime;
         _runningStory.OnHideElement += RunningStoryHandlerHideElement;
         _runningStory.OnPutInInventoryElement += RunningStoryHandlerPutInInventoryElement;
         _runningStory.OnShowMessage += RunningStoryHandlerShowMessage;
@@ -353,6 +354,18 @@ public partial class MainControl : UserControl
     }
 
     /// <summary>
+    /// Displays the elapsed left.
+    /// <param name="d">The elapsed time in ms.</param>
+    /// </summary>
+    void ElapsedTime(double d)
+    {
+        // d = Math.Abs(d / 1000.0);
+        // var remainingTimeText = !string.IsNullOrEmpty(_runningStory.MasterStory.RemainingTimeText) ?
+        //     _runningStory.MasterStory.RemainingTimeText : "Remaining time: ";
+        // TimeTextBlock.Text = remainingTimeText + d.ToString("0");
+    }
+
+    /// <summary>
     /// Displays the time left.
     /// <param name="d">The time left in ms.</param>
     /// </summary>
@@ -396,6 +409,18 @@ public partial class MainControl : UserControl
     /// <param name="e">The started running story.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     async Task RunningStoryHandlerStart(object sender, RunningStory e) => await InitializeFromAsync(e);
+
+    /// <summary>
+    /// Handles showing the elapsed time asynchronously.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The message to show.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task RunningStoryHandlerElpasedTime(object sender, double e)
+    {
+        ElapsedTime(e);
+        return Task.CompletedTask;
+    }
 
     /// <summary>
     /// Handles showing the time left asynchronously.

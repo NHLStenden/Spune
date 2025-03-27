@@ -26,10 +26,8 @@ public static class RunningStoryWriter
     public static async Task WriteToStreamAsync(RunningStory runningStory, Stream ms)
     {
         var results = runningStory.Results.ToDictionary(x => x.Key, x => x.Value.Texts);
-        results.Add("SpuneStory.StartDateTime",
-            [runningStory.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)]);
-        results.Add("SpuneStory.EndDateTime",
-            [runningStory.EndDateTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)]);
+        results.Add("SpuneStory.StartDateTime", [runningStory.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)]);
+        results.Add("SpuneStory.EndDateTime", [runningStory.EndDateTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)]);
 
         var lines = new List<string>();
         foreach (var (key, value) in results)

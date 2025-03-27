@@ -5,6 +5,7 @@
 // </copyright>
 //--------------------------------------------------------------------------------------------------
 
+using System.Globalization;
 using Avalonia.Threading;
 using Microsoft.Extensions.AI;
 using OllamaSharp;
@@ -48,6 +49,11 @@ public class RunningStory
     /// Hidden elements list member.
     /// </summary>
     readonly List<Element> _hiddenElements = [];
+
+    /// <summary>
+    /// Elapsed time event handler.
+    /// </summary>
+    event AsyncEventHandler<double>? ElpasedTimeEvent;
 
     /// <summary>
     /// Hide element event handler.
@@ -103,6 +109,15 @@ public class RunningStory
     /// </summary>
     /// <returns>The master story.</returns>
     public MasterStory MasterStory { get; private set; } = MasterStory.CreateInstance();
+
+    /// <summary>
+    /// Occurs when elapsed time is called.
+    /// </summary>
+    public event AsyncEventHandler<double> OnElpasedTime
+    {
+        add => TimeLeftEvent += value;
+        remove => TimeLeftEvent -= value;
+    }
 
     /// <summary>
     /// Occurs when hide element is called.
@@ -371,16 +386,42 @@ public class RunningStory
         if (sender is not DispatcherTimer t) return;
         if (!MasterStory.HasMaxDuration() || HasEnded())
         {
-            t.Stop();
+            Stop(t);
             return;
         }
         var now = DateTime.Now;
-
-        await InvokeTimeLeftAsync(MasterStory.MaxDuration - (now - StartDateTime).TotalMilliseconds);
-        if (now - StartDateTime <= TimeSpan.FromMilliseconds(MasterStory.MaxDuration)) return;
-        t.Stop();
+        var elapsedTime = (now - StartDateTime).TotalMilliseconds;
+        var timeLeft = MasterStory.MaxDuration - elapsedTime;
+        await InvokeElapsedTimeAsync(timeLeft);
+        await InvokeTimeLeftAsync(timeLeft);
+        if (elapsedTime <= MasterStory.MaxDuration) return;
+        Stop(t);
         await NavigateToTimeoutAsync();
         await InvokeNavigateToAsync();
+    }
+
+    /// <summary>
+    /// Stops the timer.
+    /// </summary>
+    /// <param name="timer">Timer to use.</param>
+    void Stop(DispatcherTimer? timer)
+    {
+        timer?.Stop();
+        SetElapsedTimeResult();
+    }
+
+    /// <summary>
+    /// Sets the elapsed time in the results.
+    /// </summary>
+    void SetElapsedTimeResult()
+    {
+        if (!MasterStory.HasMaxDuration())
+            return;
+        
+        var now = DateTime.Now;
+        var elapsedTime = (now - StartDateTime).TotalSeconds;
+        var result = string.Format(CultureInfo.CurrentCulture, "{0:F0}", elapsedTime);
+        Results["SpuneStory.ElapsedTime"] = new RunningStoryResult { Texts = [result], Identifiers = [result] };
     }
 
     /// <summary>
@@ -463,6 +504,17 @@ public class RunningStory
     }
 
     /// <summary>
+    /// Invokes the elpased time event asynchronously.
+    /// </summary>
+    /// <param name="d">The elapsed time in ms.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    async Task InvokeElapsedTimeAsync(double d)
+    {
+        if (ElpasedTimeEvent == null) return;
+        await ElpasedTimeEvent.InvokeAsync(this, d);
+    }
+
+    /// <summary>
     /// Invokes the time left event asynchronously.
     /// </summary>
     /// <param name="d">The time left in ms.</param>
@@ -535,7 +587,9 @@ public class RunningStory
     {
         if (!HasEnded())
             return;
+
         EndDateTime = DateTime.Now;
+        SetElapsedTimeResult();
         await SendEmailAsync();
     }
 
