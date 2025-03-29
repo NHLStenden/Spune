@@ -38,7 +38,7 @@ public class RunningStory
     /// between chapters or interactions within a story. Its value is initialized to an empty string
     /// and assigned based on the chapters available in the story.
     /// </remarks>
-    string _currentIdentifier = string.Empty;
+    RunningStoryIdentifier _currentIdentifier = new RunningStoryIdentifier();
 
     /// <summary>
     /// Inventory items list member.
@@ -74,6 +74,11 @@ public class RunningStory
     /// Put in inventory element event handler.
     /// </summary>
     event AsyncEventHandler<Element>? PutInInventoryElementEvent;
+
+    /// <summary>
+    /// Spune story results identifier.
+    /// </summary>
+    const string SpuneStoryResults = "{{SpuneStory.Results}}";
 
     /// <summary>
     /// Start event handler.
@@ -190,7 +195,7 @@ public class RunningStory
     /// unique identifiers corresponding to specific chapters or interactions within the story, and the values
     /// are multiple lists of strings representing the outcomes or data related to those identifiers.
     /// </summary>
-    public Dictionary<string, RunningStoryResult> Results { get; } = [];
+    public Dictionary<RunningStoryIdentifier, RunningStoryResult> Results { get; } = [];
 
     /// <summary>
     /// Starts the master story by initializing the current chapter and setting the start date and time.
@@ -231,7 +236,7 @@ public class RunningStory
     {
         MasterStory.Dispose();
         _chatResults.Clear();
-        _currentIdentifier = string.Empty;
+        _currentIdentifier = new RunningStoryIdentifier();
         _inventoryItems.Clear();
         _hiddenElements.Clear();
         EndDateTime = new DateTime();
@@ -345,7 +350,7 @@ public class RunningStory
         if (MasterStory != masterStory)
             MasterStory.Dispose();
         MasterStory = masterStory;
-        _currentIdentifier = MasterStory.Chapters.Count > 0 ? MasterStory.Chapters[0].Identifier : string.Empty;
+        _currentIdentifier = MasterStory.Chapters.Count > 0 ? new RunningStoryIdentifier(MasterStory.Chapters[0].Identifier, MasterStory.Chapters[0].IdentifierText) : new RunningStoryIdentifier();
         _inventoryItems.Clear();
         _inventoryItems.AddRange(MasterStory.InventoryItems);
 
@@ -421,7 +426,7 @@ public class RunningStory
         var now = DateTime.Now;
         var elapsedTime = (now - StartDateTime).TotalSeconds;
         var result = string.Format(CultureInfo.CurrentCulture, "{0:F0}", elapsedTime);
-        Results["SpuneStory.ElapsedTime"] = new RunningStoryResult { Texts = [result], Identifiers = [result] };
+        Results[new RunningStoryIdentifier("SpuneStory.ElapsedTime", MasterStory.RemainingTimeText)] = new RunningStoryResult { Texts = [result], Identifiers = [result] };
     }
 
     /// <summary>
@@ -475,7 +480,7 @@ public class RunningStory
         MasterStory = masterStory;
         var chapter =
             masterStory.Chapters.FirstOrDefault(x => string.Equals(x.Identifier, element.Identifier, StringComparison.Ordinal));
-        _currentIdentifier = chapter != null ? chapter.Identifier : masterStory.Chapters.Count > 0 ? masterStory.Chapters[0].Identifier : string.Empty;
+        _currentIdentifier = chapter != null ? new RunningStoryIdentifier(chapter.Identifier, chapter.IdentifierText) : masterStory.Chapters.Count > 0 ? new RunningStoryIdentifier(masterStory.Chapters[0].Identifier, masterStory.Chapters[0].IdentifierText) : new RunningStoryIdentifier();
         CheckStart();
         await CheckEndAsync();
         await InvokeStartAsync(this);
@@ -633,8 +638,7 @@ public class RunningStory
     /// <returns>The current chapter of the story if found; otherwise, null.</returns>
     public Chapter? GetChapter()
     {
-        var index = MasterStory.Chapters.FindIndex(x =>
-            string.Equals(x.Identifier, _currentIdentifier, StringComparison.Ordinal));
+        var index = MasterStory.Chapters.FindIndex(x => new RunningStoryIdentifier(x.Identifier, x.IdentifierText) == _currentIdentifier);
         return index >= 0 ? MasterStory.Chapters[index] : null;
     }
 
@@ -646,7 +650,7 @@ public class RunningStory
     public async Task<bool> NavigateToIdentifierAsync(Element element)
     {
         if (!HasValidIdentifier(element)) return false;
-        _currentIdentifier = element.Identifier;
+        _currentIdentifier = new RunningStoryIdentifier(element.Identifier, element.IdentifierText);
         CheckStart();
         await CheckEndAsync();
         return true;
@@ -772,7 +776,9 @@ public class RunningStory
     {
         if (!HasValidLink(element)) return false;
         var link = element.DecodeLink(this);
-        _currentIdentifier = link;
+        var linkChapter = MasterStory.Chapters.FirstOrDefault(x => string.Equals(x.Identifier, link, StringComparison.Ordinal));
+        if (linkChapter == null) return false;
+        _currentIdentifier = new RunningStoryIdentifier(linkChapter.Identifier, linkChapter.IdentifierText);
         CheckStart();
         await CheckEndAsync();
         return true;
@@ -807,11 +813,11 @@ public class RunningStory
         if (!string.IsNullOrEmpty(MasterStory.TimeoutLink))
         {
             var timeoutLinkChapter = MasterStory.Chapters.FirstOrDefault(x => string.Equals(x.Identifier, MasterStory.TimeoutLink, StringComparison.Ordinal));
-            _currentIdentifier = timeoutLinkChapter != null ? timeoutLinkChapter.Identifier : MasterStory.Chapters[^1].Identifier;
+            _currentIdentifier = timeoutLinkChapter != null ? new RunningStoryIdentifier(timeoutLinkChapter.Identifier, timeoutLinkChapter.IdentifierText) : new RunningStoryIdentifier(MasterStory.Chapters[^1].Identifier, MasterStory.Chapters[^1].IdentifierText);
         }
         else
         {
-            _currentIdentifier = MasterStory.Chapters[^1].Identifier;
+            _currentIdentifier = new RunningStoryIdentifier(MasterStory.Chapters[^1].Identifier, MasterStory.Chapters[^1].IdentifierText);
         }
         CheckStart();
         await CheckEndAsync();
@@ -856,7 +862,7 @@ public class RunningStory
 
         if (_chatResults.TryGetValue(element.Identifier, out _)) return ReplaceTextWithResults(text);
         var input = chapter.ChatMessage;
-        input = PlaceholderFunction.ReplacePlaceholders(input, Results.ToDictionary(x => x.Key, x => x.Value.Texts));
+        input = PlaceholderFunction.ReplacePlaceholders(input, Results.ToDictionary(x => x.Key.Identifier, x => x.Value.Texts));
         string chatResult;
         if (!string.IsNullOrEmpty(selectedModel))
         {
@@ -889,8 +895,18 @@ public class RunningStory
     string ReplaceTextWithResults(string text)
     {
         var result = text;
-        result = PlaceholderFunction.ReplacePlaceholders(result, _chatResults, "ChatResult.");
-        result = PlaceholderFunction.ReplacePlaceholders(result, Results.ToDictionary(x => x.Key, x => x.Value.Texts));
+        if (string.Equals(result, SpuneStoryResults, StringComparison.Ordinal))
+        {
+            var dictionary = Results.ToDictionary(x => x.Key, x => x.Value.Texts).Where(x => !x.Key.Identifier.StartsWith("SpuneStory.", StringComparison.Ordinal) && x.Value.Count > 0 && x.Value.All(y => !string.IsNullOrEmpty(y)));
+            var list = new List<string>();
+            foreach (var (key, value) in dictionary)
+                list.Add(Invariant($"{key.Text}\t{StringFunction.StringsToString(value, ", ")}"));
+            result = StringFunction.StringsToString(list);
+        }
+        {
+            result = PlaceholderFunction.ReplacePlaceholders(result, _chatResults, "ChatResult.");
+            result = PlaceholderFunction.ReplacePlaceholders(result, Results.ToDictionary(x => x.Key.Identifier, x => x.Value.Texts));
+        }
         return result;
     }
 
@@ -903,7 +919,7 @@ public class RunningStory
     /// Indicates whether the name should be added or removed from the result set.
     /// If true, the name is added to the result set. If false, the name is removed.
     /// </param>
-    void SetTextResult(string key, string name, bool value)
+    void SetTextResult(RunningStoryIdentifier key, string name, bool value)
     {
         if (!Results.TryGetValue(key, out var list))
         {

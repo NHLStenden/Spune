@@ -8,7 +8,7 @@
 namespace Spune.Core.Core;
 
 /// <summary>
-/// Represents the results of a story, including both text results and identifier results.
+/// Represents the results of a running story, including both text results and identifier results.
 /// </summary>
 public class RunningStoryResult
 {

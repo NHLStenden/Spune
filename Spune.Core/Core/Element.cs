@@ -32,6 +32,11 @@ public class Element : INotifyPropertyChanged
     string _identifier = string.Empty;
 
     /// <summary>
+    /// The identifier text member.
+    /// </summary>
+    string _identifierText = string.Empty;
+
+    /// <summary>
     /// The link member.
     /// </summary>
     string _link = string.Empty;
@@ -65,6 +70,21 @@ public class Element : INotifyPropertyChanged
         set
         {
             _identifier = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the unique identifier (in text form) for the chapter.
+    /// This is a string value that is used to identify the chapter within a master story
+    /// and can serve for navigation or referencing purposes.
+    /// </summary>
+    public string IdentifierText
+    {
+        get => _identifierText;
+        set
+        {
+            _identifierText = value;
             NotifyPropertyChanged();
         }
     }

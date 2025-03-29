@@ -373,8 +373,8 @@ public partial class MainControl : UserControl
     {
         d = Math.Abs(d / 1000.0);
         var remainingTimeText = !string.IsNullOrEmpty(_runningStory.MasterStory.RemainingTimeText) ?
-            _runningStory.MasterStory.RemainingTimeText : "Remaining time: ";
-        TimeTextBlock.Text = remainingTimeText + d.ToString("0");
+            _runningStory.MasterStory.RemainingTimeText : "Remaining time";
+        TimeTextBlock.Text = remainingTimeText + ": " + d.ToString("0");
     }
 
     /// <summary>
