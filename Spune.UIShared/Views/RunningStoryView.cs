@@ -5,6 +5,7 @@
 // </copyright>
 //--------------------------------------------------------------------------------------------------
 
+using System.Data;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -65,13 +66,13 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
             await TimerFunction.DelayInvokeAsync(async () => await _runningStory.HandleElementAsync(chapter, null), (int)chapter.CloseDelay);
 
         var imageIndex = chapter.Media.HasImage() ? 0 : -1;
-        var textIndex = chapter.HasText() ? chapter.Media.HasImage() ? 1 : 0 : -1;
+        var contentIndex = chapter.HasText() ? chapter.Media.HasImage() ? 1 : 0 : -1;
         var interactionIndex = _runningStory.GetInteractions().Where(x => !x.InImage()).ToList().Count > 0 ? 2 : -1;
 
         if (imageIndex >= 0)
             await CreateMediaAsync(chapter, chapterGrid, imageIndex);
-        if (textIndex >= 0)
-            await CreateTextAsync(chapter, chapterGrid, imageIndex >= 0, textIndex);
+        if (contentIndex >= 0)
+            await CreateContentAsync(chapter, chapterGrid, imageIndex >= 0, contentIndex);
         if (_runningStory.GetInteractions(chapter).Where(x => !x.InImage()).ToList().Count > 0)
             await CreateInteractionsAsync(chapter, chapterGrid, interactionIndex);
 
@@ -202,32 +203,101 @@ public class RunningStoryView(RunningStory runningStory, IResourceHost resourceH
         pointerIsDown = false;
     }
 
+
+	/// <summary>
+	/// A simple container class for the details.
+	/// </summary>
+	class DetailsItem
+	{
+		/// <summary>
+		/// Item 1.
+		/// </summary>
+		public string Item1 { get; set; } = string.Empty;
+		/// <summary>
+		/// Item 2.
+		/// </summary>
+		public string Item2 { get; set; } = string.Empty;
+	}
+
+
     /// <summary>
-    /// Asynchronously creates a text block for the given chapter and adds it to the specified grid at the specified index.
+    /// Asynchronously creates a content control for the given chapter and adds it to the specified grid at the specified index.
     /// </summary>
-    /// <param name="chapter">The chapter containing the text to be displayed.</param>
-    /// <param name="chapterGrid">The grid where the text block will be added.</param>
-    /// <param name="hasImage">Switch to indicate if the text block also has an image (above).</param>
-    /// <param name="textIndex">The index in the grid's row definitions where the text block will be placed.</param>
+    /// <param name="chapter">The chapter containing the content to be displayed.</param>
+    /// <param name="chapterGrid">The grid where the content control will be added.</param>
+    /// <param name="hasImage">Switch to indicate if the content control also has an image (above).</param>
+    /// <param name="contentIndex">The index in the grid's row definitions where the content control will be placed.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    async Task CreateTextAsync(Chapter chapter, Grid chapterGrid, bool hasImage, int textIndex)
+    async Task CreateContentAsync(Chapter chapter, Grid chapterGrid, bool hasImage, int contentIndex)
     {
-        var textBlock = new TextBlock
+        Control control;
+        var text = await _runningStory.GetTextAsync(chapter);
+        if (chapter.Content == Content.Text)
         {
-            // Standard font size is 14 (with Fluent). This is 1.5 * 14
-            FontSize = 1.5 * 14.0,
-            Text = await _runningStory.GetTextAsync(chapter),
-            TextAlignment = TextAlignment.Center,
-            TextWrapping = TextWrapping.Wrap
-        };
+            control = new TextBlock
+            {
+                // Standard font size is 14 (with Fluent). This is 1.5 * 14
+                FontSize = 1.5 * 14.0,
+                Text = text,
+                TextAlignment = TextAlignment.Center,
+                TextWrapping = TextWrapping.Wrap
+            };
+        }
+        else // if (chapter.Content == Content.Table)
+        {
+            var dataGrid = new Grid();
+
+            // Same format is in RunningStory.cs: 902
+            string[] rows = text.Split("\0");
+            if (rows.Length > 0)
+            {
+                var table = rows.Select(row => row.Split('\t')).ToList();
+                var columns = table[0];
+                if (columns.Length > 0)
+                {
+                    var columnDefinitions = new ColumnDefinitions();
+                    foreach (var column in columns)
+                        columnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                    dataGrid.ColumnDefinitions = columnDefinitions;
+
+                    var rowDefinitions = new RowDefinitions();
+                    foreach (var row in rows)
+                        rowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
+                    dataGrid.RowDefinitions = rowDefinitions;
+
+                    dataGrid.IsHitTestVisible = false;
+                    dataGrid.ShowGridLines = true;
+                    var result = new List<DetailsItem>();
+
+                    for (var i = 0; i < table.Count; i++) 
+                    {
+                        var row = table[i];
+                        for (var j = 0; j < row.Length; j++)
+                        {
+                            var cell = new TextBlock() 
+                            { 
+                                Padding = new Thickness(2.0d, 2.0d, 2.0d, 2.0d),
+                                FontSize = 1.5 * 14.0,
+                                Text = row[j]
+                            };
+                            dataGrid.Children.Add(cell);
+                            Grid.SetRow(cell, i);
+                            Grid.SetColumn(cell, j);
+                        }
+                    }
+                }
+            }
+            control = dataGrid;
+
+        }
         if (!hasImage)
-            textBlock.VerticalAlignment = VerticalAlignment.Center;
+            control.VerticalAlignment = VerticalAlignment.Center;
 
         if (chapter.CloseDelay > 0.0)
-            ControlExtensions.SetPointerClick(textBlock, (_, _) => Dispatcher.UIThread.InvokeAsync(async () => await _runningStory.HandleElementAsync(chapter, null)));
+            ControlExtensions.SetPointerClick(control, (_, _) => Dispatcher.UIThread.InvokeAsync(async () => await _runningStory.HandleElementAsync(chapter, null)));
 
-        Grid.SetRow(textBlock, textIndex);
-        chapterGrid.Children.Add(textBlock);
+        Grid.SetRow(control, contentIndex);
+        chapterGrid.Children.Add(control);
     }
 
     /// <summary>

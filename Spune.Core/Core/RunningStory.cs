@@ -899,9 +899,10 @@ public class RunningStory
         {
             var dictionary = Results.ToDictionary(x => x.Key, x => x.Value.Texts).Where(x => !x.Key.Identifier.StartsWith("SpuneStory.", StringComparison.Ordinal) && x.Value.Count > 0 && x.Value.All(y => !string.IsNullOrEmpty(y)));
             var list = new List<string>();
+            // Same format is in RunningStoryView.cs: 248
             foreach (var (key, value) in dictionary)
                 list.Add(Invariant($"{key.Text}\t{StringFunction.StringsToString(value, ", ")}"));
-            result = StringFunction.StringsToString(list);
+            result = StringFunction.StringsToString(list, "\0");
         }
         {
             result = PlaceholderFunction.ReplacePlaceholders(result, _chatResults, "ChatResult.");

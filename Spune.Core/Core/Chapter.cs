@@ -8,6 +8,22 @@
 namespace Spune.Core.Core;
 
 /// <summary>
+/// Specifies the type of content.
+/// </summary>
+public enum Content
+{
+
+    /// <summary>
+    /// Represents a text content type.
+    /// </summary>
+    Text,
+    /// <summary>
+    /// Represents a table content type.
+    /// </summary>
+    Table
+}
+
+/// <summary>
 /// Represents a chapter within a master story, containing an identifier and a collection of interactions.
 /// </summary>
 public class Chapter : SubElement, IDisposable
@@ -26,6 +42,11 @@ public class Chapter : SubElement, IDisposable
     /// The close delay member.
     /// </summary>
     double _closeDelay;
+
+    /// <summary>
+    /// The content member.
+    /// </summary>
+    Content _content = Content.Text;
 
     /// <summary>
     /// The inventory conditions member.
@@ -96,6 +117,19 @@ public class Chapter : SubElement, IDisposable
         set
         {
             _closeDelay = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Represents the content for the element.
+    /// </summary>
+    public Content Content
+    {
+        get => _content;
+        set
+        {
+            _content = value;
             NotifyPropertyChanged();
         }
     }

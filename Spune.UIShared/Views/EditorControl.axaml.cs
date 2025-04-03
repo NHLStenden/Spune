@@ -171,6 +171,8 @@ public partial class EditorControl : UserControl
             Dispatcher.UIThread.Invoke(() => SelectedChapterScrollViewer.ScrollToHome(), DispatcherPriority.Background);
         };
 
+        ChapterContentComboBox.ItemsSource = Enum.GetValues<Content>();
+
         InteractionListBox.SelectionChanged +=
             (_, _) => SelectedInteraction = InteractionListBox.SelectedItem as Interaction ?? new Interaction();
         InteractionTypeComboBox.ItemsSource = Enum.GetValues<InteractionType>();

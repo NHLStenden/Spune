@@ -153,12 +153,16 @@
                                 </Grid>
                                 <TextBlock Margin="0,0,0,-4">Chat message</TextBlock>
                                 <TextBox Text="{Binding $parent[v:EditorControl].SelectedChapter.ChatMessage}" />
-                                <Grid ColumnDefinitions="*,*">
+                                <Grid ColumnDefinitions="*,*,*">
                                     <StackPanel Grid.Column="0" Spacing="12">
                                         <TextBlock Margin="0,0,0,-4">Close delay (ms)</TextBlock>
                                         <v:NumberBox Number="{Binding $parent[v:EditorControl].SelectedChapter.CloseDelay}" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Spacing="12" Margin="12,0,0,0">
+                                        <TextBlock Margin="0,0,0,-4">Content</TextBlock>
+                                        <ComboBox x:Name="ChapterContentComboBox" HorizontalAlignment="Stretch" SelectedItem="{Binding $parent[v:EditorControl].SelectedChapter.Content}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Spacing="12" Margin="12,0,0,0">
                                         <TextBlock Margin="0,0,0,-4">Identifier</TextBlock>
                                         <TextBox Text="{Binding $parent[v:EditorControl].SelectedChapter.Identifier}" />
                                     </StackPanel>
