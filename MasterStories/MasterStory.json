@@ -854,7 +854,7 @@
       "RandomizeInteractions": true,
       "Interactions": [],
       "Identifier": "Conclusion",
-      "Link": "SpuneStory.Finished",
+      "Link": "Finished",
       "Text": "You walk down the path and hear... a school bell! You see your school again. {{TeacherName}} is standing at the door.\n\u0022Where were you?\u0022 is asked. You chuckle and say:"
     },
     {
@@ -862,7 +862,7 @@
       "Media": {},
       "RandomizeInteractions": true,
       "Interactions": [],
-      "Identifier": "SpuneStory.Finished",
+      "Identifier": "Finished",
       "Text": "\u0022I was rescuing a pup, you see, For a friend in need is a friend indeed!\u0022\n\nThe end."
     }
   ],
