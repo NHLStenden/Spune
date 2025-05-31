@@ -6,6 +6,7 @@
 //--------------------------------------------------------------------------------------------------
 
 using System.Globalization;
+using System.Text.Json;
 using Avalonia.Threading;
 using Microsoft.Extensions.AI;
 using OllamaSharp;
@@ -24,6 +25,11 @@ namespace Spune.Core.Core;
 /// </summary>
 public class RunningStory
 {
+    /// <summary>
+    /// Chat member.
+    /// </summary>
+    Chat? _chat;
+
     /// <summary>
     /// Chat results member.
     /// </summary>
@@ -113,7 +119,7 @@ public class RunningStory
     /// Gets the master story.
     /// </summary>
     /// <returns>The master story.</returns>
-    public MasterStory MasterStory { get; private set; } = MasterStory.CreateInstance();
+    public MasterStory MasterStory { get; set; } = MasterStory.CreateInstance();
 
     /// <summary>
     /// Occurs when elapsed time is called.
@@ -235,6 +241,7 @@ public class RunningStory
     public void Clear()
     {
         MasterStory.Dispose();
+        _chat = null;
         _chatResults.Clear();
         _currentIdentifier = new RunningStoryIdentifier();
         _inventoryItems.Clear();
@@ -350,7 +357,7 @@ public class RunningStory
         if (MasterStory != masterStory)
             MasterStory.Dispose();
         MasterStory = masterStory;
-        var startChapter = MasterStory.GetStartChapter();
+        var startChapter = await ResolveStartChapterAsync();
         _currentIdentifier = startChapter != null
             ? new RunningStoryIdentifier(startChapter.Identifier, startChapter.IdentifierText)
             : new RunningStoryIdentifier();
@@ -425,7 +432,7 @@ public class RunningStory
     {
         if (!MasterStory.HasMaxDuration())
             return;
-        
+
         var now = DateTime.Now;
         var elapsedTime = (now - StartDateTime).TotalSeconds;
         var result = string.Format(CultureInfo.CurrentCulture, "{0:F0}", elapsedTime);
@@ -488,7 +495,7 @@ public class RunningStory
         }
         else
         {
-            chapter = MasterStory.GetStartChapter();
+            chapter = await ResolveStartChapterAsync();
             _currentIdentifier = chapter != null ? new RunningStoryIdentifier(chapter.Identifier, chapter.IdentifierText) : new RunningStoryIdentifier();
         }
         CheckStart();
@@ -643,6 +650,96 @@ public class RunningStory
     }
 
     /// <summary>
+    /// Retrieves the next chapter based on the provided result string, and adds it to the master story if valid.
+    /// </summary>
+    /// <param name="result">The result string used to generate the chat message input.</param>
+    /// <returns>A <see cref="Chapter"/> object if successfully retrieved; otherwise, <c>null</c>.</returns>
+    async Task<Chapter?> NextChapterAsync(string result)
+    {
+        var chatMessage = $"Answer: \"{result}\".";
+        var chapter = await GetChapterFromChatMessageAsync(chatMessage);
+        if (chapter != null)
+            MasterStory.Chapters.Add(chapter);
+        return chapter;
+    }
+
+    /// <summary>
+    /// Sends a chat message and attempts to parse a chapter from the response.
+    /// Initializes the chat client if needed.
+    /// </summary>
+    /// <param name="chatMessage">The input message to send to the chat system.</param>
+    /// <returns>A <see cref="Chapter"/> object if deserialization is successful; otherwise, <c>null</c>.</returns>
+    async Task<Chapter?> GetChapterFromChatMessageAsync(string chatMessage)
+    {
+        var input = chatMessage;
+        if (_chat == null)
+        {
+            var clientProperties = await ClientProperties.GetInstanceAsync();
+            var uri = new Uri(ClientPropertiesFunction.GetFullChatServerUri(clientProperties));
+            var selectedModel = MasterStory.ChatServerModel;
+            if (string.IsNullOrEmpty(selectedModel)) return null;
+            var client = new OllamaApiClient(uri, selectedModel);
+            _chat = new Chat(client);
+        }
+
+        string chatResult = string.Empty;
+        try
+        {
+            await foreach (var answerToken in _chat.SendAsync(input))
+                chatResult += answerToken;
+        }
+        catch (HttpRequestException)
+        {
+            return null;
+        }
+
+        const string startTag = "```json";
+        const string endTag = "```";
+        if (chatResult.StartsWith(startTag) && chatResult.EndsWith(endTag))
+        {
+            chatResult = chatResult[startTag.Length..^endTag.Length];
+        }
+
+        return DecodeChapter(chatResult);
+    }
+
+    /// <summary>
+    /// Attempts to deserialize a JSON string into a <see cref="Chapter"/> object.
+    /// </summary>
+    /// <param name="json">The JSON string representing a chapter.</param>
+    /// <returns>A <see cref="Chapter"/> object if deserialization is successful; otherwise, <c>null</c>.</returns>
+    static Chapter? DecodeChapter(string json)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<Chapter>(json, MasterStorySerializerOptions.Options);
+        }
+        catch (JsonException)
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Determines the starting chapter for the story. Uses chat input if configured, otherwise returns the predefined start chapter.
+    /// </summary>
+    /// <returns>The starting <see cref="Chapter"/> if resolved successfully; otherwise, <c>null</c>.</returns>
+    async Task<Chapter?> ResolveStartChapterAsync()
+    {
+        if (MasterStory.UsesChatMessage())
+        {
+            var chapter = await GetChapterFromChatMessageAsync(MasterStory.ChatMessage);
+            if (chapter != null)
+            {
+                MasterStory.Chapters.Clear();
+                MasterStory.Chapters.Add(chapter);
+            }
+            return chapter;
+        }
+        return MasterStory.GetStartChapter();
+    }
+
+    /// <summary>
     /// Retrieves the current chapter of a given story based on the internal state of the story.
     /// </summary>
     /// <returns>The current chapter of the story if found; otherwise, null.</returns>
@@ -780,11 +877,20 @@ public class RunningStory
     /// <returns>A task that represents the asynchronous operation. The task result if the navigation was successful or not.</returns>
     async Task<bool> NavigateToLinkAsync(Element element)
     {
-        if (!HasValidLink(element)) return false;
-        var link = element.DecodeLink(this);
-        var linkChapter = MasterStory.GetChapter(link);
-        if (linkChapter == null) return false;
-        _currentIdentifier = new RunningStoryIdentifier(linkChapter.Identifier, linkChapter.IdentifierText);
+        if (MasterStory.UsesChatMessage())
+        {
+            var linkChapter = await NextChapterAsync(element.Text);
+            if (linkChapter == null) return false;
+            _currentIdentifier = new RunningStoryIdentifier(linkChapter.Identifier, linkChapter.IdentifierText);
+        }
+        else
+        {
+            if (!HasValidLink(element)) return false;
+            var link = element.DecodeLink(this);
+            var linkChapter = MasterStory.GetChapter(link);
+            if (linkChapter == null) return false;
+            _currentIdentifier = new RunningStoryIdentifier(linkChapter.Identifier, linkChapter.IdentifierText);
+        }
         CheckStart();
         await CheckEndAsync();
         return true;

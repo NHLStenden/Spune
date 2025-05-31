@@ -6,9 +6,7 @@
 //--------------------------------------------------------------------------------------------------
 
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Spune.Common.Miscellaneous;
-using Spune.Core.Resolvers;
 
 namespace Spune.Core.Core;
 
@@ -21,25 +19,6 @@ namespace Spune.Core.Core;
 /// </remarks>
 public static class MasterStoryReaderWriter
 {
-    /// <summary>
-    /// Configuration options for <see cref="JsonSerializer" /> related operations.
-    /// </summary>
-    static readonly JsonSerializerOptions Options;
-
-    /// <summary>
-    /// Static constructor of class StoryReaderWriter.
-    /// </summary>
-    static MasterStoryReaderWriter()
-    {
-        Options = new JsonSerializerOptions
-        {
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
-            TypeInfoResolver = new CustomTypeInfoResolver(),
-            WriteIndented = true
-        };
-        Options.Converters.Add(new JsonStringEnumConverter());
-    }
-
     /// <summary>
     /// Reads a master story from a specified file asynchronously, deserializes its contents,
     /// initializes it, and returns the resulting <see cref="MasterStory" /> object.
@@ -54,7 +33,7 @@ public static class MasterStoryReaderWriter
         await using var stream = await FileLoader.LoadFileAsync(filePath);
         using var streamReader = new StreamReader(stream);
         var json = await streamReader.ReadToEndAsync();
-        var result = JsonSerializer.Deserialize<MasterStory>(json, Options) ?? MasterStory.CreateInstance();
+        var result = JsonSerializer.Deserialize<MasterStory>(json, MasterStorySerializerOptions.Options) ?? MasterStory.CreateInstance();
         result.Initialize();
         await result.StartAsync(filePath);
         return result;
@@ -65,7 +44,7 @@ public static class MasterStoryReaderWriter
     /// </summary>
     /// <param name="filePath">The file path where the master story will be written.</param>
     /// <param name="masterStory">The master story object to serialize and save to a file.</param>
-    public static void WriteMasterStory(string filePath, MasterStory masterStory) => File.WriteAllText(filePath, (string?)JsonSerializer.Serialize(masterStory, Options));
+    public static void WriteMasterStory(string filePath, MasterStory masterStory) => File.WriteAllText(filePath, (string?)JsonSerializer.Serialize(masterStory, MasterStorySerializerOptions.Options));
 
     /// <summary>
     /// Creates a master story.

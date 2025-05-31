@@ -114,6 +114,16 @@
                         </Grid>
                     </StackPanel>
                 </TabItem>
+                <TabItem Header="Chat message" Padding="0,0,12,0">
+                    <StackPanel Spacing="12">
+                        <Grid>
+                            <StackPanel Grid.Column="0" Spacing="12">
+                                <TextBlock Margin="0,0,0,-4">Chat message</TextBlock>
+                                <TextBox AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding ChatMessage}" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </TabItem>
             </TabControl>
             <Grid Grid.Row="1" RowDefinitions="Auto,*">
                 <TextBlock Grid.Row="0" Margin="0,12,0,-4">Chapters</TextBlock>
