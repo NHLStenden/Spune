@@ -30,6 +30,11 @@ public class MasterStory : Element, IDisposable
     bool _chaptersDisposed;
 
     /// <summary>
+    /// The chat message member.
+    /// </summary>
+    string _chatMessage = string.Empty;
+
+    /// <summary>
     /// Chat server model member.
     /// </summary>
     string _chatServerModel = string.Empty;
@@ -112,6 +117,21 @@ public class MasterStory : Element, IDisposable
     /// and interactions within the master story.
     /// </remarks>
     public ObservableCollection<Chapter> Chapters { get; set; } = [];
+
+    /// <summary>
+    /// Gets or sets the AI prompt (chat message) for the master story. This property defines the input
+    /// text that can be processed by an AI system to generate a response or text completion.
+    /// It serves as a starting point for AI-based text generation processes within this class.
+    /// </summary>
+    public string ChatMessage
+    {
+        get => _chatMessage;
+        set
+        {
+            _chatMessage = value;
+            NotifyPropertyChanged();
+        }
+    }
 
     /// <summary>
     /// Represent the chat server model.
@@ -324,6 +344,48 @@ public class MasterStory : Element, IDisposable
     /// </summary>
     /// <returns>True if it is and false otherwise.</returns>
     public bool HasMaxDuration() => !double.IsInfinity(_maxDuration) && !double.IsNaN(_maxDuration) && _maxDuration > 0.0;
+
+    /// <summary>
+    /// Checks if there are chapters.
+    /// </summary>
+    /// <returns>True if it has and false otherwise.</returns>
+    public bool HasChapters() => Chapters.Count > 0;
+
+    /// <summary>
+    /// Checks if the chat message (override) is used.
+    /// </summary>
+    /// <returns>True if it is and false otherwise.</returns>
+    public bool UsesChatMessage() => !string.IsNullOrEmpty(_chatMessage);
+
+    /// <summary>
+    /// Gets the start chapter.
+    /// </summary>
+    /// <returns>The chapter or null otherwise.</returns>
+    public Chapter? GetStartChapter() => Chapters.Count > 0 ? Chapters.FirstOrDefault(x => x.IsStart) ?? Chapters[0] : null;
+
+    /// <summary>
+    /// Gets the end chapter.
+    /// </summary>
+    /// <returns>The chapter or null otherwise.</returns>
+    public Chapter? GetEndChapter() => Chapters.Count > 0 ? Chapters.FirstOrDefault(x => x.IsEnd) ?? Chapters[^1] : null;
+
+    /// <summary>
+    /// Retrieves a chapter from the chapters list that matches the specified identifier.
+    /// </summary>
+    /// <param name="identifier">The identifier to match against chapters in the list.</param>
+    /// <returns>
+    /// The matching chapter if found; otherwise, <c>null</c>.
+    /// </returns>
+    public Chapter? GetChapter(RunningStoryIdentifier identifier) => Chapters.FirstOrDefault(x => new RunningStoryIdentifier(x.Identifier, x.IdentifierText) == identifier);
+
+    /// <summary>
+    /// Retrieves a chapter from the chapters list that matches the specified identifier.
+    /// </summary>
+    /// <param name="identifier">The identifier to match against chapters in the list.</param>
+    /// <returns>
+    /// The matching chapter if found; otherwise, <c>null</c>.
+    /// </returns>
+    public Chapter? GetChapter(string identifier) => Chapters.FirstOrDefault(x => string.Equals(x.Identifier, identifier, StringComparison.Ordinal));
 
     /// <summary>
     /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

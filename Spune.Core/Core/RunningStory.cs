@@ -350,7 +350,10 @@ public class RunningStory
         if (MasterStory != masterStory)
             MasterStory.Dispose();
         MasterStory = masterStory;
-        _currentIdentifier = MasterStory.Chapters.Count > 0 ? new RunningStoryIdentifier(MasterStory.Chapters[0].Identifier, MasterStory.Chapters[0].IdentifierText) : new RunningStoryIdentifier();
+        var startChapter = MasterStory.GetStartChapter();
+        _currentIdentifier = startChapter != null
+            ? new RunningStoryIdentifier(startChapter.Identifier, startChapter.IdentifierText)
+            : new RunningStoryIdentifier();
         _inventoryItems.Clear();
         _inventoryItems.AddRange(MasterStory.InventoryItems);
 
@@ -478,9 +481,16 @@ public class RunningStory
         if (MasterStory != masterStory)
             MasterStory.Dispose();
         MasterStory = masterStory;
-        var chapter =
-            masterStory.Chapters.FirstOrDefault(x => string.Equals(x.Identifier, element.Identifier, StringComparison.Ordinal));
-        _currentIdentifier = chapter != null ? new RunningStoryIdentifier(chapter.Identifier, chapter.IdentifierText) : masterStory.Chapters.Count > 0 ? new RunningStoryIdentifier(masterStory.Chapters[0].Identifier, masterStory.Chapters[0].IdentifierText) : new RunningStoryIdentifier();
+        var chapter = masterStory.GetChapter(element.Identifier);
+        if (chapter != null)
+        {
+            _currentIdentifier = new RunningStoryIdentifier(chapter.Identifier, chapter.IdentifierText);
+        }
+        else
+        {
+            chapter = MasterStory.GetStartChapter();
+            _currentIdentifier = chapter != null ? new RunningStoryIdentifier(chapter.Identifier, chapter.IdentifierText) : new RunningStoryIdentifier();
+        }
         CheckStart();
         await CheckEndAsync();
         await InvokeStartAsync(this);
@@ -636,11 +646,7 @@ public class RunningStory
     /// Retrieves the current chapter of a given story based on the internal state of the story.
     /// </summary>
     /// <returns>The current chapter of the story if found; otherwise, null.</returns>
-    public Chapter? GetChapter()
-    {
-        var index = MasterStory.Chapters.FindIndex(x => new RunningStoryIdentifier(x.Identifier, x.IdentifierText) == _currentIdentifier);
-        return index >= 0 ? MasterStory.Chapters[index] : null;
-    }
+    public Chapter? GetChapter() => MasterStory.GetChapter(_currentIdentifier);
 
     /// <summary>
     /// Navigates to a chapter defined by the identifier in the specified element object.
@@ -776,7 +782,7 @@ public class RunningStory
     {
         if (!HasValidLink(element)) return false;
         var link = element.DecodeLink(this);
-        var linkChapter = MasterStory.Chapters.FirstOrDefault(x => string.Equals(x.Identifier, link, StringComparison.Ordinal));
+        var linkChapter = MasterStory.GetChapter(link);
         if (linkChapter == null) return false;
         _currentIdentifier = new RunningStoryIdentifier(linkChapter.Identifier, linkChapter.IdentifierText);
         CheckStart();
@@ -792,7 +798,7 @@ public class RunningStory
     bool HasValidLink(Element element)
     {
         var link = element.DecodeLink(this);
-        return !string.IsNullOrEmpty(link) && MasterStory.Chapters.Any(x => string.Equals(x.Identifier, link, StringComparison.Ordinal));
+        return !string.IsNullOrEmpty(link) && MasterStory.GetChapter(link) != null;
     }
 
     /// <summary>
@@ -800,7 +806,7 @@ public class RunningStory
     /// </summary>
     /// <param name="element">The element containing the identifier to check.</param>
     /// <returns>True if it is, and false otherwise.</returns>
-    bool HasValidIdentifier(Element element) => !string.IsNullOrEmpty(element.Identifier) && MasterStory.Chapters.Any(x => string.Equals(x.Identifier, element.Identifier, StringComparison.Ordinal));
+    bool HasValidIdentifier(Element element) => !string.IsNullOrEmpty(element.Identifier) && MasterStory.GetChapter(element.Identifier) != null;
 
     /// <summary>
     /// Navigate to the timeout chapter.
@@ -808,16 +814,29 @@ public class RunningStory
     /// <returns>A task that represents the asynchronous operation.</returns>
     async Task NavigateToTimeoutAsync()
     {
-        if (MasterStory.Chapters.Count == 0)
+        if (!MasterStory.HasChapters())
             return;
         if (!string.IsNullOrEmpty(MasterStory.TimeoutLink))
         {
-            var timeoutLinkChapter = MasterStory.Chapters.FirstOrDefault(x => string.Equals(x.Identifier, MasterStory.TimeoutLink, StringComparison.Ordinal));
-            _currentIdentifier = timeoutLinkChapter != null ? new RunningStoryIdentifier(timeoutLinkChapter.Identifier, timeoutLinkChapter.IdentifierText) : new RunningStoryIdentifier(MasterStory.Chapters[^1].Identifier, MasterStory.Chapters[^1].IdentifierText);
+            var timeoutLinkChapter = MasterStory.GetChapter(MasterStory.TimeoutLink);
+            if (timeoutLinkChapter != null)
+            {
+                _currentIdentifier = new RunningStoryIdentifier(timeoutLinkChapter.Identifier, timeoutLinkChapter.IdentifierText);
+            }
+            else
+            {
+                var endChapter = MasterStory.GetEndChapter();
+                if (endChapter == null)
+                    return;
+                _currentIdentifier = new RunningStoryIdentifier(endChapter.Identifier, endChapter.IdentifierText);
+            }
         }
         else
         {
-            _currentIdentifier = new RunningStoryIdentifier(MasterStory.Chapters[^1].Identifier, MasterStory.Chapters[^1].IdentifierText);
+            var endChapter = MasterStory.GetEndChapter();
+            if (endChapter == null)
+                return;
+            _currentIdentifier = new RunningStoryIdentifier(endChapter.Identifier, endChapter.IdentifierText);
         }
         CheckStart();
         await CheckEndAsync();
@@ -830,7 +849,7 @@ public class RunningStory
     bool IsAtStart()
     {
         var chapter = GetChapter();
-        return chapter?.IsStart == true;
+        return chapter != null && chapter == MasterStory.GetStartChapter();
     }
 
     /// <summary>
@@ -840,7 +859,7 @@ public class RunningStory
     bool HasEnded()
     {
         var chapter = GetChapter();
-        return chapter?.IsEnd == true;
+        return chapter != null && chapter == MasterStory.GetEndChapter();
     }
 
     /// <summary>
