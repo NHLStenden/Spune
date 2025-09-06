@@ -171,6 +171,7 @@ public partial class MainControl : UserControl
                 await CreateChapterAsync();
                 break;
             default:
+                HideMessage();
                 CreateStoryListBox(items);
                 break;
         }
@@ -220,7 +221,6 @@ public partial class MainControl : UserControl
             if (l.SelectedItem is not ShortMasterStory selectedItem)
                 return;
             await _runningStory.StartAsync(selectedItem.GetCombinedFileName());
-            HideMessage();
             await CreateChapterAsync();
         };
         masterStoriesGrid.Children.Add(textBlock);
