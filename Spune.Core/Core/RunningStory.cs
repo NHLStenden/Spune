@@ -331,6 +331,10 @@ public class RunningStory
     static async Task InitializeChatClientAsync(MasterStory masterStory)
     {
         var clientProperties = await ClientProperties.GetInstanceAsync();
+        if (!ClientPropertiesFunction.ChatServerUriIsValid(clientProperties))
+        {
+            return;
+        }
         var uri = new Uri(ClientPropertiesFunction.GetFullChatServerUri(clientProperties));
         var selectedModel = masterStory.ChatServerModel;
         if (string.IsNullOrEmpty(selectedModel)) return;
@@ -672,9 +676,15 @@ public class RunningStory
     async Task<Chapter?> GetChapterFromChatMessageAsync(string chatMessage)
     {
         var input = chatMessage;
+
+        var clientProperties = await ClientProperties.GetInstanceAsync();
+        if (!ClientPropertiesFunction.ChatServerUriIsValid(clientProperties))
+        {
+            return null;
+        }
+
         if (_chat == null)
         {
-            var clientProperties = await ClientProperties.GetInstanceAsync();
             var uri = new Uri(ClientPropertiesFunction.GetFullChatServerUri(clientProperties));
             var selectedModel = MasterStory.ChatServerModel;
             if (string.IsNullOrEmpty(selectedModel)) return null;

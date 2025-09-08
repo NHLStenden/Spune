@@ -32,6 +32,17 @@ public static class ClientPropertiesFunction
     }
 
     /// <summary>
+    /// Gets the validity of the chat server URI.
+    /// </summary>
+    /// <param name="clientProperties">Client properties instance to get URI from.</param>
+    /// <returns>True if configured properly and false otherwise.</returns>
+    public static bool ChatServerUriIsValid(IClientProperties clientProperties)
+    {
+        var chatServerUri = clientProperties.ChatServerUri;
+        return !string.IsNullOrEmpty(chatServerUri);
+    }
+
+    /// <summary>
     /// Gets the full URI of the chat server. If the ChatServerUri is not a complete URI, it combines it with the
     /// ApplicationUri to form a full URI.
     /// </summary>
