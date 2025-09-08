@@ -32,10 +32,10 @@ public static class ClientPropertiesFunction
     }
 
     /// <summary>
-    /// Gets the validity of the chat server URI.
+    /// Determines whether the chat server URI in the client properties is valid.
     /// </summary>
-    /// <param name="clientProperties">Client properties instance to get URI from.</param>
-    /// <returns>True if configured properly and false otherwise.</returns>
+    /// <param name="clientProperties">The client properties instance containing the chat server URI.</param>
+    /// <returns><c>true</c> if the chat server URI is valid; otherwise, <c>false</c>.</returns>
     public static bool ChatServerUriIsValid(IClientProperties clientProperties)
     {
         var chatServerUri = clientProperties.ChatServerUri;

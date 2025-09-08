@@ -332,9 +332,8 @@ public class RunningStory
     {
         var clientProperties = await ClientProperties.GetInstanceAsync();
         if (!ClientPropertiesFunction.ChatServerUriIsValid(clientProperties))
-        {
             return;
-        }
+
         var uri = new Uri(ClientPropertiesFunction.GetFullChatServerUri(clientProperties));
         var selectedModel = masterStory.ChatServerModel;
         if (string.IsNullOrEmpty(selectedModel)) return;
@@ -679,9 +678,7 @@ public class RunningStory
 
         var clientProperties = await ClientProperties.GetInstanceAsync();
         if (!ClientPropertiesFunction.ChatServerUriIsValid(clientProperties))
-        {
             return null;
-        }
 
         if (_chat == null)
         {
