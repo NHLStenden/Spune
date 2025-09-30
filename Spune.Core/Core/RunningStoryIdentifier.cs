@@ -83,6 +83,12 @@ public class RunningStoryIdentifier : IEquatable<RunningStoryIdentifier>
     }
 
     /// <summary>
+    /// Gets the text (if not empty) or the identifier.
+    /// </summary>
+    /// <returns>Text or the identifier.</returns>
+    public string GetTextOrIdentifier() => !string.IsNullOrEmpty(Text) ? Text : Identifier;
+
+    /// <summary>
     /// Checks if the identifier is empty.
     /// </summary>
     /// <returns>True if it is and false otherwise.</returns>

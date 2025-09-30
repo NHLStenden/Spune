@@ -5,6 +5,7 @@
 // </copyright>
 //--------------------------------------------------------------------------------------------------
 
+using System.Globalization;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
@@ -42,11 +43,20 @@ public class EmailSender : IEmailSender
     public async Task<string> SendAsync()
     {
         if (string.IsNullOrEmpty(From))
+        {
+            SaveToDesktop();
             return "The author (from) is empty";
+        }
         if (string.IsNullOrEmpty(SmtpHost))
+        {
+            SaveToDesktop();
             return "The SMTP host is empty";
+        }
         if (!string.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password))
+        {
+            SaveToDesktop();
             return "The password is not provided";
+        }
 
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse(From));
@@ -67,5 +77,23 @@ public class EmailSender : IEmailSender
         var resultMessage = await smtp.SendAsync(email);
         await smtp.DisconnectAsync(true);
         return resultMessage;
+    }
+
+    /// <summary>
+    /// Saves to the desktop.
+    /// </summary>
+    void SaveToDesktop()
+    {
+        if (AttachmentStream == null) return;
+        var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        var fileName = AttachmentFileName;
+        var fileExtension = Path.GetExtension(fileName);
+        var dateTime = DateTime.Now;
+        var dateTimeAsString = dateTime.ToString("yyyy-MM-dd HH_mm_ss", CultureInfo.InvariantCulture);
+        fileName = Path.GetFileNameWithoutExtension(fileName);
+        fileName = Path.Join(desktopPath, fileName + " " + dateTimeAsString + fileExtension);
+        using var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+        AttachmentStream.CopyTo(fileStream);
+        AttachmentStream.Position = 0;
     }
 }

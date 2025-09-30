@@ -28,7 +28,7 @@ public static class RunningStoryWriter
         Dictionary<string, List<string>> results;
         try
         {
-            results = runningStory.Results.ToDictionary(x => x.Key.Text, x => x.Value.Texts);
+            results = runningStory.Results.ToDictionary(x => x.Key.GetTextOrIdentifier(), x => x.Value.Texts);
         }
         catch (ArgumentException)
         {
